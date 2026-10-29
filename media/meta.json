@@ -1,0 +1,100 @@
+{
+ "plate_night": {
+  "w": 1672,
+  "h": 941,
+  "horizon": 0.5569,
+  "horizonK": 0.2937,
+  "sun": [
+   0.5,
+   0.552
+  ],
+  "source": "assets/space_v1 (ChatGPT), dawn aligned by ECC"
+ },
+ "plate_day": {
+  "w": 1672,
+  "h": 941,
+  "horizon": 0.5569,
+  "horizonK": 0.2937,
+  "sun": [
+   0.5,
+   0.552
+  ],
+  "source": "assets/space_v1 (ChatGPT), dawn aligned by ECC"
+ },
+ "icons": {
+  "car_front": {
+   "w": 640,
+   "h": 483,
+   "aspect": 1.3251
+  },
+  "delivery_truck": {
+   "w": 640,
+   "h": 440,
+   "aspect": 1.4545
+  },
+  "gps_pin": {
+   "w": 492,
+   "h": 640,
+   "aspect": 0.7688
+  },
+  "route_tracking": {
+   "w": 640,
+   "h": 625,
+   "aspect": 1.024
+  },
+  "wireless_signal": {
+   "w": 640,
+   "h": 523,
+   "aspect": 1.2237
+  },
+  "telemetry_dashboard": {
+   "w": 640,
+   "h": 525,
+   "aspect": 1.219
+  },
+  "gps_satellite": {
+   "w": 640,
+   "h": 580,
+   "aspect": 1.1034
+  },
+  "vehicle_diagnostics": {
+   "w": 640,
+   "h": 613,
+   "aspect": 1.044
+  },
+  "payment_card": {
+   "w": 640,
+   "h": 427,
+   "aspect": 1.4988
+  },
+  "digital_wallet": {
+   "w": 640,
+   "h": 623,
+   "aspect": 1.0273
+  }
+ },
+ "liquid": {
+  "w": 1014,
+  "h": 999
+ },
+ "pearl": {
+  "w": 988,
+  "h": 975
+ },
+ "logo": {
+  "w": 976,
+  "h": 941,
+  "tile_box": [
+   0.0369,
+   0.0383,
+   0.9631,
+   0.9617
+  ],
+  "s_box": [
+   0.2131,
+   0.2232,
+   0.7705,
+   0.78
+  ]
+ }
+}
