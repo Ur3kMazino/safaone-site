@@ -7,7 +7,7 @@
 const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
-const out3 = t => 1 - (1 - t) ** 3;
+const out3 = t => 1 - (1 - t) ** 3, out4 = t => 1 - (1 - t) ** 4;
 const reduceMq = matchMedia('(prefers-reduced-motion: reduce)'), wideMq = matchMedia('(min-width: 1024px)');
 const live = () => wideMq.matches && !reduceMq.matches;
 
@@ -52,19 +52,27 @@ function pxSvg(svg, vw, vh){
   });
 }
 
+/* ---------- купол: верхний край полотна — горизонт планеты из фильма, распрямляется, пока манифест поднимается к середине экрана ----------
+   Это форма края, а не движение предметов, поэтому работает на любой ширине; при «уменьшить движение» край сразу прямой */
+const canvas = $('.canvas'), man = $('.s-man');
+let dome = -1, manTop = 0;
+const setDome = v => { v = Math.round(v * 1000) / 1000; if (v !== dome) canvas.style.setProperty('--dome', dome = v); };
+
 /* ---------- движок прогресса ---------- */
 const scenes = [];
 const scene = (el, mode, run, final) => el && scenes.push({ el, mode, run, final, top: 0, h: 0 });
 function measure(){
   const y = scrollY;
   scenes.forEach(s => { const r = s.el.getBoundingClientRect(); s.top = r.top + y; s.h = r.height; });
+  manTop = man.getBoundingClientRect().top + y;
 }
-let lastY = scrollY, lastT = performance.now(), vel = 0, wasLive = null, raf = 0;
+let lastY = scrollY, lastT = performance.now(), vel = 0, wasLive = null, raf = 0, settling = false;
 function tick(){
-  raf = 0;
+  raf = 0; settling = false;
   const on = live(), y = scrollY, vh = innerHeight, now = performance.now();
   vel = lerp(vel, (y - lastY) / Math.max(8, now - lastT) * 16, .25);  // px за кадр, сглаженная
   lastY = y; lastT = now;
+  setDome(reduceMq.matches ? 1 : clamp((vh * .8 - (manTop - y)) / (vh * .5)));
   if (on !== wasLive){ wasLive = on; if (!on) scenes.forEach(s => s.final && s.final()); }
   if (!on) return;
   for (const s of scenes){
@@ -73,21 +81,23 @@ function tick(){
     const p = s.mode === 'pin' ? clamp(-top / Math.max(1, s.h - vh)) : clamp((vh - top) / (vh + s.h));
     s.run(p, top, vh, s.h);
   }
-  if (Math.abs(vel) > .05) schedule();                                // доводим наклон «двигают» после остановки
+  if (Math.abs(vel) > .05 || settling) schedule();                    // доводим «двигают» в покой после остановки
 }
 const schedule = () => { if (!raf) raf = requestAnimationFrame(tick); };
 addEventListener('scroll', schedule, { passive: true });
 
-/* ---------- 1. Манифест: дуга горизонта распрямляется, «двигают» плывёт и наклоняется от скорости ---------- */
-const man = $('.s-man'), arc = $('.man__arc'), arcLine = $('.man__line'), move = $('.man__move'), biz = $('.ln--biz');
-// дуга распрямляется: контрольная точка кривой опускается к линии концов (градиент в userSpaceOnUse — на плоской линии он не пропадает)
-const setArc = a => { arc.style.setProperty('--arc', a.toFixed(3)); arcLine.setAttribute('d', `M0 79 Q740 ${lerp(-50, 79, a).toFixed(1)} 1000 79`); };
-scene(man, 'flow', (p, top, vh) => {
-  setArc(clamp((vh * .8 - top) / (vh * .4)));
-  move.style.setProperty('--mx', `${lerp(6, -3, p) * innerWidth / 100}px`);
-  move.style.setProperty('--sk', `${clamp(-vel * .35, -9, 9).toFixed(2)}deg`);
-  biz.style.translate = `${lerp(-2, 1, p) * innerWidth / 100}px 0`;
-}, () => { setArc(1); move.style.cssText = ''; biz.style.translate = ''; });
+/* ---------- 1. Манифест: «двигают» плывёт и наклоняется от скорости, «бизнес» доезжает на место ---------- */
+const move = $('.man__move'), biz = $('.ln--biz');
+let sk = 0;
+scene(man, 'flow', p => {
+  // дрейф и наклон — только от скорости: в покое перед «двигают» обычный пробел, без дыры
+  const goal = clamp(-vel * .22, -6, 6);
+  sk = lerp(sk, goal, .12);                                           // наклон догоняет скорость пружиной
+  settling = Math.abs(sk - goal) > .02; if (!settling) sk = goal;
+  move.style.setProperty('--mx', `${clamp(-vel * 1.4, -28, 28).toFixed(1)}px`);
+  move.style.setProperty('--sk', `${sk.toFixed(2)}deg`);
+  biz.style.translate = `${(4 * (1 - out4(clamp((p - .1) / .35)))).toFixed(3)}cqw 0`;   // «бизнес» доезжает и встаёт
+}, () => { sk = 0; move.style.cssText = ''; biz.style.translate = ''; });
 
 /* ---------- 2. Почему мы: слова заливаются по мере чтения, предметы выпрыгивают ---------- */
 const read = $('[data-read]');
@@ -113,32 +123,65 @@ const setRead = k => {
 scene(read, 'flow', (p, top, vh, h) => setRead(Math.round(clamp((vh * .85 - top) / (h + vh * .45)) * readItems.length)),
   () => setRead(readItems.length));
 
-/* ---------- 3. Три продукта: машина, пин и карта по наклонной орбите; подпись у того, кто спереди ---------- */
-const ov = $('.s-ov'), ovBodies = $$('.ov__body'), ovCaps = $$('.ov__cap'), ring = $('.ov__ring'), stage = $('.ov__stage');
-let ovFront = -1, orb = null;
+/* ---------- 3. Три продукта: машина, пин и карта по наклонной орбите сквозь заголовок ----------
+   Задняя половина пути идёт за буквами (z 1 < заголовок 2), передняя — поверх (3). В списке активна строка того, кто спереди */
+const ov = $('.s-ov'), ovBodies = $$('.ov__body'), ovRings = $$('.ov__ring'), ovJobs = $$('.ov__jobs li'), stage = $('.ov__stage');
+const ovOrbit = $('.ov__orbit'), ovList = $('.ov__jobs'), ovTitle = $('.ov__title'), OV_TILT = -9;
+let ovFront = null, orb = null;
 function ovGeom(){
-  const rx = stage.clientWidth * .22, ry = rx * .31;
-  ring.style.cssText = `left:${-1.1 * rx}px;top:${-40 / 31 * ry}px;width:${2.2 * rx}px;height:${80 / 31 * ry}px;transform:rotate(-10deg)`;
-  orb = { rx, ry, tilt: -10 * Math.PI / 180, size: ovBodies.map(b => [b.offsetWidth, b.offsetHeight]) };
+  const W = stage.clientWidth, t = OV_TILT * Math.PI / 180, size = ovBodies.map(b => [b.offsetWidth, b.offsetHeight]);
+  // крайняя точка тел на пути (с их размером на этом месте, k — общий масштаб тел) по оси f: f(x, y) — координата центра, i — 0 ширина / 1 высота
+  const edge = (rx, k, f, i) => {
+    let m = -1e9;
+    for (let a = 0; a < 360; a += 4){
+      const th = a * Math.PI / 180, d = (Math.sin(th) + 1) / 2, c = f(rx * Math.cos(th), rx * .27 * Math.sin(th));
+      size.forEach(s => { m = Math.max(m, c + s[i] * k * (.5 + .6 * d) / 2); });
+    }
+    return m;
+  };
+  // rx по ТЗ, но тела справа не уходят за край полотна (на 1280–1440 машина у края обрезалась). .43 — место справа от центра (.ov__orbit left:57%)
+  let rx = Math.min(W * .33, innerHeight * .58);
+  for (let i = 0, over; i < 3 && (over = edge(rx, 1, (x, y) => x * Math.cos(t) - y * Math.sin(t), 0) - W * .43 + 16) > 0; i++) rx -= over;
+  // центр на 49% высоты, но самая низкая точка тел (спереди слева — туда наклон опускает кольцо) остаётся над списком «каждый…».
+  // Переднее тело заходит на нижнюю строку заголовка не больше чем на 60% её высоты; на низких экранах (1366×657) для этого тела чуть уменьшаются
+  const ry = rx * .27, lh = parseFloat(getComputedStyle(ovTitle).fontSize) * .86, roof = ovTitle.offsetTop + ovTitle.offsetHeight - lh * .6;
+  const hMax = Math.max(...size.map(s => s[1]));
+  let k = 1, cy = 0;
+  for (; k > .6; k -= .02){
+    cy = Math.min(stage.clientHeight * .49, ovList.offsetTop - 16 - edge(rx, k, (x, y) => x * Math.sin(t) + y * Math.cos(t), 1));
+    if (cy + ry * Math.cos(t) - hMax * k * .55 >= roof) break;
+  }
+  ovOrbit.style.top = `${cy.toFixed(1)}px`;
+  // кольцо — две дуги одной геометрии: задняя за буквами, передняя поверх
+  ovRings.forEach(r => r.style.cssText = `left:${(-rx).toFixed(1)}px;top:${(-ry).toFixed(1)}px;width:${(2 * rx).toFixed(1)}px;height:${(2 * ry).toFixed(1)}px;transform:rotate(${OV_TILT}deg)`);
+  orb = { rx, ry, t, k, size };
 }
-scene(ov, 'pin', p => {
+function placeOrbit(p){                                               // возвращает, кто спереди
   if (!orb) ovGeom();
   let best = 0, bestD = -1;
   ovBodies.forEach((b, k) => {
     const th = (90 - p * 300 + k * 120) * Math.PI / 180;
     const x = orb.rx * Math.cos(th), y = orb.ry * Math.sin(th), d = (Math.sin(th) + 1) / 2;
-    const X = x * Math.cos(orb.tilt) - y * Math.sin(orb.tilt), Y = x * Math.sin(orb.tilt) + y * Math.cos(orb.tilt);
+    const X = x * Math.cos(orb.t) - y * Math.sin(orb.t), Y = x * Math.sin(orb.t) + y * Math.cos(orb.t);
     const [w, h] = orb.size[k];
-    b.style.transform = `translate(${(X - w / 2).toFixed(1)}px,${(Y - h / 2).toFixed(1)}px) scale(${(.5 + .6 * d).toFixed(3)})`;
-    b.style.opacity = (.5 + .5 * d).toFixed(3); b.style.zIndex = Math.round(d * 10);
+    b.style.transform = `translate(${(X - w / 2).toFixed(1)}px,${(Y - h / 2).toFixed(1)}px) scale(${((.5 + .6 * d) * orb.k).toFixed(3)})`;
+    b.style.opacity = (.5 + .5 * d).toFixed(3); b.style.zIndex = d > .5 ? 3 : 1;
     b.classList.toggle('is-far', d < .3);
     if (d > bestD){ bestD = d; best = k; }
   });
-  if (best !== ovFront){
-    ovCaps.forEach((c, k) => { c.classList.toggle('is-gone', k === ovFront); c.classList.toggle('is-on', k === best); });
-    ovFront = best;
-  }
-}, () => { ovFront = -1; ovBodies.forEach(b => b.style.cssText = ''); ovCaps.forEach(c => c.classList.remove('is-on', 'is-gone')); });
+  return best;
+}
+const setJob = k => {                                                 // k < 0 — все строки разом: кадр без движения
+  if (k === ovFront) return;
+  ovJobs.forEach((li, i) => li.classList.toggle('is-on', k < 0 || i === k)); ovFront = k;
+};
+scene(ov, 'pin', p => setJob(placeOrbit(p)), () => {
+  // без пина: от 1024px — та же композиция в покое (машина спереди), на телефоне — кадр из CSS
+  orb = null;
+  if (wideMq.matches) placeOrbit(0);
+  else { [ovOrbit, ...ovBodies, ...ovRings].forEach(el => el.style.cssText = ''); ovBodies.forEach(b => b.classList.remove('is-far')); }
+  setJob(-1);
+});
 
 /* ---------- 4. Fleet: машина едет на зрителя, макет отстаёт, водитель проходит проверку ---------- */
 const fleet = $('.sp--fleet'), car = $('.sp__hero', fleet), fleetMock = $('.sp__mock', fleet);
@@ -152,7 +195,22 @@ scene(fleet, 'flow', p => {
 
 /* ---------- 5. GPS: маршрут прорисовывается поверх букв, в конец падает пин; на карте едет машина ---------- */
 const gps = $('.sp--gps'), gpsWrap = $('.sp__mast-wrap', gps), map = $('.map', gps), speed = $('.map__speed', gps);
+const gpsSvg = $('.gps__route', gps), gpsEnd = $('.map__end', gps);
 $$('.gps__path, .map__route').forEach(path => path.setAttribute('pathLength', 1));
+// маршрут над словом начинается в экранной точке конца трека на карте: одна линия от карты сквозь буквы к пину.
+// Точки пути — в долях слова (100 × 40, как в разметке), пересчёт в пиксели блока
+function gpsRoute(){
+  const r = gpsSvg.getBoundingClientRect(), e = gpsEnd.getBoundingClientRect();
+  if (!r.width || !e.width) return;
+  const sx = (e.left + e.width / 2 - r.left) / r.width * 100, sy = (e.top + e.height / 2 - r.top) / r.height * 40;
+  const pt = (x, y) => `${(x / 100 * r.width).toFixed(1)} ${(y / 40 * r.height).toFixed(1)}`;
+  // из точки на карте вверх и влево, в чашу «P», и дугой над «S» к пину. Конец — под остриём пина (left 90%, top 20%)
+  const d = `M${pt(sx, sy)} C${pt(sx - 6, sy - 16)},${pt(36, 30)},${pt(44, 21)} S${pt(70, 6)},${pt(90, 8)}`;
+  gpsSvg.setAttribute('viewBox', `0 0 ${r.width.toFixed(1)} ${r.height.toFixed(1)}`);
+  $$('.gps__path', gpsSvg).forEach(path => path.setAttribute('d', d));
+  const c = $('.gps__start', gpsSvg), [cx, cy] = pt(sx, sy).split(' ');
+  c.setAttribute('cx', cx); c.setAttribute('cy', cy);
+}
 scene(gps, 'flow', p => {
   const d1 = clamp((p - .12) / .33), d2 = clamp((p - .3) / .3);
   gpsWrap.style.setProperty('--draw', d1.toFixed(3));
@@ -173,7 +231,7 @@ scene(pay, 'flow', p => {
 const bal = $('.ip-balance b', pay);
 if (bal && !reduceMq.matches){
   const num = bal.firstChild, final = num.textContent, total = 328400;
-  const fmt = v => `${Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')},00 `;
+  const fmt = v => `${Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')},00 `;   // разряды узким неразрывным
   num.textContent = fmt(0);
   const balIo = new IntersectionObserver(es => {
     if (!es[0].isIntersecting) return;
@@ -188,7 +246,9 @@ if (bal && !reduceMq.matches){
   balIo.observe(bal);
 }
 
-/* ---------- 7. Разработка на заказ: активная строка указателя меняет предмет в липкой колонке ---------- */
+/* ---------- 7. Разработка на заказ: главная строка указателя меняет предмет справа ----------
+   От 1024px сцена стоит на экране, и главная строка идёт по прогрессу пина (шесть равных отрезков).
+   Без пина (телефон, «уменьшить движение») — строка, ближайшая к середине экрана */
 const rows = $$('.svc__row'), svcImgs = $$('.svc__stick img');
 let svcK = -1;
 function setSvc(k){
@@ -200,27 +260,43 @@ function setSvc(k){
   });
   svcK = k;
 }
-// активна строка, ближайшая к середине экрана, среди тех, что сейчас в средней полосе (при скролле вверх тоже)
 const svcIn = new Set();
-const svcIo = new IntersectionObserver(es => {
-  es.forEach(en => en.isIntersecting ? svcIn.add(en.target) : svcIn.delete(en.target));
+const svcNear = () => {                                               // среди строк в средней полосе экрана — ближайшая к середине (при скролле вверх тоже)
   let best = null, bestD = Infinity;
   svcIn.forEach(r => { const b = r.getBoundingClientRect(), d = Math.abs(b.top + b.height / 2 - innerHeight / 2); if (d < bestD){ bestD = d; best = r; } });
   if (best) setSvc(+best.dataset.k);
+};
+const svcIo = new IntersectionObserver(es => {
+  es.forEach(en => en.isIntersecting ? svcIn.add(en.target) : svcIn.delete(en.target));
+  if (!live()) svcNear();
 }, { rootMargin: '-45% 0px -45% 0px' });
 rows.forEach(r => {
   svcIo.observe(r);
   const a = r.querySelector('a');
-  a.addEventListener('pointerenter', () => setSvc(+r.dataset.k));
+  // в пине строка под курсором не становится главной: она выросла бы и уехала из-под курсора, а под ним оказалась бы соседняя
+  a.addEventListener('pointerenter', () => { if (!live()) setSvc(+r.dataset.k); });
   a.addEventListener('focus', () => setSvc(+r.dataset.k));
 });
+scene($('.svc__track'), 'pin', p => setSvc(Math.min(5, Math.floor(p * 6))), svcNear);
 setSvc(0);
+// кегль главной строки не больше того, при котором её название встаёт в колонку одной строкой (css: --fit)
+const svcRange = document.createRange();
+const fitSvc = () => $$('.svc__name').forEach(n => {
+  svcRange.selectNodeContents(n);
+  const w = svcRange.getBoundingClientRect().width;
+  if (w) n.style.setProperty('--fit', `${(parseFloat(getComputedStyle(n).fontSize) * n.clientWidth / w).toFixed(1)}px`);
+});
 
 /* ---------- 8. Процесс: одометр 1→4, жемчужина-солнце едет по дуге, на «Запуске» встаёт рассвет ---------- */
-const proc = $('.s-proc'), digits = $('.proc__digits'), steps = $$('.proc__step'), procArc = $('.proc__arc'),
+const proc = $('.s-proc'), digits = $('.proc__digits'), procWin = $('.proc__win'), steps = $$('.proc__step'), procArc = $('.proc__arc'),
   procPath = $('.proc__fill'), pearl = $('.proc__pearl'), ticks = $$('.proc__tick');
 const STOPS = [.06, .35, .65, .94];                                   // где на дуге стоят шаги (доля длины)
-let procStep = -1, procLen = 0;
+let procStep = -1, procLen = 0, digitW = [];
+// цифры пропорциональные: окно одометра принимает ширину текущей цифры
+const measureDigits = () => {
+  const ls = parseFloat(getComputedStyle(procWin).letterSpacing) || 0;   // отрицательная разрядка после последней цифры обрезала бы её край
+  digitW = $$('span', digits).map(d => d.getBoundingClientRect().width - ls); procStep = -1;
+};
 procPath.setAttribute('pathLength', 1);
 const arcPoint = f => {                                               // точка дуги в пикселях блока .proc__arc
   if (!procLen) procLen = procPath.getTotalLength();
@@ -238,35 +314,38 @@ scene(proc, 'pin', p => {
   procArc.style.setProperty('--dawn', clamp((p - .78) / .17).toFixed(3));
   if (s !== procStep){
     procStep = s; digits.style.setProperty('--step', s);
+    if (digitW[s]) procWin.style.width = `${digitW[s].toFixed(1)}px`;
     steps.forEach((el, i) => { el.classList.toggle('is-on', i === s); el.classList.toggle('is-past', i < s); });
     ticks.forEach((t, i) => t.classList.toggle('is-on', i <= s));
   }
-}, () => { procStep = -1; steps.forEach(el => el.classList.remove('is-on', 'is-past')); });
+}, () => { procStep = -1; procWin.style.width = ''; steps.forEach(el => el.classList.remove('is-on', 'is-past')); });
 
 /* ---------- 9. Контакт: чат наклоняется к форме, пока в ней пишут ---------- */
 const chat = $('.ct__chat'), lead = $('#lead');
 lead.addEventListener('focusin', e => { if (e.target.matches('.pf') && !reduceMq.matches) chat.style.setProperty('--tilt', '-9deg'); });
 lead.addEventListener('focusout', () => chat.style.setProperty('--tilt', '0deg'));
 
-/* ---------- 10. Футер: плитка S разворачивается, герои фильма садятся на орбиту вокруг неё ---------- */
-const foot = $('.s-foot'), fOrbit = $('.foot__orbit'), fBodies = $$('.foot__b'), fBg = $('.foot__bg');
+/* ---------- 10. Футер: плитка S разворачивается, герои фильма садятся на орбиту вокруг неё ----------
+   Эллипс шире плитки и опущен ниже её центра: передние тела проходят под нижней кромкой и не закрывают лицо S, задние идут за буквами слогана */
+const foot = $('.s-foot'), fOrbit = $('.foot__orbit'), fBodies = $$('.foot__b'), fRings = $$('.foot__ring'), fTile = $('.foot__tile'), fBg = $('.foot__bg');
 let fe = 1, fSpin = 0, fRaf = 0, fSeen = false, fPrev = 0;
 function placeFootBodies(){
-  const rx = fOrbit.clientWidth * .5 * fe, ry = rx * .3, tilt = -8 * Math.PI / 180;
+  const rx = fOrbit.clientWidth * .48 * fe, ry = rx * .28, cy = fTile.offsetHeight * .36, tilt = -8 * Math.PI / 180;
+  fRings.forEach(r => r.style.cssText = `width:${(2 * rx).toFixed(1)}px;height:${(2 * ry).toFixed(1)}px;opacity:${fe.toFixed(3)};transform:translate(-50%,-50%) translateY(${cy.toFixed(1)}px) rotate(-8deg)`);
   fBodies.forEach((b, k) => {
     const th = fSpin + k * 2 * Math.PI / 3, d = (Math.sin(th) + 1) / 2;
     const x = rx * Math.cos(th), y = ry * Math.sin(th);
-    const X = x * Math.cos(tilt) - y * Math.sin(tilt), Y = x * Math.sin(tilt) + y * Math.cos(tilt);
+    const X = x * Math.cos(tilt) - y * Math.sin(tilt), Y = x * Math.sin(tilt) + y * Math.cos(tilt) + cy;
     b.style.transform = `translate(-50%,-50%) translate(${X.toFixed(1)}px,${Y.toFixed(1)}px) scale(${((.55 + .5 * d) * (.3 + .7 * fe)).toFixed(3)})`;
     b.style.zIndex = d > .5 ? 3 : 1; b.style.opacity = (.35 + .65 * fe).toFixed(3);
     b.classList.toggle('is-far', d < .3);
   });
 }
-const fTile = $('.foot__tile'); fTile.style.zIndex = 2;
-const footSpin = t => {                                               // круг за 48 с
+fTile.style.zIndex = 2;
+const footSpin = t => {                                               // круг за 60 с
   fRaf = 0;
   if (!fSeen || !live()) return;
-  fSpin += (t - (fPrev || t)) / 48000 * 2 * Math.PI; fPrev = t;
+  fSpin += (t - (fPrev || t)) / 60000 * 2 * Math.PI; fPrev = t;
   placeFootBodies();
   fRaf = requestAnimationFrame(footSpin);
 };
@@ -283,13 +362,13 @@ scene(foot, 'flow', (p, top, vh, h) => {
   fSpin += (q - fScroll) * Math.PI; fScroll = q;                      // скролл подкручивает орбиту
   if (!fRaf) placeFootBodies();
   if (fSeen && !fRaf) fRaf = requestAnimationFrame(footSpin);
-}, () => { fe = 1; fSpin = .6; fOrbit.style.setProperty('--fe', 1); fBg.style.translate = ''; placeFootBodies(); });
+}, () => { fe = 1; fSpin = 1.37; fOrbit.style.setProperty('--fe', 1); fBg.style.translate = ''; placeFootBodies(); });   // в покое: машина спереди под плиткой, пин сзади за «каждом», карта сзади справа
 
 /* ---------- пересчёт геометрии ---------- */
 function relayout(){
   fit(); orb = null; procLen = 0;
-  pxSvg($('.gps__route'), 100, 40);
-  if (live()){ pxSvg($('svg', procArc), 1000, 100); ovGeom(); placeTicks(); }
+  gpsRoute();
+  if (live()){ pxSvg($('svg', procArc), 1000, 100); ovGeom(); placeTicks(); measureDigits(); fitSvc(); }
   measure(); wasLive = null; schedule();
 }
 let rq = 0;

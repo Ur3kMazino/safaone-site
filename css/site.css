@@ -12,7 +12,10 @@
   --plum:#9F5D87;
   --night:#180033;
   --rose:#C25E93;          /* розовый потемнее — для текста и линий на белом */
-  --grad:linear-gradient(100deg,#623289 0%,#9F5D87 50%,#D46A9E 100%);
+  /* градиенты только из брендбука: розовый→фиолетовый, фиолетовый→ночной, розово-фиолетовый→коралл */
+  --g-brand:linear-gradient(100deg,#623289 15%,#F29FC5 115%);
+  --g-night:linear-gradient(100deg,#180033,#623289);
+  --g-pay:linear-gradient(100deg,#9F5D87,#DE3C35);
   --btn:linear-gradient(120deg,#B07AA0 0%,#8C58A8 22%,#7C4BA6 55%,#623289 100%);   /* светлее исходного #9F5D87→#4b2470; под текстом белый ≥4.6:1 */
   --glass:linear-gradient(180deg,#ffffffc7 0%,#ffffff8c 100%);
   --glass-bd:#ffffffe6;
@@ -22,7 +25,7 @@
   --r-lg:24px;--r:20px;--r-sm:14px;
   --wrap:1240px;--pad:clamp(20px,4.4vw,64px);
   --font:"Onest","Helvetica Neue",Arial,sans-serif;
-  --font-ui:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-ui:"Helvetica Neue",Onest,sans-serif;   /* без Helvetica: на Windows она подменяется на Arial */
   --ease:cubic-bezier(.2,.7,.2,1);
   --hero-gap:clamp(24px, 2.5vw, 48px);--hero-radius:clamp(22px, 1.5vw, 28px);   /* поля растут с экраном: 1440 → 36px, 1920 → 48px */
   --nav-top:calc(var(--hero-gap) + 12px);
@@ -51,13 +54,14 @@ ul,ol{margin:0;padding:0;list-style:none}
 
 /* ---------- полотно: все разделы под фильмом — один сплошной белый лист с теми же полями и скруглением, что у карточки фильма ---------- */
 .canvas{position:relative;isolation:isolate;overflow:clip;margin:0 var(--gap) var(--gap);border-radius:var(--radius);background:var(--sheet);
-  box-shadow:0 0 0 1px #1C13260d,0 30px 60px -50px #62328940}
+  box-shadow:0 0 0 1px #1C13260d,0 30px 60px -50px #62328940;
+  /* купол: верхний край изогнут, как горизонт планеты из фильма, и распрямляется, пока манифест поднимается к середине экрана.
+     --dome 0 → 1 ставит scenes.js. Горизонтальный радиус тоже уходит к обычному: в покое углы те же, что у карточки фильма, а не плоская дуга */
+  --dome-h:7.5cqw;
+  border-top-left-radius:calc(var(--radius) + (1 - var(--dome,1)) * (50% - var(--radius))) calc(var(--radius) + (1 - var(--dome,1)) * var(--dome-h));
+  border-top-right-radius:calc(var(--radius) + (1 - var(--dome,1)) * (50% - var(--radius))) calc(var(--radius) + (1 - var(--dome,1)) * var(--dome-h))}
+@media (max-width:640px){.canvas{--dome-h:14cqw}}
 /* разделы внутри полотна разделяются только отступами */
-/* мягкие цветные пятна — за ними работает стекло */
-.blob{position:absolute;z-index:-1;border-radius:50%;pointer-events:none;filter:blur(60px);opacity:.75}
-.blob--lilac{background:radial-gradient(closest-side,#C9A8F5,#C9A8F500)}
-.blob--pink{background:radial-gradient(closest-side,#F7B8D4,#F7B8D400)}
-.blob--peach{background:radial-gradient(closest-side,#FFD9C4,#FFD9C400)}
 
 /* ---------- типографика ---------- */
 .h1{font-size:clamp(44px,6.25cqw,86px);line-height:1;font-weight:600;letter-spacing:-.04em;text-wrap:balance}
@@ -65,7 +69,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .h3{font-size:clamp(22px,1.75cqw,26px);line-height:1.22;font-weight:600;letter-spacing:-.015em}
 .lead{font-size:clamp(19px,1.55cqw,23px);line-height:1.5;color:var(--ink-2);max-width:640px;text-wrap:pretty}
 .muted{color:var(--ink-2)}
-.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad{background:var(--g-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
 .sec-head{display:grid;gap:22px;max-width:980px;margin-bottom:clamp(44px,5vw,72px)}
 
 /* ---------- стекло (светлое) ---------- */
@@ -84,6 +88,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .btn:active{transform:scale(.98)}
 .btn--primary{color:#fff;background:var(--btn);box-shadow:inset 0 1px 0 #ffffff40,0 16px 34px -16px #623289b3}
 .btn--primary:hover{box-shadow:inset 0 1px 0 #ffffff55,0 20px 44px -14px #623289cc}
+.btn--primary:focus-visible{outline:none;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--purple)}
 .btn--glass{color:var(--ink);background:#ffffffb3;box-shadow:inset 0 0 0 1px #1C13261f,0 10px 24px -18px #62328966;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .btn--glass:hover{background:#fff}
 .btn--sm{height:40px;padding:0 18px;font-size:15px}
@@ -175,7 +180,17 @@ ul,ol{margin:0;padding:0;list-style:none}
   --cg:clamp(12px,1.7cqw,24px);    /* гаттер сетки */
   --ghost:#D3CADA;                  /* слова до прочтения */
   --fleet-ink:#12182A;--gps:#0145F2;--gps-ink:#050170;--mint:#3DF48C;
+  /* три уровня набора: иерархию задаёт контраст веса 700 / 500 / 400, а не размер одного 600 */
+  --t1:500 clamp(44px,7.3cqw,106px)/.94 var(--font);--t1-ls:-.042em;   /* главный: манифест, «Три продукта», «Обсудим» */
+  --t2-fs:clamp(40px,4.8cqw,68px);                                      /* кегль T2 отдельно: по нему процесс считает место под цифру */
+  --t2:500 var(--t2-fs)/.98 var(--font);--t2-ls:-.032em;               /* раздел: услуги, процесс */
+  --t3:400 clamp(19px,1.6cqw,23px)/1.42 var(--font);--t3-ls:-.012em;   /* лид */
+  --cap:400 13px/1.45 var(--font-ui);                                   /* подпись: мелких кеглей два — 13 и 15 */
+  --marg:400 15px/1.5 var(--font-ui);                                   /* маргиналия */
+  --man-fs:clamp(40px,7.3cqw,106px);                                    /* кегль манифеста: по нему стоят лесенка и левый край «Почему мы» */
 }
+h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
 .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cg);padding:0 var(--in)}
 .sx{position:relative}
 .hrow{display:flex;align-items:center;gap:16px}
@@ -183,111 +198,123 @@ ul,ol{margin:0;padding:0;list-style:none}
 .hrow img{height:30px;width:auto;flex:none}
 .gico{display:block;width:56px;height:56px;object-fit:contain;flex:none;filter:drop-shadow(0 10px 14px #62328938)}
 .dot{width:7px;height:7px;border-radius:50%;background:#19b36b;box-shadow:0 0 0 3px #19b36b26;display:inline-block}
-.paymark{display:inline-flex;align-items:flex-start;gap:3px;flex:none}
-.paymark img{height:28px;width:auto}
-.paymark b{font:700 14px/1 var(--font);color:#C25E93;margin-top:-5px}
 .ulink{display:inline-block;margin-top:26px;padding:0 0 4px;border:0;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;
   font:500 17px/1.3 var(--font);color:var(--ink);cursor:pointer;transition:color .25s,background-size .35s var(--ease)}
 .ulink:hover{color:var(--purple)}
 
-/* ---------- маска строк: строка выезжает снизу, как подписи фильма ---------- */
-.ln{display:block;overflow:hidden;padding:.07em .12em .12em 0;margin:-.07em -.12em -.12em 0}
+/* ---------- маска строк: строка выезжает снизу, как подписи фильма ----------
+   Режет только снизу: бока и верх открыты, последняя буква и наклон «двигают» не обрезаются */
+.ln{display:block;overflow:visible;clip-path:inset(-.35em -.3em 0 -.3em);padding:.07em 0 .12em;margin:-.07em 0 -.12em}
 .nw{white-space:nowrap}
 .js .ln>span{display:inline-block;transform:translateY(112%);transition:transform 1s cubic-bezier(.16,1,.3,1);transition-delay:calc(var(--k,0) * 90ms)}
 .js .is-in .ln>span{transform:none}
 .js [data-fade]{opacity:0;translate:0 16px;transition:opacity .9s var(--ease) .45s,translate .9s var(--ease) .45s}
 .js [data-fade].is-in{opacity:1;translate:0 0}
+/* ленивые картинки проявляются по загрузке (класс .is-ok ставит site.js). :where — нулевая специфичность:
+   у предметов со своей прозрачностью и переходами (услуги, пин GPS) правило не перебивает их собственные */
+:where(.js img[loading=lazy]){transition:opacity .6s var(--ease)}
+:where(.js img[loading=lazy]:not(.is-ok)){opacity:0}
 @keyframes floaty{from{translate:0 -7px}to{translate:0 8px}}
 
 /* ---------- 1. Манифест ---------- */
-.s-man{padding:clamp(24px,3cqw,48px) 0 clamp(150px,15cqw,220px)}
-.man__arc{position:relative;height:clamp(36px,5cqw,72px);margin:0 0 clamp(80px,9cqw,130px)}
-.man__arc svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.man__glow{position:absolute;left:62%;bottom:0;width:min(900px,66%);height:340%;transform:translate(-50%,40%);pointer-events:none;
-  background:radial-gradient(closest-side,#FFD3B88c,#FFD3B800);opacity:calc(1 - var(--arc,0))}
+.s-man{padding:clamp(72px,7cqw,120px) 0 clamp(120px,14cqw,200px)}
 .man{position:relative}
-.man__title{grid-column:1/-1;grid-row:1;--col:calc((100% + var(--cg)) / 12);
-  font:600 clamp(40px,8.9cqw,128px)/.92 var(--font);letter-spacing:-.045em;color:var(--ink)}
-.ln--c4{padding-left:calc(var(--col) * 3)}
+/* T1, а «бизнес» — T0: контраст 500/700 даёт взрыв. Оптическое поле: ножка «Р» (левый отступ знака .078em) встаёт на край сетки */
+.man__title{grid-column:1/-1;grid-row:1;--col:calc((100% + var(--cg)) / 12);margin-left:-.078em;
+  font:500 var(--man-fs)/.94 var(--font);letter-spacing:var(--t1-ls);color:var(--ink)}
+.ln--c4{padding-left:2.63em}                  /* лесенка по буквам: «технологии,» и «бизнес» встают под «б» из «Разрабатываем» */
 .ln--c3{padding-left:calc(var(--col) * 2)}
 .ln--c2{padding-left:var(--col)}
 .man__move{font-style:normal;display:inline-block;transform:translateX(var(--mx,0px)) skewX(var(--sk,0deg));will-change:transform}
 .man__biz{font-weight:700;font-size:17.5cqw;line-height:.8;letter-spacing:-.055em}
 .ln--biz{margin-top:.02em}
-.man__sub{grid-column:1/4;grid-row:1;align-self:end;margin-bottom:clamp(6px,1.1cqw,16px);max-width:290px;font-size:17px;line-height:1.5;color:var(--ink-3)}
+/* маргиналия кончается до «бизнес»: тот стоит по буквам (2.63em кегля заголовка), а не по колонкам */
+.man__sub{grid-column:1/4;grid-row:1;align-self:end;margin-bottom:clamp(6px,1.1cqw,16px);max-width:min(290px,calc(2.55 * var(--man-fs) - var(--cg)));
+  font-size:17px;line-height:1.5;color:var(--ink-2)}
 
 /* ---------- 2. Почему мы: абзац заливается при чтении ---------- */
-.s-read{padding:0 0 clamp(160px,17cqw,240px)}
-.read{grid-column:3/12;font:400 clamp(24px,2.8cqw,40px)/1.28 var(--font);letter-spacing:-.02em;color:var(--ink);text-wrap:pretty}
+.s-read{padding:0 0 clamp(80px,8cqw,120px)}
+/* левый край абзаца продолжает «технологии,» и «бизнес»: лесенка стоит по буквам (2.63em − оптическое поле .078em кегля манифеста), а не по 4-й колонке */
+.read{grid-column:1/-1;padding-left:calc(2.552 * var(--man-fs));font:400 clamp(26px,3.1cqw,46px)/1.28 var(--font);letter-spacing:-.02em;color:var(--ink);text-wrap:pretty}
 .js .read{color:var(--ghost)}
 .read b{font-weight:600}
 .read .w{transition:color .35s linear}
 .read .w.is-on{color:var(--ink)}
 .ri{display:inline-block;height:1.15em;width:auto;vertical-align:-.24em;margin:0 .05em;transition:transform .55s cubic-bezier(.34,1.56,.64,1),opacity .3s}
 .js .ri:not(.is-on){transform:scale(.45) rotate(-20deg);opacity:.35}
-.rl{display:inline-block;height:.68em;width:auto;vertical-align:-.04em;filter:brightness(0);opacity:.88;transition:opacity .35s}
-.js .rl:not(.is-on){opacity:.2}
-.rl--ya{height:.74em;vertical-align:-.1em}.rl--humo{height:.55em}.rl--myid{height:.6em}.rl--munis{height:.8em;margin-right:.12em;vertical-align:-.12em}
-.rl-word{white-space:nowrap}
+/* логотипы в абзаце как слова: знак — маска, цвет текущий, заливаются вместе со словами */
+.rl{display:inline-block;height:.7em;aspect-ratio:var(--r);vertical-align:0;color:var(--ink);background:currentColor;
+  -webkit-mask:var(--src) center/contain no-repeat;mask:var(--src) center/contain no-repeat;transition:color .35s linear}
+.js .rl:not(.is-on){color:var(--ghost)}
+.rl--ya{--src:url(../img/logo-yandex-pro-word.svg);--r:5.86;vertical-align:-.1em}
+.rl--uzcard{--src:url(../img/logo-uzcard.svg);--r:3.94;height:.62em}
+.rl--humo{--src:url(../img/logo-humo.png);--r:3.865;height:.66em;vertical-align:-.04em}
 
-/* ---------- 3. Три продукта: орбита (пин от 1024px) ---------- */
-.s-ov{padding-top:clamp(20px,3cqw,40px)}
-.ov__grid{padding-top:22vh}
-.ov__text{grid-column:1/8;position:relative;z-index:4}
-.ov__title{font:600 clamp(44px,7.2cqw,104px)/.92 var(--font);letter-spacing:-.045em}
-.ov__lead{margin-top:32px;max-width:400px;font-size:18px;line-height:1.55;color:var(--ink-2)}
-.ov__orbit{position:absolute;left:66%;top:52%;width:0;height:0;z-index:3}
-.ov__ring{position:absolute;overflow:visible;pointer-events:none}
+/* ---------- 3. Три продукта: орбита проходит сквозь заголовок (пин от 1024px) ----------
+   Один слой на всех: кольцо сзади (z 0) → тела сзади (1) → заголовок (2) → тела спереди (3) → список (4) → кольцо спереди (5).
+   Заголовок, орбита и список не создают своих слоёв, поэтому z-index тел сравнивается с z-index букв. */
+.ov__stage{position:relative}
+.ov__text{grid-column:1/-1;position:static}
+.ov__title{position:relative;z-index:2;font:500 clamp(56px,min(10.6cqw,18vh),200px)/.86 var(--font);letter-spacing:-.05em}   /* в пине кегль ограничен и высотой экрана */
+.ov__title .ln:nth-child(2){padding-left:calc((100% + var(--cg)) / 12 * 4)}   /* «Весь парк.» с 5-й колонки */
+.ov__orbit{position:absolute;left:57%;top:49%;width:0;height:0}
+.ov__ring{position:absolute;max-width:none;overflow:visible;pointer-events:none}   /* без max-width:none svg сжимался до ширины орбиты — 0 */
+.ov__ring--back{z-index:0;stroke:#62328933;stroke-width:1;stroke-dasharray:2 6}
+.ov__ring--front{z-index:5;stroke:#6232894d;stroke-width:1.25}
 .ov__body{position:absolute;left:0;top:0;max-width:none;will-change:transform,opacity;filter:drop-shadow(0 24px 30px #0145F233)}
-.ov__body[data-k="0"]{width:clamp(180px,21cqw,300px)}
-.ov__body[data-k="1"]{width:clamp(130px,15cqw,220px)}
-.ov__body[data-k="2"]{width:clamp(160px,18cqw,260px);filter:drop-shadow(0 24px 30px #62328933)}
+.ov__body[data-k="0"]{width:min(25cqw,40vh)}
+.ov__body[data-k="1"]{width:min(17cqw,27vh)}
+.ov__body[data-k="2"]{width:min(21cqw,33vh);filter:drop-shadow(0 24px 30px #62328933)}
 .ov__body.is-far{filter:blur(2px)}
-.ov__caps{position:absolute;left:62%;right:var(--in);top:78vh;height:64px;overflow:hidden;z-index:4}
-.ov__cap{position:absolute;inset:0;display:flex;align-items:center;gap:14px;font:400 20px/1.35 var(--font);color:var(--ink);
-  transform:translateY(105%);visibility:hidden;transition:transform .6s cubic-bezier(.16,1,.3,1),visibility 0s .6s}
-.ov__cap.is-on{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.16,1,.3,1)}
-.ov__cap.is-gone{transform:translateY(-105%)}
-.ov__cap img{height:26px;width:auto;flex:none}
-.ov__cap>span:not(.paymark){flex:1;min-width:0}
-.ov__cap i{font:400 13px var(--font-ui);font-style:normal;color:var(--ink-3);flex:none}
-.ov__toc{display:none}
+/* слоган по продуктам: активна строка того, кто спереди; остальные бледные, лого серые */
+.ov__jobs{position:relative;z-index:4;display:grid;gap:.2em;font:500 clamp(22px,2.2cqw,32px)/1.2 var(--font);letter-spacing:-.025em}
+.ov__jobs a{display:flex;align-items:baseline;gap:.5em;color:var(--ghost);transition:color .35s}
+.ov__jobs img{width:auto;height:.82em;flex:none;filter:grayscale(1);opacity:.3;transition:opacity .35s,filter .35s}
+.ov__jobs .is-on a{color:var(--ink)}
+.ov__jobs .is-on img{filter:none;opacity:1}
+.ov__jobs a:hover,.ov__jobs a:focus-visible{color:var(--ink)}
+@media (min-width:1024px){
+  .ov__stage{height:100vh}
+  .ov__grid{padding-top:max(13vh,calc(var(--nav-top) + 68px))}   /* на низких экранах 13vh — уже под меню */
+  .ov__jobs{position:absolute;left:var(--in);bottom:9vh}
+}
 @media (min-width:1024px) and (prefers-reduced-motion:no-preference){
   .s-ov{height:240vh}
-  .ov__stage{position:sticky;top:0;height:100vh;overflow:hidden}
-}
-@media (max-width:1023px),(prefers-reduced-motion:reduce){
-  .ov__orbit,.ov__caps{display:none}
-  .ov__grid{padding-top:0}
-  .ov__toc{display:block;margin:48px var(--in) 0;border-top:1px solid var(--line)}
-  .ov__toc a{display:flex;align-items:center;gap:16px;min-height:76px;border-bottom:1px solid var(--line);font:500 20px/1.3 var(--font)}
-  .ov__toc img{width:52px;height:52px;object-fit:contain;flex:none}
-  .ov__toc i{margin-left:auto;font-style:normal;color:var(--ink-3)}
+  .ov__stage{position:sticky;top:0;overflow:hidden}
 }
 
-/* ---------- 4–6. Развороты продуктов ---------- */
-.sp{padding-top:clamp(150px,15cqw,220px)}
+/* ---------- 4–6. Развороты продуктов: у каждого свой порядок слоёв ----------
+   Fleet: макет на слове, машина над обоими. GPS: слово над картой. Pay: телефон перед словом. Масштабы слов 27 / 22 / 34cqw */
+.sp{padding-top:clamp(80px,8cqw,130px)}
 .sp__grid{position:relative}
 .sp__mast{margin:0;font:700 var(--mast-fs)/.78 var(--font);letter-spacing:-.06em;position:relative;z-index:1}
 .sp__mast .ln{padding-bottom:.22em;margin-bottom:-.22em}
 .sp__text{position:relative;z-index:2}
-.sp__text .hrow h3{font:600 clamp(26px,3cqw,44px)/1.05 var(--font);letter-spacing:-.03em}
-.sp__text>p{margin-top:18px;max-width:420px;font-size:18px;line-height:1.6;color:var(--ink-2)}
-.sp__text>.sp__feats{margin-top:14px;font:400 15px/1.5 var(--font-ui);color:var(--ink-3)}
-.sp__cap{margin-top:18px;font:400 13px/1.45 var(--font-ui);color:var(--ink-3);position:relative;z-index:2}
+.sp__text .hrow{align-items:first baseline;gap:14px}   /* лок-ап стоит на базовой линии первой строки, как слово */
+.sp__text .hrow h3{font:600 clamp(26px,2.5cqw,36px)/1.08 var(--font);letter-spacing:-.028em}
+.sp__text>p{margin-top:20px;max-width:31ch;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink)}
+.sp__text>.sp__feats{margin-top:16px;max-width:36ch;font:var(--marg);letter-spacing:0;color:var(--ink-2)}
+.sp__cap{margin-top:16px;max-width:38ch;font:var(--cap);color:var(--ink-3);position:relative;z-index:2}
+.sp__cap b{font-weight:500;color:var(--ink)}
 .sp__mock{position:relative;z-index:2;will-change:translate}
 /* «экран» продукта: рамка и тень только у самого интерфейса */
 .mock,.map{border-radius:22px;background:#fff;box-shadow:0 0 0 1px #1C13260f,0 40px 80px -36px #1C132652}
 
-/* Fleet */
-.sp--fleet{--mast-fs:27cqw}
-.sp--fleet .sp__mast{grid-column:1/10;grid-row:1;color:var(--fleet-ink);margin-left:-.05em}
-.sp--fleet .sp__hero{grid-column:8/13;grid-row:1;justify-self:end;align-self:end;width:min(540px,37cqw);max-width:none;margin:0 -2cqw -3cqw 0;position:relative;z-index:3;
+/* Fleet: обложка. Макет закрывает нижнюю треть букв, машина над обоими.
+   Левый край машины — у правого края макета (конец 8-й колонки) с заходом до 20px на его угол: так пилюли статуса не уходят под машину
+   и на 1920+, где гаттер упирается в 24px и макет шире. Позиция от рамки сетки, поэтому grid-area auto */
+.sp--fleet{--mast-fs:27cqw;padding-top:clamp(56px,6cqw,96px)}
+.sp--fleet .sp__mast{grid-column:1/-1;grid-row:1;color:var(--fleet-ink);margin-left:-.074em}   /* ножка «F» на краю сетки */
+.sp--fleet .sp__hero{grid-area:auto;position:absolute;left:calc(var(--in) + (100% - 2 * var(--in) + var(--cg)) / 12 * 8 - var(--cg) - min(1.4cqw,20px));top:calc(var(--mast-fs) * -.06);
+  width:34cqw;max-width:none;margin:0;z-index:3;
   filter:drop-shadow(0 40px 36px #0145F23d);will-change:transform,opacity}
-.sp--fleet .sp__mock{grid-column:6/12;grid-row:2;margin-top:clamp(56px,6cqw,96px)}
-.sp--fleet .sp__text{grid-column:1/5;grid-row:2;margin-top:clamp(120px,11cqw,170px)}
-.sp--fleet .sp__cap{grid-column:6/10;grid-row:3}
-.sp--fleet .mock{padding:18px}
+.sp--fleet .sp__mock{grid-column:2/9;grid-row:2;margin-top:calc(var(--mast-fs) * -.26);z-index:2}
+/* текст справа стоит по низу макета с подписью; третья строка сетки гибкая — высокий текст растит её, а не отрывает подпись от макета.
+   margin-top — нижняя граница: текст не заходит под машину (car_blue 1120×828: низ машины на 2.5cqw ниже слова) */
+.sp--fleet .sp__grid{grid-template-rows:auto auto 1fr}
+.sp--fleet .sp__text{grid-column:9/13;grid-row:2/4;align-self:end;margin-top:5.5cqw}
+.sp--fleet .sp__cap{grid-column:2/6;grid-row:3;align-self:start}
+.sp--fleet .mock{padding:18px;box-shadow:0 0 0 1px #1C13260f,0 50px 90px -30px #12182A66}
 .sp--fleet .tabs .on{background:var(--mint);color:var(--fleet-ink)}
 .row--story .st{display:inline-grid;justify-items:center;overflow:hidden}
 .row--story .st b{grid-area:1/1;font-weight:600;transition:transform .45s var(--ease),opacity .45s}
@@ -297,20 +324,20 @@ ul,ol{margin:0;padding:0;list-style:none}
 .sp--fleet.is-done .row--story .st b+b{transform:none;opacity:1}
 .sp--fleet .ava{background:linear-gradient(135deg,#16A9E2,#0145F2)}
 
-/* GPS */
-.sp--gps{--mast-fs:29cqw}
-.sp__mast-wrap{grid-column:4/13;grid-row:1;justify-self:end;position:relative}
+/* GPS: слово над картой. Текст в пустом левом верху, подпись — маргиналия слева от карты */
+.sp--gps{--mast-fs:22cqw}
+.sp__mast-wrap{grid-column:5/13;grid-row:1;justify-self:end;align-self:end;position:relative;z-index:3}
 .sp--gps .sp__mast{color:var(--gps)}
 .gps__route{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:2}
 .js .gps__path{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--draw,0))}
 .gps__route{filter:drop-shadow(0 3px 8px #05017033)}
 .js .gps__start{opacity:calc(var(--draw,0) * 8)}
-.gps__pin{position:absolute;left:90%;top:20%;width:clamp(80px,11cqw,170px);max-width:none;z-index:3;transform:translate(-50%,-94%);
+.gps__pin{position:absolute;left:90%;top:20%;width:clamp(80px,11cqw,240px);max-width:none;z-index:3;transform:translate(-50%,-94%);
   filter:drop-shadow(0 18px 18px #05017040);transition:transform .7s cubic-bezier(.3,1.45,.5,1),opacity .3s}
 .js .sp--gps:not(.is-pinned) .gps__pin{transform:translate(-50%,-94%) translateY(-140px);opacity:0}
-.sp--gps .sp__mock{grid-column:1/7;grid-row:2;margin-top:-80px}
-.sp--gps .sp__text{grid-column:8/12;grid-row:2;align-self:center;padding-top:40px}
-.sp--gps .sp__cap{grid-column:1/5;grid-row:3}
+.sp--gps .sp__mock{grid-column:5/13;grid-row:2;margin:calc(var(--mast-fs) * -.32) -1cqw 0 0;z-index:1}
+.sp--gps .sp__text{grid-column:1/5;grid-row:1;align-self:start;padding-top:calc(var(--mast-fs) * .1);z-index:4}
+.sp--gps .sp__cap{grid-column:1/4;grid-row:2;align-self:end}
 .map{position:relative;overflow:hidden;aspect-ratio:560/360;background:#F4F6FC}
 .map svg{width:100%;height:100%;display:block}
 .js .map__route{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--draw,0))}
@@ -322,14 +349,14 @@ ul,ol{margin:0;padding:0;list-style:none}
 .map__sum{position:absolute;right:14px;bottom:14px;padding:9px 13px;border-radius:12px;background:#ffffffeb;font:400 13px/1 var(--font-ui);color:var(--ink-2);
   box-shadow:0 8px 20px -14px #05017059}
 
-/* Pay */
-.sp--pay{--mast-fs:26cqw}
-.sp--pay .sp__mast{grid-column:2/13;grid-row:1}
-.sp--pay .sp__mast .ln>span{padding-bottom:.25em;margin-bottom:-.25em;background:linear-gradient(100deg,#9F5D87 0%,#F29FC5 55%,#DE3C35 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pay__phone{grid-column:8/11;grid-row:1/3;justify-self:center;align-self:start;margin-top:calc(var(--mast-fs) * .38);position:relative;z-index:3;will-change:translate}
-.pay__card{position:absolute;width:clamp(150px,18cqw,260px);max-width:none;right:-62%;top:60px;rotate:12deg;z-index:-1;filter:drop-shadow(0 26px 30px #62328940)}
-.pay__coins{position:absolute;width:clamp(90px,11cqw,160px);max-width:none;left:-52%;bottom:90px;z-index:4;filter:drop-shadow(0 20px 24px #62328940)}
-.sp--pay .sp__text{grid-column:1/6;grid-row:2;margin-top:56px}
+/* Pay: телефон стоит перед словом и закрывает низ «P» и «a»; карта за ним и монеты спереди — слева, справа абзац свободен */
+.sp--pay{--mast-fs:34cqw}
+.sp--pay .sp__mast{grid-column:3/-1;grid-row:1;white-space:nowrap}
+.sp--pay .sp__mast .ln>span{padding-bottom:.26em;margin-bottom:-.26em;background:var(--g-pay);-webkit-background-clip:text;background-clip:text;color:transparent}   /* поле снизу — под хвост «y» */
+.pay__phone{grid-column:4/7;grid-row:1/3;justify-self:center;align-self:start;margin-top:calc(var(--mast-fs) * .34);position:relative;z-index:3;will-change:translate}
+.pay__card{position:absolute;width:18cqw;max-width:none;left:-70%;top:40px;rotate:-12deg;z-index:-1;filter:drop-shadow(0 26px 30px #62328940)}
+.pay__coins{position:absolute;width:11cqw;max-width:none;left:-46%;bottom:40px;z-index:4;filter:drop-shadow(0 20px 24px #62328940)}
+.sp--pay .sp__text{grid-column:8/12;grid-row:2;align-self:start;margin-top:calc(var(--mast-fs) * .29)}   /* ниже хвоста «y» */
 .sp--pay .sp__cap{grid-column:8/12;grid-row:3}
 
 /* мокап: список водителей */
@@ -344,54 +371,79 @@ ul,ol{margin:0;padding:0;list-style:none}
 .st--wait{background:#F5A62333;color:#8a5200}
 .st--off{background:#1C13260d;color:var(--ink-3)}
 
-/* ---------- 7. Разработка на заказ: указатель + липкая колонка ---------- */
-.s-svc{padding-top:clamp(170px,17cqw,240px)}
-.svc__head{align-items:end}
-.svc__title{grid-column:1/9;--col:calc((100% + var(--cg)) / 8);font:600 clamp(44px,7.8cqw,112px)/.92 var(--font);letter-spacing:-.045em}
-.svc__lead{grid-column:9/13;font-size:18px;line-height:1.55;color:var(--ink-2);padding-bottom:.4em}
-.svc__body{margin-top:clamp(64px,8cqw,120px);align-items:start}
-.svc__list{grid-column:1/8;border-top:1px solid var(--line)}
+/* ---------- 7. Разработка на заказ: указатель + предмет справа ----------
+   Заголовок одной строкой на всю ширину. Под ним: список 1/9, справа вводка и предмет 9/13 (в 8/12 вводка встала бы над длинной активной строкой).
+   От 1024px сцена стоит на экране (.svc__track длиной 370vh), главная строка одна и меняется скроллом; иначе — обычный список */
+.s-svc{padding-top:clamp(200px,22cqw,340px)}
+.svc__title{grid-column:1/-1;margin-left:-.078em;font:var(--t2);letter-spacing:var(--t2-ls)}
+.svc__body{margin-top:clamp(40px,4cqw,64px);align-items:start}
+.svc__lead{grid-column:9/13;grid-row:1;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink)}
+.svc__list{grid-column:1/9;grid-row:1/3;border-top:1px solid var(--line)}
 .svc__row{position:relative;border-bottom:1px solid var(--line)}
 .svc__row::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--purple);transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease)}
 .svc__row.is-on::before{transform:scaleX(1)}
-.svc__row a{display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:var(--cg);padding:30px 0 32px}
-.svc__row:not(.is-on) .svc__name{color:#8E8399}
+.svc__row a{display:grid;grid-template-columns:72px minmax(0,1fr);column-gap:var(--cg);align-items:baseline;padding:30px 0 32px}
+.svc__row:not(.is-on) .svc__name{color:#9A90A6}
 .svc__row a:hover .svc__name,.svc__row a:focus-visible .svc__name{color:var(--ink)}
-.svc__n{grid-column:1;grid-row:1;padding-top:.85em;font:400 14px/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.svc__n{grid-column:1;grid-row:1;font:500 15px/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-3);transition:color .3s}
+.svc__row.is-on .svc__n{color:var(--purple)}
 .svc__ico{display:none}
-.svc__name{grid-column:2;grid-row:1;font:500 clamp(30px,3.9cqw,56px)/1.05 var(--font);letter-spacing:-.035em;transition:transform .3s var(--ease),color .3s}
-.svc__row.is-on .svc__name{transform:translateX(12px)}
-.svc__desc{grid-column:2;grid-row:2;margin-top:10px;max-width:44ch;font-size:17px;line-height:1.45;color:var(--ink-3)}
-.svc__aside{grid-column:8/13;align-self:stretch}
-.svc__stick{position:relative;height:64vh;display:grid;place-items:center}
-@media (min-width:1024px) and (prefers-reduced-motion:no-preference){.svc__stick{position:sticky;top:18vh;animation:floaty 8s ease-in-out infinite alternate}}
-.svc__stick::before{content:"";position:absolute;width:min(480px,90%);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,#E7D6F7,#E7D6F700)}
-.svc__stick img{grid-area:1/1;position:relative;width:min(420px,80%);max-height:56vh;height:auto;object-fit:contain;opacity:0;transform:scale(.7) rotate(18deg);
+.svc__name{grid-column:2;grid-row:1;font:500 clamp(30px,3.9cqw,56px)/1.05 var(--font);letter-spacing:-.035em;transition:color .3s}
+.sl{font-weight:300;opacity:.55;margin:0 .06em}
+.svc__desc{grid-column:2;grid-row:2;margin-top:10px;max-width:52ch;font-size:17px;line-height:1.45;color:var(--ink-2)}
+.svc__aside{grid-column:9/13;grid-row:2}
+.svc__stick{position:relative;height:min(30cqw,54vh);display:grid;place-items:center}
+.svc__stick img{grid-area:1/1;position:relative;width:min(26cqw,48vh);max-height:52vh;height:auto;object-fit:contain;opacity:0;transform:scale(.7) rotate(18deg);
   filter:drop-shadow(0 30px 36px #62328940);transition:opacity .25s,transform .25s}
 .svc__stick img.is-on{opacity:1;transform:none;transition:opacity .4s,transform .6s cubic-bezier(.34,1.56,.64,1)}
 .svc__stick img.is-out{opacity:0;transform:scale(.7) rotate(-18deg)}
+@media (min-width:1024px){.svc__lead{margin-bottom:clamp(16px,2cqw,32px)}}
+@media (min-width:1024px) and (prefers-reduced-motion:no-preference){
+  /* сцена начинается под меню; пауза-глава перед разделом считается до заголовка, а не до верха сцены */
+  .s-svc{--svc-pad:calc(var(--nav-top) + 60px + clamp(12px,2.5vh,28px));padding-top:calc(clamp(200px,22cqw,340px) - var(--svc-pad))}
+  .svc__track{height:370vh}
+  .svc__stage{position:sticky;top:0;height:100vh;overflow:hidden;padding:var(--svc-pad) 0 clamp(24px,5vh,56px);display:flex;flex-direction:column}
+  .svc__body{flex:1;min-height:0;margin-top:clamp(24px,4vh,64px);grid-template-rows:auto minmax(0,1fr)}
+  .svc__aside{align-self:stretch;min-height:0}
+  .svc__stick{height:100%;grid-template:minmax(0,1fr)/minmax(0,1fr);animation:floaty 8s ease-in-out infinite alternate}   /* ряд 1fr — иначе max-height:100% у картинки не от чего считать */
+  .svc__stick img{max-height:100%}
+  /* неактивные строки — короткий указатель, главная одна. Кегли ограничены и по высоте экрана: вся сцена помещается в 100vh */
+  .svc__row a{padding:clamp(8px,1.7vh,16px) 0 clamp(10px,2vh,18px)}
+  .svc__name{font:500 clamp(22px,min(2.5cqw,3.6vh),36px)/1.1 var(--font);white-space:nowrap}
+  .svc__row.is-on a{padding:clamp(16px,3.4vh,34px) 0 clamp(18px,3.9vh,40px)}
+  /* --fit (scenes.js) — кегль, при котором название встаёт в колонку одной строкой: «Мобильные приложения» иначе зашло бы под вводку */
+  .svc__row.is-on .svc__name{font-size:min(clamp(44px,min(6.2cqw,9.6vh),92px),var(--fit,92px));line-height:.95;color:var(--ink)}
+  .svc__desc{display:none}
+  .svc__row.is-on .svc__desc{display:block;margin-top:clamp(8px,1.4vh,14px)}
+}
 
 /* ---------- 8. Процесс: одометр и дуга (пин от 1024px) ---------- */
 .s-proc{padding-top:clamp(170px,17cqw,240px)}
-.proc__title{grid-column:1/9;grid-row:1;font:600 clamp(36px,4.5cqw,64px)/1 var(--font);letter-spacing:-.035em}
-.proc__title2>span{color:#8E8399}
+.proc__title{grid-column:1/9;grid-row:1;font:var(--t2);letter-spacing:var(--t2-ls)}
+.proc__title2>span{color:inherit}
 .proc__num{display:none}
 .proc__steps{grid-column:1/-1;grid-row:2;margin-top:48px;border-top:1px solid var(--line)}
 .proc__step{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:24px;padding:26px 0;border-bottom:1px solid var(--line)}
-.proc__step::before{content:attr(data-n);grid-row:1/3;font:700 clamp(64px,16cqw,96px)/.8 var(--font);letter-spacing:-.05em;color:var(--ink)}
+.proc__step::before{content:attr(data-n);grid-row:1/3;font:700 clamp(64px,16cqw,96px)/.8 var(--font);letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--ink)}
 .proc__step h3{font:600 clamp(24px,3.2cqw,32px)/1.08 var(--font);letter-spacing:-.025em}
-.proc__step p{margin-top:8px;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.proc__step p{margin-top:8px;font-size:17px;line-height:1.5;color:var(--ink-2)}
 .proc__arc{display:none}
 @media (min-width:1024px) and (prefers-reduced-motion:no-preference){
   .s-proc{height:300vh;padding-top:0}
   .proc__stage{position:sticky;top:0;height:100vh;overflow:hidden}
-  .proc__grid{position:relative;z-index:1;height:100%;padding-top:132px;grid-template-rows:auto 1fr}
-  .proc__num{display:flex;grid-column:1/7;grid-row:2;align-self:end;margin-bottom:24vh;align-items:baseline;gap:14px}
-  .proc__win{display:block;height:.8em;overflow:hidden;font:700 clamp(240px,36cqw,520px)/.8 var(--font);letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+  /* цифра стоит за горизонтом: дуга с белой «землёй» (z 2) закрывает её низ, заголовок и шаг поверх (z 3). Сетка своего слоя не создаёт */
+  .proc__grid{height:100%;padding-top:132px;grid-template-rows:auto 1fr}
+  .proc__title{position:relative;z-index:3}
+  /* кегль min(40cqw,78vh), но окно цифры не выше места под заголовком (132px + две строки T2 + 40px воздуха до «/4») — на низких экранах */
+  .proc__num{--num-fs:clamp(200px,calc((95vh - 132px - 1.96 * var(--t2-fs) - 40px) / .8),min(40cqw,78vh));
+    position:relative;z-index:1;display:flex;grid-column:1/8;grid-row:2;align-self:end;margin-bottom:5vh;align-items:baseline;gap:.08em}
+  /* тонкая цифра: слова плотные, числа тонкие. Окно по ширине текущей цифры (меряет scenes.js) */
+  .proc__win{display:block;height:.8em;overflow:hidden;font:200 var(--num-fs)/.8 var(--font);letter-spacing:-.07em;font-variant-numeric:proportional-nums;
+    transition:width .9s cubic-bezier(.16,1,.3,1)}
   .proc__digits{display:block;transform:translateY(calc(var(--step,0) * -.8em));transition:transform .9s cubic-bezier(.16,1,.3,1)}
-  .proc__digits span{display:block;height:.8em}
-  .proc__num i{font:400 16px var(--font-ui);font-style:normal;color:var(--ink-3)}
-  .proc__steps{grid-column:8/13;grid-row:2;align-self:center;position:relative;min-height:240px;margin:0 0 6vh;border:0}
+  .proc__digits span{display:block;width:max-content;height:.8em}
+  .proc__num i{align-self:flex-start;font:300 clamp(64px,7.5cqw,108px)/.8 var(--font);font-style:normal;letter-spacing:-.04em;color:#CFC6D6}
+  .proc__steps{grid-column:8/13;grid-row:2;align-self:start;position:relative;z-index:3;min-height:240px;margin:9vh 0 0;border:0}
   .proc__step{position:absolute;left:0;right:0;top:0;display:block;padding:0;border:0;opacity:0;transform:translateY(46px);pointer-events:none;
     transition:opacity .45s,transform .7s cubic-bezier(.16,1,.3,1)}
   .proc__step::before{display:none}
@@ -399,29 +451,31 @@ ul,ol{margin:0;padding:0;list-style:none}
   .proc__step.is-past{transform:translateY(-46px)}
   .proc__step h3{font-size:clamp(36px,3.9cqw,56px);line-height:1.02;letter-spacing:-.03em}
   .proc__step p{margin-top:20px;max-width:440px;font-size:20px}
-  .proc__arc{display:block;position:absolute;z-index:0;left:var(--in);right:var(--in);bottom:10vh;height:clamp(60px,7cqw,100px)}
+  .proc__arc{display:block;position:absolute;z-index:2;left:var(--in);right:var(--in);bottom:17vh;height:clamp(80px,9cqw,150px)}
   .proc__arc svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
   .proc__fill{stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--fill,0))}
   .proc__pearl{position:absolute;left:0;top:0;width:48px;height:48px;margin:-24px 0 0 -24px;transform:translate(var(--px,0px),var(--py,0px));
     filter:drop-shadow(0 0 14px #F29FC5)}
-  .proc__tick{position:absolute;transform:translate(-50%,18px);font:400 13px/1 var(--font-ui);color:var(--ink-3);white-space:nowrap;transition:color .3s}
-  .proc__tick::before{content:"";position:absolute;left:50%;top:-22px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #1C132630;transition:transform .3s,background-color .3s}
+  .proc__tick{position:absolute;transform:translate(-50%,30px);font:400 13px/1 var(--font-ui);color:var(--ink-3);white-space:nowrap;transition:color .3s}
+  .proc__tick::before{content:"";position:absolute;left:50%;top:-34px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #1C132630;transition:transform .3s,background-color .3s}
   .proc__tick.is-on{color:var(--ink)}
   .proc__tick.is-on::before{background:var(--purple);box-shadow:0 0 0 4px #62328926;transform:scale(1.4)}
-  .proc__dawn{position:absolute;z-index:-1;right:-12%;bottom:-70%;width:min(820px,60%);height:300%;pointer-events:none;
-    background:radial-gradient(closest-side,#FFD3B8,#FFD3B800);opacity:var(--dawn,0);transform:translateY(calc((1 - var(--dawn,0)) * 20px))}
 }
 
 /* ---------- 9. Контакт: телефон-постер и заявка-фраза ---------- */
-.s-ct{padding:clamp(170px,17cqw,240px) 0 clamp(110px,12cqw,180px)}
-.ct__head{align-items:start}
-.ct__title{grid-column:1/9;grid-row:1;font:600 clamp(44px,7.8cqw,112px)/.92 var(--font);letter-spacing:-.045em}
-.ct__chat{grid-column:9/12;grid-row:1;width:min(280px,20cqw);max-width:none;margin-top:-12px;rotate:var(--tilt,0deg);
-  filter:drop-shadow(0 26px 30px #62328940);transition:rotate .4s var(--ease);animation:floaty 7s ease-in-out infinite alternate}
-.ct__phone{grid-column:1/-1;display:block;margin-top:clamp(40px,5cqw,72px);padding-bottom:18px;border-bottom:1px solid var(--line);white-space:nowrap;
-  font:600 8.4cqw/1 var(--font);letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.s-ct{--ph-gap:clamp(40px,5cqw,72px);padding:clamp(96px,9cqw,140px) 0 clamp(48px,5cqw,80px)}
+.ct__head{position:relative;align-items:start}
+.ct__title{grid-column:1/10;grid-row:1;margin-left:-.025em;font:var(--t1);letter-spacing:var(--t1-ls)}
+/* чат над концом номера: хвост указывает на «00» и заходит в верх цифр на ~4px (с плаванием ±7px — не больше 12). Позиция от рамки сетки — grid-area auto.
+   Низ хвоста повёрнутого чата — примерно на его ширину ниже верха; верх цифр — на отступ номера и ~2cqw ниже заголовка */
+.ct__chat{--chat-w:clamp(150px,15cqw,300px);grid-area:auto;position:absolute;right:var(--in);top:calc(100% + var(--ph-gap) + 2cqw - var(--chat-w) + 4px);width:var(--chat-w);max-width:none;rotate:calc(-8deg + var(--tilt,0deg));
+  filter:drop-shadow(0 26px 30px #62328940);transition:rotate .4s var(--ease),opacity .6s var(--ease);animation:floaty 7s ease-in-out infinite alternate}
+/* номер тонкий, код страны — мелкий верхний индекс */
+.ct__phone{grid-column:1/-1;display:block;margin-top:var(--ph-gap);padding-bottom:18px;border-bottom:1px solid var(--line);white-space:nowrap;
+  font:300 8.4cqw/1 var(--font);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
 .ct__phone span{display:inline-block;background:linear-gradient(var(--purple),var(--purple)) 0 0/0% 100% no-repeat,linear-gradient(var(--ink),var(--ink));
   -webkit-background-clip:text;background-clip:text;color:transparent;transition:background-size .6s var(--ease)}
+.ct__phone small{font-size:.38em;vertical-align:1.32em;margin-right:.22em;letter-spacing:-.02em;color:#B9AEC4}
 .ct__phone:hover span{background-size:100% 100%,auto}
 .ct__body{margin-top:56px;align-items:start}
 .ct__info{grid-column:1/5;display:grid;gap:12px;align-content:start;justify-items:start}
@@ -431,20 +485,31 @@ ul,ol{margin:0;padding:0;list-style:none}
 .ct__addr{margin-top:14px;font:400 15px/1.5 var(--font-ui);color:var(--ink-3)}
 .ct__formwrap{grid-column:6/13}
 .pform__text{font:400 clamp(22px,2.4cqw,34px)/1.7 var(--font);letter-spacing:-.015em;color:var(--ink-2)}
-.pf{display:inline-block;width:12ch;min-width:8ch;max-width:100%;padding:0 2px 1px;margin:0 .1em;border:0;border-bottom:1.5px solid #1C13268c;border-radius:0;background:transparent;
-  font:500 1em/1.3 var(--font);letter-spacing:-.01em;color:var(--ink);outline:none;vertical-align:baseline;transition:border-color .2s}
+/* поле — волосяная линия; по фокусу слева заливается линия 2px фирменным цветом, ошибка — тем же жестом красным */
+.pf{--pf-c:var(--purple);display:inline-block;width:12ch;max-width:100%;padding:0 2px 2px;margin:0 .06em;border:0;border-radius:0;
+  background:linear-gradient(var(--pf-c),var(--pf-c)) 0 100%/0% 2px no-repeat,linear-gradient(#1C132640,#1C132640) 0 100%/100% 1px no-repeat;
+  font:500 1em/1.3 var(--font);letter-spacing:-.01em;color:var(--ink);outline:none;vertical-align:baseline;
+  transition:background-size .45s cubic-bezier(.16,1,.3,1),background-color .2s}
 .pf::placeholder{color:#7D7387;font-weight:400}
-.pf:hover{border-bottom-color:#1C132680}
-.pf:focus,.pf:focus-visible{border-bottom:2px solid var(--purple);outline:none;background:#62328910;border-radius:6px 6px 0 0}
-.pf[aria-invalid="true"]{border-bottom-color:#C0392B}
-.pf--area{resize:none;overflow:hidden;height:1.4em;vertical-align:bottom;width:16ch}
-.pform__text sup{color:#9c3d6c;font-size:.55em}
+.pf:focus,.pf:focus-visible{outline:none;background-size:100% 2px,100% 1px}
+.pf[aria-invalid="true"]{--pf-c:#C0392B;background-size:100% 2px,100% 1px}
+.pf[aria-invalid="true"]:focus{background-color:#C0392B0d}   /* у поля с ошибкой линия уже красная — фокус видно по тону */
+.pf--area{resize:none;overflow:hidden;height:1.32em;line-height:1.3;vertical-align:-.28em;width:16ch}
 .pform__text .nw{white-space:nowrap}
+.pform{transition:height .5s var(--ease),opacity .3s}
+.pform.is-gone{overflow:hidden;opacity:0;pointer-events:none}
+/* отправка: три точки пульсируют поверх подписи кнопки, ширина кнопки не прыгает */
+.btn .dots{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px}
+.btn .dots i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:dot 1s ease-in-out infinite;animation-delay:calc(var(--i) * .15s)}
+.pform[aria-busy="true"] .btn{position:relative;cursor:progress}
+.pform[aria-busy="true"] .btn>:not(.dots){visibility:hidden}
+.pform[aria-busy="true"] .btn .dots{display:flex}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:scale(.75)}40%{opacity:1;transform:none}}
 .pform__errs{display:grid;gap:4px;margin-top:8px}
 .pform__errs .err{font:400 13px/1.4 var(--font-ui);color:#C0392B}
 .pform__errs .err:empty{display:none}
 .pform__send{display:flex;align-items:center;gap:28px;margin-top:36px;flex-wrap:wrap}
-.check{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;max-width:46ch;font:400 14px/1.45 var(--font-ui);color:var(--ink-2);cursor:pointer}
+.check{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;max-width:46ch;font:var(--cap);color:var(--ink-2);cursor:pointer}
 .check input{appearance:none;-webkit-appearance:none;margin:0;width:24px;height:24px;border-radius:8px;border:1.5px solid #1C13268c;background:#fff;display:grid;place-items:center;cursor:pointer;transition:background-color .2s,border-color .2s}
 .check input::after{content:"";width:11px;height:6px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg) scale(0);transition:transform .2s var(--ease)}
 .check input:checked{background:var(--purple);border-color:var(--purple)}
@@ -452,65 +517,95 @@ ul,ol{margin:0;padding:0;list-style:none}
 .check a{color:var(--purple);text-decoration:underline;text-decoration-color:#6232894d;text-underline-offset:3px}
 .done .hrow h3{font:600 clamp(28px,3cqw,44px)/1.1 var(--font);letter-spacing:-.03em}
 .done__text{margin-top:14px;font-size:20px;line-height:1.5;color:var(--ink-2)}
+/* «Спасибо» выезжает той же маской строк, значок и ссылка проявляются следом */
+.js .done .gico,.js .done .ulink{opacity:0;transition:opacity .6s var(--ease) .35s}
+.js .done.is-in .gico,.js .done.is-in .ulink{opacity:1}
 
 /* ---------- 10. Футер: день над облаками, плитка S и герои на орбите ---------- */
-.s-foot{position:relative;isolation:isolate;overflow:hidden;min-height:max(100vh,820px);display:flex;flex-direction:column;justify-content:space-between;padding-top:200px}
+.s-foot{position:relative;isolation:isolate;overflow:hidden;min-height:max(100vh,820px);display:flex;flex-direction:column;justify-content:space-between;padding-top:140px}
 .foot__bg{position:absolute;inset:-8% 0 0;z-index:-1;will-change:translate;
-  /* картинка: раскомментировать, когда будет img/footer-bg.webp (см. ТЗ_главная_v2.md) */
-  /* --foot-img:url(../img/footer-bg.webp); */
-  background:var(--foot-img, linear-gradient(180deg,#fff 0%,#F3ECFA 40%,#FBE9F1 75%,#fff 100%)) 50% 60%/cover no-repeat;
+  /* картинка №6 из ТЗ_главная_v3.md: солнце на картинке — на 72% / 39%, там же центр плитки S; на узких — вертикальная, солнце 50% / 38% */
+  --foot-img:url(../img/footer-bg.webp);--foot-pos:79% 40%;   /* подобрано замером: центр солнца ±30 px от центра плитки на 1280–1920 */
+  background:var(--foot-img, linear-gradient(180deg,#fff 0%,#F3ECFA 40%,#FBE9F1 75%,#fff 100%)) var(--foot-pos)/var(--foot-size,cover) no-repeat;
   -webkit-mask-image:linear-gradient(transparent,#000 200px);mask-image:linear-gradient(transparent,#000 200px)}
 .foot__top{position:relative;align-items:end}
-.foot__slogan{grid-column:1/9;grid-row:1/3;--col:calc((100% + var(--cg)) / 8);font:700 clamp(44px,7.6cqw,110px)/.9 var(--font);letter-spacing:-.05em}
-.foot__orbit{grid-column:9/13;grid-row:1;align-self:start;position:relative;height:clamp(200px,19cqw,280px);perspective:900px}
-.foot__tile{position:absolute;left:50%;top:50%;width:clamp(110px,14cqw,210px);max-width:none;filter:drop-shadow(0 30px 40px #62328947);
-  transform:translate(-50%,-50%) translateY(calc((1 - var(--fe,1)) * 60px)) rotateY(calc((1 - var(--fe,1)) * -25deg)) scale(calc(.9 + .1 * var(--fe,1)))}
-.foot__b{position:absolute;left:50%;top:50%;width:clamp(52px,7.4cqw,112px);max-width:none;will-change:transform;filter:drop-shadow(0 14px 16px #62328933)}
+/* финал крупнее разворотов: слоган и плитка S одного масштаба, середина слогана на уровне центра плитки.
+   Задние тела орбиты идут за буквами (слоган z 2), передние — под нижней кромкой плитки; левый край эллипса ниже слогана — спереди тела букв не закрывают */
+.foot__slogan{grid-column:1/8;grid-row:1/3;align-self:center;position:relative;z-index:2;--col:calc((100% + var(--cg)) / 7);font:700 clamp(48px,8.4cqw,150px)/.8 var(--font);letter-spacing:-.055em}
+.foot__slogan .ln--c3{padding-left:1.2em}   /* «в» под «в» из «Доверие» */
+.foot__slogan .ln--c2{padding-left:0}       /* «д» под «Д» */
+/* интерлиньяж .8: ножки «д» ниже строки — маске и градиенту текстом нужно поле снизу, а строке — выезд поглубже */
+.foot__slogan .ln{padding-bottom:.26em;margin-bottom:-.26em}
+.foot__slogan .grad{padding-bottom:.26em;margin-bottom:-.26em}
+.js .foot__slogan:not(.is-in) .ln>span{transform:translateY(145%)}
+/* перспектива — в transform плитки: у орбиты нет своего слоя, z-index тел сравнивается со слоганом */
+.foot__orbit{grid-column:6/13;grid-row:1/3;align-self:center;position:relative;height:clamp(300px,34cqw,620px)}
+.foot__tile{position:absolute;left:50%;top:50%;width:clamp(200px,27cqw,520px);max-width:none;filter:drop-shadow(0 30px 40px #62328947);
+  transform:translate(-50%,-50%) perspective(900px) translateY(calc((1 - var(--fe,1)) * 60px)) rotateY(calc((1 - var(--fe,1)) * -25deg)) scale(calc(.9 + .1 * var(--fe,1)))}
+.foot__ring{position:absolute;left:50%;top:50%;max-width:none;overflow:visible;pointer-events:none}
+.foot__ring--back{z-index:0;stroke:#62328933;stroke-width:1;stroke-dasharray:2 6}
+.foot__ring--front{z-index:5;stroke:#6232894d;stroke-width:1.25}
+.foot__b{position:absolute;left:50%;top:50%;width:clamp(70px,10cqw,190px);max-width:none;will-change:transform;filter:drop-shadow(0 14px 16px #62328933)}
 .foot__b.is-far{filter:blur(1.5px)}
-.foot__cta{grid-column:9/13;grid-row:2;justify-self:center;align-self:end;margin:28px 0 .5em}
 .foot__colophon{position:relative;margin-top:clamp(90px,10cqw,160px);padding-top:56px;padding-bottom:28px;row-gap:28px}
 .foot__colophon::before{content:"";position:absolute;inset:-90px 0 0;z-index:-1;background:linear-gradient(to top,#fff 0%,#ffffffcc 55%,#ffffff00 100%)}
 .foot__brand{grid-column:1/4}
 .foot__brand img{height:34px;width:auto}
-.foot__brand p{margin-top:14px;max-width:260px;font:400 14px/1.5 var(--font-ui);color:var(--ink-2)}
+.foot__brand p{margin-top:14px;max-width:260px;font:var(--cap);color:var(--ink-2)}
 .foot__col{grid-column:span 2}
 .foot__col--a{grid-column:5/7}
 .foot__col h3{margin:0 0 12px;font:500 15px/1.2 var(--font);color:var(--ink)}
-.foot__col a{font:400 14px/2 var(--font-ui);color:var(--ink-2);transition:color .2s}
+.foot__col a{font:400 13px/2.1 var(--font-ui);color:var(--ink-2);white-space:nowrap;transition:color .2s}
 .foot__col a:hover{color:var(--purple)}
-.foot__legal{grid-column:1/-1;padding-top:20px;border-top:1px solid var(--line);font:400 12px/1.5 var(--font-ui);color:var(--ink-3)}
+.foot__legal{grid-column:1/-1;padding-top:20px;border-top:1px solid var(--line);font:var(--cap);color:var(--ink-3)}
 
 /* ---------- планшет и телефон: 4 колонки, без пинов ---------- */
 @media (max-width:1023px){
   .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  /* стыки на телефоне: 80–120px вместо десктопных пауз */
+  .sp{padding-top:88px}
+  .s-svc,.s-proc,.s-ct{padding-top:96px}
+  .s-man,.s-read{padding-bottom:80px}
+  .s-foot{padding-top:120px}
   .man__title{--col:calc((100% + var(--cg)) / 4)}
   .ln--c4{padding-left:var(--col)}
   .man__biz{font-size:24cqw}
   .ln--biz{padding-left:0}
   .man__sub{grid-column:2/-1;grid-row:2;margin:24px 0 0;justify-self:end;max-width:none;width:100%}
-  .read{grid-column:1/-1}
-  .ov__text{grid-column:1/-1}
+  .read{grid-column:1/-1;padding-left:0}
+  /* орбита — статичный кадр с предметами вместо оглавления, под ним тот же список */
+  .ov__title{font-size:clamp(40px,11cqw,72px)}
+  .ov__title .ln:nth-child(2){padding-left:calc((100% + var(--cg)) / 4)}
+  .ov__orbit{position:relative;left:auto;top:auto;width:auto;height:72cqw;margin:28px var(--in) 0}
+  .ov__ring{left:-4%;top:30%;width:108%;height:46%;transform:rotate(-8deg)}
+  .ov__body[data-k="0"]{width:58%;left:21%;top:26%;z-index:3}
+  .ov__body[data-k="1"]{width:26%;left:2%;top:4%;z-index:1;filter:blur(1px) drop-shadow(0 14px 18px #0145F233)}
+  .ov__body[data-k="2"]{width:34%;left:auto;right:0;top:8%;z-index:1;rotate:10deg}
+  .ov__jobs{margin:24px var(--in) 0}
   .sp__mast-wrap,.sp--fleet .sp__mast,.sp--pay .sp__mast{grid-column:1/-1}
-  .sp--fleet{--mast-fs:31cqw}.sp--gps{--mast-fs:40cqw}.sp--pay{--mast-fs:34cqw}
-  .sp--fleet .sp__hero{grid-column:2/-1;grid-row:1;width:62%;margin:32% -6% 0 0}
-  .sp--fleet .sp__mock,.sp--gps .sp__mock{grid-column:1/-1;grid-row:2;margin-top:28px}
-  .sp--fleet .sp__text,.sp--gps .sp__text,.sp--pay .sp__text{grid-column:1/-1;grid-row:3;margin-top:36px;padding-top:0}
+  .sp--fleet{--mast-fs:31cqw}.sp--gps{--mast-fs:40cqw}.sp--pay{--mast-fs:40cqw}
+  .sp--fleet .sp__grid{grid-template-rows:none}
+  .sp--fleet .sp__hero{position:relative;left:auto;top:auto;grid-column:2/-1;grid-row:1;width:62%;margin:32% -6% 0 0}
+  .sp--fleet .sp__mock,.sp--gps .sp__mock{grid-column:1/-1;grid-row:2;margin:28px 0 0}
+  .sp--fleet .sp__text,.sp--gps .sp__text,.sp--pay .sp__text{grid-column:1/-1;grid-row:3;align-self:start;margin-top:36px;padding-top:0}
   .sp--fleet .sp__cap,.sp--gps .sp__cap,.sp--pay .sp__cap{grid-column:1/-1;grid-row:4}
-  .pay__phone{grid-column:1/-1;grid-row:2;justify-self:end;margin:-12% 6% 0 0}
-  .pay__card{right:-18%;width:110px}.pay__coins{left:-12%;width:84px;bottom:60px}
-  .svc__title,.svc__lead{grid-column:1/-1}
-  .svc__lead{margin-top:20px;padding:0}
-  .svc__list{grid-column:1/-1}
+  /* Pay: слово над телефоном; ни один предмет не обрезается краем полотна больше чем на 10% */
+  .sp--pay .sp__mast{z-index:4}
+  .pay__phone{grid-column:1/-1;grid-row:2;justify-self:end;margin:-2cqw 6% 0 0;zoom:.8}
+  .pay__card{left:auto;right:-4%;width:96px}.pay__coins{left:-4%;width:84px}
+  .svc__title,.svc__lead,.svc__list{grid-column:1/-1}
+  .svc__body{margin-top:20px}
+  .svc__lead{grid-row:auto;margin-bottom:28px}
+  .svc__list{grid-row:auto}
   .svc__aside{display:none}
   .svc__row a{grid-template-columns:44px minmax(0,1fr) auto;align-items:center;opacity:1;padding:20px 0}
   .svc__ico{display:block;grid-column:1;grid-row:1;width:44px;height:44px;object-fit:contain}
   .svc__name{grid-column:2;font-size:clamp(22px,5.4cqw,30px)}
   .svc__n{grid-column:3;grid-row:1;padding:0}
   .svc__desc{grid-column:2/-1;font-size:15px}
-  .svc__row.is-on .svc__name{transform:none}
   .proc__title{grid-column:1/-1}
   .ct__title{grid-column:1/-1;padding-right:92px}
-  .ct__chat{grid-column:1/-1;grid-row:1;justify-self:end;width:92px;margin:0}
+  .ct__chat{position:static;grid-column:1/-1;grid-row:1;justify-self:end;width:92px;margin:0}
   .ct__phone{font-size:10.5cqw}
   .ct__info,.ct__formwrap{grid-column:1/-1}
   .ct__formwrap{margin-top:48px}
@@ -519,10 +614,12 @@ ul,ol{margin:0;padding:0;list-style:none}
   .foot__slogan{grid-column:1/-1;grid-row:1;--col:calc((100% + var(--cg)) / 4);font-size:11.5cqw}
   .foot__slogan .ln--c3{padding-left:var(--col)}
   .foot__slogan .ln--c2{padding-left:calc(var(--col) / 2)}
-  .foot__cta{grid-column:1/-1;grid-row:3;justify-self:stretch;margin:32px 0 0}
-  .foot__orbit{grid-row:2;grid-column:1/-1;height:200px;margin:24px 0 0}
+  .foot__orbit{grid-row:2;grid-column:1/-1;height:290px;margin:24px 0 0}
+  .foot__bg{--foot-img:url(../img/footer-bg-tall.webp);--foot-size:auto 110%;--foot-pos:50% 15%}
+  .foot__tile{width:clamp(150px,44cqw,220px)}
   .foot__brand{grid-column:1/-1}
   .foot__col,.foot__col--a{grid-column:span 2}
+  .foot__col a{display:inline-block;line-height:1.3;padding:6px 0;white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){
   .js .ln>span{transform:none;transition:none}
@@ -588,7 +685,15 @@ ul,ol{margin:0;padding:0;list-style:none}
 .ip-tabs svg{width:19px;height:19px}
 .ip-tabs .on{color:var(--purple);font-weight:600}
 .ip-home{position:absolute;z-index:3;left:50%;bottom:7px;width:104px;height:4px;margin-left:-52px;border-radius:3px;background:#1C1326}
+/* на больших экранах телефон растёт вместе со словом «Pay» (34cqw), иначе на 1920+ он теряется на его фоне */
+@media (min-width:1600px){.iphone{zoom:1.3}}
+@media (min-width:2200px){.iphone{zoom:1.55}}
 @media (max-width:520px){.iphone{zoom:.86}}
 
 /* узкий телефон: статус водителя уходит под имя */
 @media (max-width:400px){.row{grid-template-columns:38px minmax(0,1fr)}.row .st{grid-column:2;justify-self:start}.sp--fleet .mock{padding:12px}}
+
+/* фон футера: солнце на картинке за плиткой S (подобрано замером на 1920 и 390) */
+@media (min-width:1600px){.foot__bg{--foot-pos:82% 40%}}
+@media (min-width:2200px){.foot__bg{--foot-pos:98% 40%}}
+@media (max-width:640px){.foot__bg{--foot-size:auto 108%;--foot-pos:50% 87%}}

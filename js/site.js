@@ -7,6 +7,25 @@ const reduceMq = matchMedia('(prefers-reduced-motion: reduce)');
 const film = document.querySelector('[data-film]');
 const nav = document.getElementById('nav');
 
+/* ---------- русский набор: короткие предлоги и союзы не висят в конце строки, тире не начинает строку ----------
+   Идёт до scenes.js: тот делит абзац «Почему мы» на слова по обычным пробелам, неразрывный слово не делит */
+const SHORT = /(^|[\s(«„"])(в|и|а|с|к|о|у|я|на|по|от|до|из|за|для|не|или|без|при) /gi;
+const nb = s => s.replace(SHORT, '$1$2 ').replace(SHORT, '$1$2 ').replace(/ (—|–) /g, ' $1 ');   // дважды: «и в» подряд; текст, вставленный позже, тоже через nb
+const canvasEl = document.querySelector('.canvas');
+if (canvasEl){
+  const tw = document.createTreeWalker(canvasEl, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentNode.closest('script,style,svg') ? 2 : 1 });
+  for (let n; (n = tw.nextNode());){
+    const t = nb(n.data);
+    if (t !== n.data) n.data = t;
+  }
+}
+
+/* ---------- ленивые картинки проявляются, когда догрузились (css: img[loading=lazy]) ---------- */
+document.querySelectorAll('img[loading=lazy]').forEach(img => {
+  const ok = () => img.classList.add('is-ok');
+  if (img.complete) ok(); else { img.addEventListener('load', ok, { once: true }); img.addEventListener('error', ok, { once: true }); }
+});
+
 /* ---------- плавный скролл: Lenis, как у vibr. film.js берёт его из window.lenis ---------- */
 // включённое «уменьшить движение» снимает сглаживание сразу, без перезагрузки; выключенное — возвращает
 let lenisRaf = 0;
@@ -113,9 +132,10 @@ const phone = form.elements.phone, msg = form.elements.message;
 // поля стоят прямо во фразе: ширина растёт по набранному тексту, описание задачи переносится и растёт вниз
 const ruler = document.createElement('canvas').getContext('2d');
 function autosize(el){
-  const cs = getComputedStyle(el), fs = parseFloat(cs.fontSize), box = el.closest('.pform__text');
-  ruler.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-  const w = ruler.measureText(el.value || el.placeholder).width + fs * .5;
+  const cs = getComputedStyle(el, el.value ? null : '::placeholder'), fs = parseFloat(cs.fontSize), box = el.closest('.pform__text');
+  ruler.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;    // плейсхолдер тоньше набранного — меряем его же начертанием
+  ruler.letterSpacing = cs.letterSpacing;
+  const w = ruler.measureText(el.value || el.placeholder).width + fs * .12 + 4;   // поле вплотную к пунктуации фразы (+4 — поля по 2px)
   el.style.width = `${Math.min(box.clientWidth - fs, Math.max(fs * (el === msg ? 7 : 4), w))}px`;
   if (el === msg){ el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px`; }
 }
@@ -127,7 +147,7 @@ document.fonts ? document.fonts.ready.then(sizeAll) : sizeAll();
 // строка услуги ведёт в форму: «Хочу обсудить мобильные приложения.»
 document.addEventListener('click', e => {
   const s = e.target.closest('[data-service]');
-  if (!s) return;
+  if (!s || form.hasAttribute('aria-busy')) return;                   // заявка уходит — её поля не трогаем
   if (form.hidden) resetLead();                                       // заявку уже отправили — открываем новую с этой услугой
   if (msg.value && msg.dataset.auto !== msg.value) return;            // своё описание не затираем
   const name = s.dataset.service;
@@ -168,19 +188,33 @@ function validate(name){
 Object.keys(checks).forEach(n => form.elements[n].addEventListener(n === 'consent' ? 'change' : 'blur', () => {
   if (form.elements[n].getAttribute('aria-invalid') === 'true' || form.elements[n].value) validate(n);
 }));
+// отправка: точки на кнопке → форма сворачивается → «Спасибо» выезжает маской строк. Ответа сервера пока нет — вместо него пауза
+let sendT = 0;
 form.addEventListener('submit', e => {
   e.preventDefault();
+  if (form.hasAttribute('aria-busy')) return;
   const bad = Object.keys(checks).filter(n => !validate(n));
   if (bad.length){ form.elements[bad[0]].focus(); return; }
-  const who = form.elements.name.value.trim().split(/\s+/)[0];
-  done.querySelector('.done__text').textContent = `Спасибо, ${who}! Свяжемся с вами по номеру ${phone.value}.`;
-  form.hidden = true; done.hidden = false;
-  done.querySelector('h3').focus();
+  const who = form.elements.name.value.trim().split(/\s+/)[0], still = reduceMq.matches;
+  done.querySelector('.done__text .ln>span').textContent = nb(`Спасибо, ${who}! Свяжемся с вами по номеру ${phone.value.replace(/ /g, ' ')}.`);
+  form.setAttribute('aria-busy', 'true');
+  const show = () => {
+    form.hidden = true; form.removeAttribute('aria-busy'); form.classList.remove('is-gone'); form.style.height = '';
+    done.hidden = false; done.querySelector('h3').focus({ preventScroll: true });
+    requestAnimationFrame(() => requestAnimationFrame(() => done.classList.add('is-in')));
+  };
+  sendT = setTimeout(() => {
+    if (still) return show();
+    form.style.height = `${form.offsetHeight}px`; form.offsetHeight;   // от текущей высоты к нулю
+    form.classList.add('is-gone'); form.style.height = '0px';
+    sendT = setTimeout(show, 500);
+  }, still ? 0 : 900);
 });
 function resetLead(){
-  form.reset(); phonePrev = '';
+  clearTimeout(sendT); form.reset(); phonePrev = '';
+  form.removeAttribute('aria-busy'); form.classList.remove('is-gone'); form.style.height = '';
   Object.keys(checks).forEach(n => { form.elements[n].removeAttribute('aria-invalid'); document.getElementById('e-' + n).textContent = ''; });
-  delete msg.dataset.auto; done.hidden = true; form.hidden = false; sizeAll();
+  delete msg.dataset.auto; done.classList.remove('is-in'); done.hidden = true; form.hidden = false; sizeAll();
 }
 document.getElementById('lead-again').addEventListener('click', () => { resetLead(); form.elements.name.focus(); });
 })();

@@ -12,7 +12,7 @@
 <script>document.documentElement.classList.replace('no-js', 'js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@200..700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="media/poster_wide_f1.webp?v=4" media="(min-aspect-ratio: 1/1)">
 <link rel="preload" as="image" href="media/poster_tall_f1.webp?v=4" media="(max-aspect-ratio: 1/1)">
 <link rel="stylesheet" href="css/site.css">
@@ -28,7 +28,7 @@
 
 <!-- градиент для линейных иконок (stroke: url(#ig)) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#623289"/><stop offset="1" stop-color="#D46A9E"/></linearGradient></defs>
+  <defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#623289"/><stop offset="1" stop-color="#F29FC5"/></linearGradient></defs>
 </svg>
 
 <!-- ============ МЕНЮ: лого | разделы и язык по центру | кнопка — без внутренних плашек ============ -->
@@ -109,15 +109,8 @@
 <div class="canvas">
 <main>
 
-<!-- ============ 1. МАНИФЕСТ: горизонт фильма распрямляется в первую линейку дня ============ -->
+<!-- ============ 1. МАНИФЕСТ: верхний край полотна — горизонт планеты из фильма, распрямляется при скролле ============ -->
 <section class="sx s-man" id="about" tabindex="-1" aria-labelledby="man-title">
-  <div class="man__arc" aria-hidden="true">
-    <i class="man__glow"></i>
-    <svg viewBox="0 0 1000 80" preserveAspectRatio="none">
-      <defs><linearGradient id="arcg" gradientUnits="userSpaceOnUse" x1="0" x2="1000" y1="0" y2="0"><stop offset="0" stop-color="#623289"/><stop offset=".62" stop-color="#F29FC5"/><stop offset="1" stop-color="#623289"/></linearGradient></defs>
-      <path class="man__line" d="M0 79 Q740 -50 1000 79" fill="none" stroke="url(#arcg)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-    </svg>
-  </div>
   <div class="grid man">
     <h1 class="man__title" id="man-title" data-mask>
       <span class="ln"><span>Разрабатываем</span></span>
@@ -137,41 +130,37 @@
       <span class="nw"><img class="ri" src="media/xl/route.webp" alt="" width="46" height="46"> <b>Глубокая</b></span> <b>экспертиза в&nbsp;транспорте.</b> Знаем, как работают таксопарки, агрегаторы и&nbsp;выплаты водителям.
       <span class="nw"><img class="ri" src="media/g2/check_badge_256.webp" alt="" width="46" height="46"> <b>Полный</b></span> <b>цикл.</b> Ведём продукт от&nbsp;идеи и&nbsp;дизайна до&nbsp;запуска и&nbsp;развития.
       <span class="nw"><img class="ri" src="media/g2/document_check_256.webp" alt="" width="46" height="46"> <b>Решения</b></span> <b>под ваши процессы.</b> Дорабатываем продукты под ваши задачи и&nbsp;связываем с&nbsp;тем, чем вы уже пользуетесь:
-      <img class="rl rl--ya" src="img/logo-yandex-pro.svg" alt="Яндекс Про для бизнеса">, <img class="rl" src="img/logo-uzcard.svg" alt="Uzcard">, <img class="rl rl--humo" src="img/logo-humo.png" alt="HUMO">, <img class="rl rl--myid" src="img/logo-myid.svg" alt="MyID"> и&nbsp;<span class="rl-word"><img class="rl rl--munis" src="img/logo-munis.svg" alt="">MUNIS</span>.
+      <span class="rl rl--ya" role="img" aria-label="Яндекс Про"></span>, <span class="rl rl--uzcard" role="img" aria-label="Uzcard"></span>, <span class="rl rl--humo" role="img" aria-label="HUMO"></span>, <b>MyID</b> и&nbsp;<b>MUNIS</b>.
     </p>
   </div>
 </section>
 
-<!-- ============ 3. ТРИ ПРОДУКТА: увертюра — герои кружат по орбите, как в фильме (пин от 1024px) ============ -->
+<!-- ============ 3. ТРИ ПРОДУКТА: герои кружат по орбите сквозь заголовок — задняя половина пути за буквами, передняя поверх (пин от 1024px) ============ -->
 <section class="sx s-ov" id="products" tabindex="-1" aria-labelledby="ov-title">
   <div class="ov__stage">
     <div class="grid ov__grid">
       <div class="ov__text">
         <h2 class="ov__title" id="ov-title" data-mask><span class="ln"><span>Три продукта.</span></span><span class="ln"><span>Весь парк.</span></span></h2>
-        <p class="ov__lead" data-fade>Водители и&nbsp;документы, машины на&nbsp;линии и&nbsp;выплаты — каждую часть работы парка закрывает свой продукт.</p>
       </div>
     </div>
     <div class="ov__orbit" aria-hidden="true">
-      <svg class="ov__ring" viewBox="-110 -40 220 80" preserveAspectRatio="none"><ellipse cx="0" cy="0" rx="100" ry="31" fill="none" stroke="#62328924" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>
+      <svg class="ov__ring ov__ring--back" viewBox="-100 -27 200 54" preserveAspectRatio="none"><path d="M-100 0 A100 27 0 0 1 100 0" fill="none" vector-effect="non-scaling-stroke"/></svg>
+      <svg class="ov__ring ov__ring--front" viewBox="-100 -27 200 54" preserveAspectRatio="none"><path d="M-100 0 A100 27 0 0 0 100 0" fill="none" vector-effect="non-scaling-stroke"/></svg>
       <img class="ov__body" data-k="0" src="media/xl/car_blue_s.webp" alt="">
       <img class="ov__body" data-k="1" src="media/xl/pin_blue_s.webp" alt="">
       <img class="ov__body" data-k="2" src="media/xl/card.webp" alt="">
     </div>
-    <div class="ov__caps">
-      <a class="ov__cap" href="#fleet" data-k="0"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="74" height="28"><span>CRM для таксопарков: водители, лиды, документы и&nbsp;выплаты.</span><i>1 / 3</i></a>
-      <a class="ov__cap" href="#gps" data-k="1"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="76" height="28"><span>Каждая машина на&nbsp;карте в&nbsp;реальном времени.</span><i>2 / 3</i></a>
-      <a class="ov__cap" href="#pay" data-k="2"><span class="paymark"><img src="img/safa-color.svg" alt="Safa" width="62" height="22"><b>pay</b></span><span>Выплаты водителям на&nbsp;карту, наличными или на&nbsp;счёт.</span><i>3 / 3</i></a>
-    </div>
+    <!-- слоган раскрыт по продуктам: активна строка того, кто сейчас спереди -->
+    <ol class="ov__jobs">
+      <li data-k="0"><a href="#fleet"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="80" height="30"><span>Каждый водитель проверен.</span></a></li>
+      <li data-k="1"><a href="#gps"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="82" height="30"><span>Каждая машина на&nbsp;виду.</span></a></li>
+      <li data-k="2"><a href="#pay"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="80" height="30"><span>Каждая выплата — в&nbsp;срок.</span></a></li>
+    </ol>
   </div>
-  <ol class="ov__toc">
-    <li><a href="#fleet"><img src="media/xl/car_blue_s.webp" alt=""><span>Fleet — CRM для таксопарков</span><i>↘</i></a></li>
-    <li><a href="#gps"><img src="media/xl/pin_blue_s.webp" alt=""><span>GPS — мониторинг транспорта</span><i>↘</i></a></li>
-    <li><a href="#pay"><img src="media/xl/card.webp" alt=""><span>Pay — выплаты водителям</span><i>↘</i></a></li>
-  </ol>
 </section>
 
-<!-- ============ 4. FLEET: мастхед, машина едет на зрителя, макет списка водителей внахлёст ============ -->
-<section class="sx sp sp--fleet" id="fleet" tabindex="-1" aria-labelledby="fleet-title">
+<!-- ============ 4. FLEET как обложка: макет лежит на слове, машина над обоими ============ -->
+<section class="sx sp sp--fleet" id="fleet" tabindex="-1" aria-labelledby="fleet-logo fleet-title">
   <div class="grid sp__grid">
     <p class="sp__mast" aria-hidden="true" data-mask><span class="ln"><span>Fleet</span></span></p>
     <img class="sp__hero" src="media/xl/car_blue.webp" alt="" loading="lazy" decoding="async">
@@ -187,16 +176,16 @@
       </div>
     </div>
     <div class="sp__text">
-      <div class="hrow"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="80" height="30"><h3 id="fleet-title">CRM для таксопарков</h3></div>
-      <p>Управляйте водителями, лидами, документами и&nbsp;выплатами в&nbsp;одной системе. Автоматизируйте процессы и&nbsp;развивайте свой парк.</p>
-      <p class="sp__feats">Водители / Лиды / Документы / Выплаты</p>
+      <div class="hrow"><img id="fleet-logo" src="img/safa-fleet-color.svg" alt="Safa Fleet" width="80" height="30"><h3 id="fleet-title">Каждый водитель проверен.</h3></div>
+      <p>Safa Fleet — CRM для таксопарков. Водители, лиды, документы и&nbsp;выплаты в&nbsp;одной системе: автоматизируйте процессы и&nbsp;развивайте свой парк.</p>
+      <p class="sp__feats">Подключается к&nbsp;Яндекс Fleet: водители и&nbsp;балансы подтягиваются сами.</p>
     </div>
-    <p class="sp__cap">Водители в&nbsp;Safa Fleet: статус проверки документов и&nbsp;блокировка при истёкших правах.</p>
+    <p class="sp__cap"><b>Safa Fleet.</b> Статус проверки документов и&nbsp;блокировка водителя при истёкших правах.</p>
   </div>
 </section>
 
-<!-- ============ 5. GPS: маршрут прочерчивается поверх слова, в его конец падает стеклянный пин ============ -->
-<section class="sx sp sp--gps" id="gps" tabindex="-1" aria-labelledby="gps-title">
+<!-- ============ 5. GPS: слово лежит над картой; маршрут выходит из конца трека на карте, идёт сквозь буквы к стеклянному пину ============ -->
+<section class="sx sp sp--gps" id="gps" tabindex="-1" aria-labelledby="gps-logo gps-title">
   <div class="grid sp__grid">
     <div class="sp__mast-wrap">
       <p class="sp__mast" aria-hidden="true" data-mask><span class="ln"><span>GPS</span></span></p>
@@ -216,23 +205,23 @@
           <path d="M60 300 C120 270 140 210 210 206 S300 240 330 175 S380 125 410 110" fill="none" stroke="#C9D6FF" stroke-width="6" stroke-linecap="round"/>
           <path class="map__route" d="M60 300 C120 270 140 210 210 206 S300 240 330 175 S380 125 410 110" fill="none" stroke="#0145F2" stroke-width="4" stroke-linecap="round"/>
           <circle cx="60" cy="300" r="7" fill="#050170"/>
-          <circle cx="410" cy="110" r="8" fill="#0145F2"/><circle class="map__ping" cx="410" cy="110" r="16" fill="none" stroke="#0145F2" stroke-opacity=".5"/>
+          <circle class="map__end" cx="410" cy="110" r="8" fill="#0145F2"/><circle class="map__ping" cx="410" cy="110" r="16" fill="none" stroke="#0145F2" stroke-opacity=".5"/>
         </svg>
-        <span class="map__plate"><i class="dot"></i><b>01 A 123 BC</b> · <span class="map__speed">68</span> км/ч</span>
-        <span class="map__sum">Геозоны 3 · Нарушения 1 · Маршрут 125 км</span>
+        <span class="map__plate"><i class="dot"></i><b>01 A 123 BC</b> · <span class="map__speed">68</span>&nbsp;км/ч</span>
+        <span class="map__sum">Геозоны 3 · Нарушения 1 · Маршрут 125&nbsp;км</span>
       </div>
     </div>
     <div class="sp__text">
-      <div class="hrow"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="82" height="30"><h3 id="gps-title">Мониторинг транспорта</h3></div>
-      <p>Отслеживание транспорта в&nbsp;реальном времени, геозоны, маршруты, контроль событий и&nbsp;детальная аналитика по&nbsp;всему автопарку.</p>
-      <p class="sp__feats">Карта онлайн / Геозоны / Маршруты / Нарушения</p>
+      <div class="hrow"><img id="gps-logo" src="img/safa-gps-color.svg" alt="Safa GPS" width="82" height="30"><h3 id="gps-title">Каждая машина на&nbsp;виду.</h3></div>
+      <p>Safa GPS — мониторинг транспорта. Машины на&nbsp;карте в&nbsp;реальном времени, геозоны, маршруты, контроль событий и&nbsp;аналитика по&nbsp;всему автопарку.</p>
+      <p class="sp__feats">Выехала из&nbsp;геозоны — вы узнаёте в&nbsp;ту же минуту, а&nbsp;не из&nbsp;отчёта в&nbsp;конце месяца.</p>
     </div>
-    <p class="sp__cap">Safa GPS: трек машины за&nbsp;смену, стоянки и&nbsp;выезд из&nbsp;геозоны.</p>
+    <p class="sp__cap"><b>Safa GPS.</b> Трек машины за&nbsp;смену, стоянки и&nbsp;выезд из&nbsp;геозоны.</p>
   </div>
 </section>
 
-<!-- ============ 6. PAY: телефон поднимается из слова, баланс считается вверх ============ -->
-<section class="sx sp sp--pay" id="pay" tabindex="-1" aria-labelledby="pay-title">
+<!-- ============ 6. PAY: телефон стоит перед словом, карта и монеты слева; баланс считается вверх ============ -->
+<section class="sx sp sp--pay" id="pay" tabindex="-1" aria-labelledby="pay-logo pay-title">
   <div class="grid sp__grid">
     <p class="sp__mast" aria-hidden="true" data-mask><span class="ln"><span>Pay</span></span></p>
     <div class="pay__phone" aria-hidden="true">
@@ -254,11 +243,11 @@
               <svg class="ip-s" viewBox="0 0 566.93 958.12"><path d="M147.33 0L0 0L0 533.65C0 624.38 73.55 697.94 164.28 697.94C255.02 697.94 328.57 624.38 328.57 533.65L328.57 395.4C328.57 370.26 348.95 349.88 374.08 349.88C399.22 349.88 419.6 370.26 419.6 395.4L419.6 958.12L566.93 958.12L566.93 395.4C566.93 288.89 480.59 202.55 374.08 202.55L374.08 202.55C267.58 202.55 181.24 288.89 181.24 395.4L181.24 533.65C181.24 543.02 173.65 550.61 164.28 550.61C154.92 550.61 147.33 543.02 147.33 533.65L147.33 0Z"/></svg>
               <img class="ip-balance__logo" src="img/safa-white.svg" alt="" width="48" height="17">
               <span>Можно вывести</span>
-              <b>328 400,00 <small>soʻm</small></b>
+              <b>328&#8239;400,00&nbsp;<small>soʻm</small></b>
             </div>
             <div class="ip-card ip-rows">
-              <div class="ip-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="M3 9.5h15M15.5 14.5h2"/></svg><span>Всего на балансе</span><b>412 900,00 soʻm</b></div>
-              <div class="ip-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Кэшбэк</span><b class="ip-accent">4 129,00 soʻm</b></div>
+              <div class="ip-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="15" rx="3"/><path d="M3 9.5h15M15.5 14.5h2"/></svg><span>Всего на балансе</span><b>412&#8239;900,00&nbsp;soʻm</b></div>
+              <div class="ip-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg><span>Кэшбэк</span><b class="ip-accent">4&#8239;129,00&nbsp;soʻm</b></div>
             </div>
             <div class="ip-actions">
               <div class="ip-card ip-act"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg><b>Вывести</b></div>
@@ -271,7 +260,7 @@
               <span class="ip-badge">Основная</span>
             </div>
             <div class="ip-h"><b>Можно вывести по паркам</b></div>
-            <div class="ip-card ip-park"><span class="ip-ava">YT</span><span>Yangi Taxi</span><b>328 400,00 soʻm</b></div>
+            <div class="ip-card ip-park"><span class="ip-ava">YT</span><span>Yangi Taxi</span><b>328&#8239;400,00&nbsp;soʻm</b></div>
           </div>
           <div class="ip-tabs">
             <span class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z"/></svg>Главная</span>
@@ -283,28 +272,30 @@
       </div>
     </div>
     <div class="sp__text">
-      <div class="hrow"><span class="paymark"><img src="img/safa-color.svg" alt="Safa" width="80" height="28"><b>pay</b></span><h3 id="pay-title">Финтех для выплат водителям</h3></div>
-      <p>Быстрые и&nbsp;прозрачные выплаты водителям, гибкие комиссии, отчётность и&nbsp;полная финансовая автоматизация таксопарка.</p>
+      <div class="hrow"><img id="pay-logo" src="img/safa-pay-color.svg" alt="Safa PAY" width="80" height="30"><h3 id="pay-title">Каждая выплата — в&nbsp;срок.</h3></div>
+      <p>Safa PAY — финтех для выплат водителям. Быстрые и&nbsp;прозрачные выплаты, гибкие комиссии, отчётность и&nbsp;финансовая автоматизация таксопарка.</p>
       <p class="sp__feats">На карту Uzcard и&nbsp;HUMO · наличными в&nbsp;кассе парка · на&nbsp;счёт компании</p>
       <a class="ulink" href="#contact">Обсудить внедрение →</a>
     </div>
-    <p class="sp__cap">Приложение водителя Safa&nbsp;PAY: баланс по&nbsp;паркам и&nbsp;вывод на&nbsp;карту.</p>
+    <p class="sp__cap"><b>Safa PAY.</b> Приложение водителя: баланс по&nbsp;паркам и&nbsp;вывод на&nbsp;карту.</p>
   </div>
 </section>
 
-<!-- ============ 7. РАЗРАБОТКА НА ЗАКАЗ: журнальный указатель + липкая колонка с одним предметом ============ -->
+<!-- ============ 7. РАЗРАБОТКА НА ЗАКАЗ: указатель с одной главной строкой и предмет справа. От 1024px сцена стоит на экране, строки сменяются скроллом ============ -->
 <section class="sx s-svc" id="services" tabindex="-1" aria-labelledby="svc-title">
+  <div class="svc__track">
+  <div class="svc__stage">
   <div class="grid svc__head">
-    <h2 class="svc__title" id="svc-title" data-mask><span class="ln"><span>Разработка</span></span><span class="ln ln--c3"><span>на&nbsp;заказ</span></span></h2>
-    <p class="svc__lead" data-fade>От мобильного приложения до&nbsp;сложной интеграции — продукты, которые решают реальные задачи и&nbsp;растут вместе с&nbsp;компанией.</p>
+    <h2 class="svc__title" id="svc-title" data-mask><span class="ln"><span>Разработка на&nbsp;заказ</span></span></h2>
   </div>
   <div class="grid svc__body">
+    <p class="svc__lead" data-fade>От мобильного приложения до&nbsp;сложной интеграции — продукты, которые решают реальные задачи и&nbsp;растут вместе с&nbsp;компанией.</p>
     <ol class="svc__list">
       <li class="svc__row" data-k="0"><a href="#contact" data-service="Мобильные приложения"><span class="svc__n">01</span><img class="svc__ico" src="media/g2/smartphone_256.webp" alt=""><span class="svc__name">Мобильные приложения</span><span class="svc__desc">Нативные iOS и&nbsp;Android с&nbsp;современным UX/UI.</span></a></li>
       <li class="svc__row" data-k="1"><a href="#contact" data-service="Веб-платформы"><span class="svc__n">02</span><img class="svc__ico" src="media/g2/laptop_256.webp" alt=""><span class="svc__name">Веб-платформы</span><span class="svc__desc">Масштабируемые веб-сервисы и&nbsp;личные кабинеты.</span></a></li>
-      <li class="svc__row" data-k="2"><a href="#contact" data-service="Backend / API"><span class="svc__n">03</span><img class="svc__ico" src="media/g2/cloud_256.webp" alt=""><span class="svc__name">Backend / API</span><span class="svc__desc">Надёжная серверная архитектура и&nbsp;интеграции.</span></a></li>
-      <li class="svc__row" data-k="3"><a href="#contact" data-service="IoT / телематика"><span class="svc__n">04</span><img class="svc__ico" src="media/g2/wireless_signal_256.webp" alt=""><span class="svc__name">IoT / телематика</span><span class="svc__desc">Подключаем устройства, собираем и&nbsp;анализируем данные с&nbsp;транспорта.</span></a></li>
-      <li class="svc__row" data-k="4"><a href="#contact" data-service="AI / автоматизация"><span class="svc__n">05</span><img class="svc__ico" src="media/g2/vehicle_diagnostics_256.webp" alt=""><span class="svc__name">AI / автоматизация</span><span class="svc__desc">Интеллектуальные решения и&nbsp;автоматизация бизнес-процессов.</span></a></li>
+      <li class="svc__row" data-k="2"><a href="#contact" data-service="Backend / API"><span class="svc__n">03</span><img class="svc__ico" src="media/g2/cloud_256.webp" alt=""><span class="svc__name">Backend<span class="sl">/</span>API</span><span class="svc__desc">Надёжная серверная архитектура и&nbsp;интеграции.</span></a></li>
+      <li class="svc__row" data-k="3"><a href="#contact" data-service="IoT / телематика"><span class="svc__n">04</span><img class="svc__ico" src="media/g2/wireless_signal_256.webp" alt=""><span class="svc__name">IoT<span class="sl">/</span>телематика</span><span class="svc__desc">Подключаем устройства, собираем и&nbsp;анализируем данные с&nbsp;транспорта.</span></a></li>
+      <li class="svc__row" data-k="4"><a href="#contact" data-service="AI / автоматизация"><span class="svc__n">05</span><img class="svc__ico" src="media/g2/vehicle_diagnostics_256.webp" alt=""><span class="svc__name">AI<span class="sl">/</span>автоматизация</span><span class="svc__desc">Интеллектуальные решения и&nbsp;автоматизация бизнес-процессов.</span></a></li>
       <li class="svc__row" data-k="5"><a href="#contact" data-service="Интеграции"><span class="svc__n">06</span><img class="svc__ico" src="media/g2/gears_256.webp" alt=""><span class="svc__name">Интеграции</span><span class="svc__desc">Связываем с&nbsp;внешними системами и&nbsp;сторонними сервисами.</span></a></li>
     </ol>
     <div class="svc__aside" aria-hidden="true">
@@ -318,14 +309,16 @@
       </div>
     </div>
   </div>
+  </div>
+  </div>
 </section>
 
-<!-- ============ 8. ПРОЦЕСС: одометр 1→4, дуга горизонта как шкала, на «Запуске» рассвет (пин от 1024px) ============ -->
+<!-- ============ 8. ПРОЦЕСС: цифра-одометр 1→4 встаёт из-за горизонта, дуга — шкала шагов (пин от 1024px) ============ -->
 <section class="sx s-proc" id="process" tabindex="-1" aria-labelledby="proc-title">
   <div class="proc__stage">
     <div class="grid proc__grid">
       <h2 class="proc__title" id="proc-title" data-mask><span class="ln"><span>От задачи до&nbsp;запуска</span></span><span class="ln proc__title2"><span>и&nbsp;поддержки</span></span></h2>
-      <div class="proc__num" aria-hidden="true"><span class="proc__win"><span class="proc__digits"><span>1</span><span>2</span><span>3</span><span>4</span></span></span><i>/ 4</i></div>
+      <div class="proc__num" aria-hidden="true"><span class="proc__win"><span class="proc__digits"><span>1</span><span>2</span><span>3</span><span>4</span></span></span><i>/4</i></div>
       <ol class="proc__steps">
         <li class="proc__step" data-n="1"><h3>Анализ задачи</h3><p>Разбираем процессы и&nbsp;цели, фиксируем требования, сроки и&nbsp;бюджет.</p></li>
         <li class="proc__step" data-n="2"><h3>Проектирование и&nbsp;дизайн</h3><p>Проектируем архитектуру и&nbsp;интерфейсы, согласуем прототип до&nbsp;начала разработки.</p></li>
@@ -334,9 +327,10 @@
       </ol>
     </div>
     <div class="proc__arc" aria-hidden="true">
-      <i class="proc__dawn"></i>
       <svg viewBox="0 0 1000 100" preserveAspectRatio="none">
         <defs><linearGradient id="procg" x1="0" x2="1"><stop offset="0" stop-color="#623289"/><stop offset=".6" stop-color="#C25E93"/><stop offset="1" stop-color="#FFB38A"/></linearGradient></defs>
+        <!-- белая «земля» под дугой: низ цифры уходит за горизонт -->
+        <path class="proc__ground" d="M-400 100 L0 96 Q740 -36 1000 96 L1400 100 L1400 2000 L-400 2000 Z" fill="#fff"/>
         <path class="proc__base" d="M0 96 Q740 -36 1000 96" fill="none" stroke="#1C132617" stroke-width="1.5"/>
         <path class="proc__fill" d="M0 96 Q740 -36 1000 96" fill="none" stroke="url(#procg)" stroke-width="2.5"/>
       </svg>
@@ -352,7 +346,7 @@
     <h2 class="ct__title" id="contact-title" data-mask><span class="ln"><span>Обсудим</span></span><span class="ln"><span>ваш проект.</span></span></h2>
     <img class="ct__chat" src="media/xl/chat.webp" alt="" loading="lazy" decoding="async">
   </div>
-  <div class="grid"><a class="ct__phone" href="tel:+998503333900" data-fit="12"><span>+998 50 333 39 00</span></a></div>
+  <div class="grid"><a class="ct__phone" href="tel:+998503333900" data-fit="12" aria-label="+998 50 333 39 00"><span><small>+998</small>50&nbsp;333&nbsp;39&nbsp;00</span></a></div>
   <div class="grid ct__body">
     <div class="ct__info">
       <a class="ct__mail" href="mailto:dev@safaone.uz">dev@safaone.uz</a>
@@ -364,24 +358,24 @@
       <form class="pform" id="lead" novalidate>
         <p class="pform__text">
           <span id="lbl-name">Здравствуйте! Меня зовут</span>
-          <span class="nw"><input class="pf" id="f-name" name="name" autocomplete="name" placeholder="ваше имя" aria-labelledby="lbl-name" required aria-describedby="e-name"><sup aria-hidden="true">*</sup>,</span>
+          <span class="nw"><input class="pf" id="f-name" name="name" autocomplete="name" placeholder="ваше имя" aria-labelledby="lbl-name" required aria-describedby="e-name">,</span>
           <span id="lbl-company">я из&nbsp;компании</span>
           <span class="nw"><input class="pf" id="f-company" name="company" autocomplete="organization" placeholder="название компании" aria-labelledby="lbl-company">.</span>
           <span id="lbl-msg">Хочу обсудить</span>
           <span class="nw"><textarea class="pf pf--area" id="f-msg" name="message" rows="1" placeholder="кратко опишите задачу" aria-labelledby="lbl-msg"></textarea>.</span>
           <span id="lbl-phone">Перезвоните мне:</span>
-          <span class="nw"><input class="pf" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 __ ___ __ __" aria-labelledby="lbl-phone" required aria-describedby="e-phone"><sup aria-hidden="true">*</sup>.</span>
+          <span class="nw"><input class="pf" id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 90 000 00 00" aria-labelledby="lbl-phone" required aria-describedby="e-phone">.</span>
         </p>
         <p class="pform__errs"><span class="err" id="e-name"></span><span class="err" id="e-phone"></span><span class="err" id="e-consent"></span></p>
         <div class="pform__send">
-          <button class="btn btn--primary" type="submit">Отправить заявку
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+          <button class="btn btn--primary" type="submit"><span>Отправить заявку</span>
+            <i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
           <label class="check"><input type="checkbox" name="consent" id="f-consent" required aria-describedby="e-consent"><span>Соглашаюсь с&nbsp;<a href="privacy.html">политикой конфиденциальности</a> и&nbsp;даю согласие на&nbsp;обработку персональных данных</span></label>
         </div>
       </form>
       <div class="done" id="lead-done" hidden>
-        <div class="hrow"><img class="gico" src="media/g2/check_badge_256.webp" alt="" width="56" height="56"><h3 tabindex="-1">Заявка отправлена.</h3></div>
-        <p class="done__text">Спасибо! Мы получили заявку и&nbsp;свяжемся с&nbsp;вами.</p>
+        <div class="hrow"><img class="gico" src="media/g2/check_badge_256.webp" alt="" width="56" height="56"><h3 tabindex="-1"><span class="ln"><span>Заявка отправлена.</span></span></h3></div>
+        <p class="done__text"><span class="ln" style="--k:1"><span>Спасибо! Мы получили заявку и&nbsp;свяжемся с&nbsp;вами.</span></span></p>
         <button class="ulink" type="button" id="lead-again">Отправить ещё одну</button>
       </div>
     </div>
@@ -396,19 +390,19 @@
   <div class="grid foot__top">
     <h2 class="foot__slogan" data-mask><span class="ln"><span>Доверие</span></span><span class="ln ln--c3"><span>в&nbsp;каждом</span></span><span class="ln ln--c2"><span class="grad">действии.</span></span></h2>
     <div class="foot__orbit" aria-hidden="true">
+      <svg class="foot__ring foot__ring--back" viewBox="-100 -28 200 56" preserveAspectRatio="none"><path d="M-100 0 A100 28 0 0 1 100 0" fill="none" vector-effect="non-scaling-stroke"/></svg>
+      <svg class="foot__ring foot__ring--front" viewBox="-100 -28 200 56" preserveAspectRatio="none"><path d="M-100 0 A100 28 0 0 0 100 0" fill="none" vector-effect="non-scaling-stroke"/></svg>
       <img class="foot__tile" src="media/logo_tile.webp" alt="">
       <img class="foot__b" data-k="0" src="media/xl/car_blue_s.webp" alt="">
       <img class="foot__b" data-k="1" src="media/xl/pin_blue_s.webp" alt="">
       <img class="foot__b" data-k="2" src="media/xl/card.webp" alt="">
     </div>
-    <a class="btn btn--primary foot__cta" href="#contact">Обсудить проект
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
   </div>
   <div class="grid foot__colophon">
     <div class="foot__brand"><img src="img/safa-color.svg" alt="safa" width="96" height="34"><p>Собственные продукты и&nbsp;разработка на&nbsp;заказ для транспорта и&nbsp;бизнеса в&nbsp;Узбекистане.</p></div>
     <nav class="foot__col foot__col--a" aria-label="Продукты"><h3>Продукты</h3><ul><li><a href="#fleet">Safa Fleet</a></li><li><a href="#gps">Safa GPS</a></li><li><a href="#pay">Safa PAY</a></li></ul></nav>
     <nav class="foot__col" aria-label="Услуги"><h3>Услуги</h3><ul><li><a href="#services">Мобильные приложения</a></li><li><a href="#services">Веб-платформы</a></li><li><a href="#services">Backend / API</a></li><li><a href="#services">IoT / телематика</a></li><li><a href="#services">AI / автоматизация</a></li><li><a href="#services">Интеграции</a></li></ul></nav>
-    <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="#about">О компании</a></li><li><a href="#process">Как мы работаем</a></li><li><a href="#contact">Контакты</a></li><li><a href="tel:+998503333900">+998 50 333 39 00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
+    <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="#about">О компании</a></li><li><a href="#process">Как мы работаем</a></li><li><a href="#contact">Контакты</a></li><li><a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
     <nav class="foot__col" aria-label="Документы"><h3>Документы</h3><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="data-deletion.html">Удаление данных</a></li><li><a href="terms.html">Условия использования</a></li></ul></nav>
     <p class="foot__legal">© 2026 SAFA ONE MChJ&nbsp;· ИНН&nbsp;312911394&nbsp;· Узбекистан, г.&nbsp;Ташкент, Юнусабадский район, махалля Mirzo&nbsp;Ulugʻbek, <span style="white-space:nowrap">ул. Xalqobod-2,</span> д.&nbsp;65/6</p>
   </div>
