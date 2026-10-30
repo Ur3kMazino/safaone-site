@@ -55,7 +55,8 @@
 @media (pointer:coarse){.ladder{backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px)}}
 
 /* ---------- ШАПКА ГЛАВНОЙ: фильм в карточке со скруглением (как hero у vibr) ---------- */
-.film--hero{border-radius:0;background:transparent;view-timeline-name:--film}
+/* один экран: фильм в шапке идёт по времени от первого действия, а не по скроллу (film.js, FILM.play) — длинная дорожка прокрутки не нужна */
+.film--hero{--screens:1;border-radius:0;background:transparent;view-timeline-name:--film}
 .film--hero .film__stage{background:transparent}
 .film--hero .film__media{
   --gap:var(--hero-gap,16px);

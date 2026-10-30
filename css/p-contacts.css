@@ -1,0 +1,148 @@
+/* Safa One — contacts.html (ТЗ_страницы.md §2.6). Подключается после pages.css. Свои классы — cx-.
+   Три таблицы разной плотности: каналы — крупно (метка 1–3, значение 4–10, действие 11–12),
+   «Партнёрам и водителям» — средне (текст 1–9, действие 10–12, без колонки меток), реквизиты — мелко (.pg-dl). */
+
+/* ---------- герой: заголовок, лид, оглавление ---------- */
+.cx-hero{padding-bottom:0}
+.cx-hero .pg-hero__lead{max-width:30ch}
+/* лид стоит сразу под H1; оглавление занимает строки H1 и лида и встаёт низом на низ лида —
+   на любой ширине лид не отрывается от заголовка (H1 на ≥1024 кончается левее колонки 9, проверено 1024–1920) */
+@media (min-width:1024px){
+  .cx-hero .pg-hero__h{grid-row:1}
+  .cx-hero .pg-hero__lead{grid-row:2;align-self:start}
+  .cx-hero .cx-toc{grid-row:1/3;align-self:end}
+  .cx-hero .pg-hero__marg{padding-bottom:0}
+}
+
+/* оглавление в маргиналии: стрелки смотрят вниз; поле 6 px по бокам — кольцо фокуса не прижимается к тексту */
+.cx-toc{display:grid;justify-items:start;gap:6px}
+.cx-toc a{display:inline-flex;align-items:center;min-height:30px;padding-inline:6px;margin-left:-6px;font:500 15px/1.4 var(--font-ui);color:var(--ink-2);transition:color .24s}
+.cx-toc a:hover{color:var(--ink)}
+.cx-toc .pg-arr{rotate:90deg;width:12px;height:12px;margin-left:8px;color:var(--ink-3);transition:translate .24s var(--e-enter),color .24s}
+.cx-toc a:hover>.pg-arr,.cx-toc a:focus-visible>.pg-arr{translate:0 3px;color:var(--acc)}
+.cx-toc a:focus-visible{border-radius:3px}
+
+/* ---------- строки каналов ---------- */
+.cx-chs{grid-column:1/-1;margin:clamp(56px,6cqw,104px) 0 0;padding:0;list-style:none;border-bottom:1px solid var(--line)}
+.cx-ch{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cg);align-items:baseline;
+  padding-block:clamp(26px,2.8cqw,44px);border-top:1px solid var(--line)}
+.cx-ch__l{grid-column:1/4;font:var(--marg);color:var(--ink-3)}
+.cx-ch__v{grid-column:4/11;min-width:0}
+.cx-ch__a{grid-column:11/13;justify-self:end}
+
+/* крупное значение: телефон и почта */
+.cx-ch__big{position:relative;display:inline-block;font:500 clamp(30px,3.6cqw,56px)/1.1 var(--font);letter-spacing:-.03em;color:var(--ink);
+  font-variant-numeric:lining-nums;white-space:nowrap;border-radius:6px;transition:color .24s}
+.cx-ch__big:hover{color:var(--acc-ink)}
+/* кольцо фокуса отступает от «+» и последней цифры */
+.cx-ch__big:focus-visible{box-shadow:none;outline:2px solid var(--purple);outline-offset:6px}
+@media (pointer:fine){.cx-ch__big[data-copy-fine]{cursor:copy}}
+.cx-ch__big .og{--gw:1.18em;margin:0 .3em 0 0}
+.cx-ch__big .pg-tip{right:auto;left:0;letter-spacing:0;font-variant-numeric:normal}
+/* предмет висит слева от колонки значения: начала значений в одну вертикаль */
+@media (min-width:1024px){.cx-ch__big .og{margin-left:calc(-1 * var(--gw) - .3em)}}
+.cx-ch__s{margin-top:12px;font:var(--marg);color:var(--ink-3);max-width:46ch}
+
+/* на касании значение само звонит и пишет: второе действие рядом не нужно */
+@media (pointer:coarse){.cx-ch:not(.cx-ch--sm) .cx-ch__a{display:none}}
+
+/* второстепенные значения: адрес и LinkedIn */
+.cx-ch__mid{font:500 clamp(20px,1.8cqw,26px)/1.32 var(--font);letter-spacing:-.015em;color:var(--ink);max-width:34ch;text-wrap:balance}
+.cx-ch__mid .nw{white-space:nowrap}
+
+/* ---------- заявка ---------- */
+.cx-form{grid-column:1/12}
+/* под кнопкой уже 28 px запаса на ошибку (.pg-form__send): до линии следующего раздела — тот же шаг, что у строк таблиц, а не целый .pg-sec */
+.cx-lead{padding-bottom:clamp(26px,2.8cqw,44px)}
+/* невыбранный вариант — тише текста, но не «отключён»: 3.5:1 на белом (в ТЗ #A99FB3 — 2.5:1) */
+.cx-form .pg-choice [role=radio][aria-checked="false"]{color:#8F859A}
+.cx-form .pg-choice [role=radio][aria-checked="false"]:hover{color:var(--ink-2)}
+/* «Коротко» — textarea: её базовая линия — низ бокса; при .28em из pages.css текст поля стоит на ~2 px выше текста фразы (замер 390 и 1440) */
+.cx-form textarea.pg-pf{vertical-align:-.36em}
+/* десктоп: строка ошибки под полем не слипается с прописными следующей строки фразы */
+@media (min-width:1024px){.cx-form .pg-form__text{line-height:1.8}}
+
+/* ---------- партнёрам и водителям: средняя плотность, без колонки меток (H3 остаётся для структуры, скрыт) ---------- */
+.cx-rows{grid-column:1/-1;margin:0;padding:0;list-style:none;border-bottom:1px solid var(--line)}
+.cx-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cg);align-items:baseline;
+  padding-block:clamp(28px,3cqw,48px);border-top:1px solid var(--line)}
+.cx-row__t{grid-column:1/10;max-width:40ch;margin:0;font:400 clamp(22px,2.2cqw,32px)/1.3 var(--font);letter-spacing:-.018em;color:var(--ink);text-wrap:pretty}
+.cx-row__lk{display:inline-block;height:.9em;width:auto;vertical-align:-.1em;margin-right:.4em}
+.cx-row__a{grid-column:10/13;justify-self:end}
+/* нижняя линия строк — уже граница раздела: от неё до «Реквизитов» один общий шаг .pg-sec (padding-top), а не два */
+.cx-who{padding-bottom:0}
+
+/* ---------- реквизиты: последний раздел, его нижняя линия и есть граница подвала ---------- */
+.cx-req{padding-bottom:0}
+.pg-canvas:has(.cx-req:last-child) .pg-foot::before{display:none}
+.cx-req .pg-head__aside{justify-self:end;text-align:right}
+.cx-copyall{position:relative;gap:0;border:0;padding:0 0 4px;background-color:transparent;cursor:pointer}
+.cx-copyall__i{width:15px;height:15px;margin-right:9px;align-self:center;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;color:var(--ink-3);transition:color .24s}
+.cx-copyall:hover .cx-copyall__i{color:var(--acc)}
+/* одиночные значения: цифры пропорциональные (ИНН не в разрядку), адрес переносится ровными строками, «махалля» не отрывается от названия */
+.cx-req .pg-dl__v{font-variant-numeric:lining-nums proportional-nums;text-wrap:balance}
+.cx-req .pg-dl__v .nw{white-space:nowrap}
+/* кнопка-копия на первой строке значения; кольцо фокуса внутри кнопки, за линию таблицы не выходит */
+.cx-req .pg-copy{margin:calc(clamp(18px,1.6cqw,24px) * .675 - 22px) -10px -8px 0;align-self:start}
+.cx-req .pg-copy:focus-visible{box-shadow:inset 0 0 0 2px var(--purple)}
+
+/* ---------- согласие у кнопки: 14 px, по центру кнопки, чекбокс на первой строке ---------- */
+.cx-form .pg-form__send{align-items:center}
+.cx-form .pg-check{font-size:14px;max-width:46ch}
+.cx-form .pg-check input{margin-top:1px}
+
+/* ---------- ≥1680: содержимое не тянется на всё полотно, колонки укладываются в 1480 px от левого поля (ТЗ §1.9) ---------- */
+@media (min-width:1680px){
+  #main .grid{grid-template-columns:repeat(12,minmax(0,calc((1480px - 11 * var(--cg)) / 12)));justify-content:start}
+  #main .pg-sec--rule::before{right:auto;width:1480px}
+}
+
+/* ---------- 1024–1279: действию нужно три колонки ---------- */
+@media (min-width:1024px) and (max-width:1279px){
+  .cx-ch__v{grid-column:4/10}
+  .cx-ch__a{grid-column:10/13}
+}
+
+/* ---------- ≤1023: метка, значение, действие — столбиком ---------- */
+@media (max-width:1023px){
+  .cx-ch,.cx-row{grid-template-columns:minmax(0,1fr);row-gap:10px}
+  .cx-ch__l,.cx-ch__v,.cx-ch__a,.cx-row__t,.cx-row__a{grid-column:1}
+  .cx-ch__a,.cx-row__a{justify-self:start;margin-top:8px}
+  .cx-ch__l{order:0}
+  .cx-form{grid-column:1/-1}
+  .cx-req .pg-head__aside{justify-self:start;text-align:left}
+  .cx-hero .pg-hero__marg{margin-top:24px}
+  .cx-toc{grid-auto-flow:column;justify-content:start;gap:4px 22px}
+  /* планшет: цель касания 44 px */
+  .cx-toc a{min-height:44px}
+}
+/* 641–1023: метка слева в строку со значением, как на десктопе (над значением она читалась надзаголовком); предмет висит слева от колонки значения — начала значений в одну вертикаль */
+@media (min-width:641px) and (max-width:1023px){
+  .cx-ch{grid-template-columns:repeat(12,minmax(0,1fr))}
+  .cx-ch__l{grid-column:1/4}
+  .cx-ch__v,.cx-ch__a{grid-column:4/13}
+  .cx-ch__big .og{margin-left:calc(-1 * var(--gw) - .3em)}
+}
+@media (max-width:640px){
+  /* узкий телефон: номер с предметом укладывается в колонку текста */
+  .cx-ch__big{font-size:clamp(26px,7.9cqw,32px)}
+  /* на телефоне каналы идут сразу под лидом; оглавление короткой странице не нужно */
+  .cx-toc{display:none}
+  /* согласие — перед кнопкой; под ним место на строку ошибки, кнопка не прыгает и ошибка не ложится на её тень */
+  .cx-form .pg-check{order:-1;margin-bottom:22px}
+  .cx-ch__s{font-size:14px}
+  /* метки каналов — только для скринридера: у телефона и почты есть предмет, адрес и ссылка говорят сами за себя */
+  .cx-ch__l{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  /* linkedin.com/company/safaone одной строкой входит в колонку до 320 */
+  .cx-ch__mid{font-size:min(20px,5.3cqw)}
+}
+/* 320–340: номер с предметом (white-space:nowrap) входит в колонку */
+@media (max-width:340px){.cx-ch__big{font-size:7.4cqw}}
+/* касание: зона нажатия крупного значения и полей фразы выше, вид прежний (линии полей считаются от контента) */
+@media (pointer:coarse){
+  .cx-ch__big{padding-block:6px;margin-block:-6px}
+  .cx-form input.pg-pf,.cx-form .pg-pf--tel,.cx-form .pg-choice [role=radio]{padding-block:8px;margin-block:-8px;background-origin:content-box}
+}
+@media (prefers-reduced-motion:reduce){
+  .cx-toc .pg-arr,.cx-ch__big{transition:none}
+}

@@ -1,0 +1,166 @@
+<!doctype html><html lang="ru" class="no-js"><head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>О компании — Safa One</title><meta name="description" content="SAFA ONE — компания из Ташкента. Собственные продукты для таксопарков и автопарков и разработка на заказ.">
+<meta property="og:title" content="О компании — Safa One"><meta property="og:description" content="SAFA ONE — компания из Ташкента. Собственные продукты для таксопарков и автопарков и разработка на заказ."><meta property="og:image" content="media/poster_wide_f1.webp">
+<meta name="theme-color" content="#F3EEF6">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/pages.css"><link rel="stylesheet" href="css/p-about.css">
+<script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script defer src="js/pages.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"index.html"},{"@type":"ListItem","position":2,"name":"О компании","item":"about.html"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"SAFA ONE MChJ","taxID":"312911394","telephone":"+998503333900","email":"dev@safaone.uz","address":{"@type":"PostalAddress","addressCountry":"UZ","addressLocality":"Ташкент","addressRegion":"Юнусабадский район","streetAddress":"махалля Mirzo Ulugʻbek, ул. Xalqobod-2, д. 65/6"}}</script>
+</head><body class="pg pg-about" data-tone="brand">
+<a class="skip-link" href="#main">К содержимому</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="d-ok" viewBox="0 0 12 12"><path d="M2.4 6.4 4.9 8.8 9.6 3.4"/></symbol>
+  <symbol id="d-wait" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.7"/><path d="M6 3.5V6l1.7 1.1"/></symbol>
+  <symbol id="d-bad" viewBox="0 0 12 12"><path d="M6 2.3v4.6"/><path d="M6 9.6v.1" stroke-width="2"/></symbol>
+  <symbol id="pg-arr" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" vector-effect="non-scaling-stroke"/></symbol>
+</svg>
+<!-- nav:start -->
+<!-- меню сайта: одна разметка на всех страницах (scratchpad/pages/tools/chrome.py). Лого | разделы и язык по центру | кнопка — без внутренних плашек -->
+<header class="nav is-light" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Safa One — на главную">
+    <img class="is-white" src="img/safa-white.svg" alt="" width="71" height="25">
+    <img class="is-color" src="img/safa-color.svg" alt="" width="71" height="25">
+  </a>
+  <nav class="nav__menu" aria-label="Основное меню">
+    <div class="nav__dd">
+      <button class="nav__link" type="button" aria-expanded="false" aria-controls="drop-products">Продукты
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 3.7 5 6.5l2.8-2.8"/></svg></button>
+      <div class="drop drop--fit" id="drop-products">
+        <!-- герои продуктов, 96px, без loading=lazy: выпадашка открывается сразу, ленивые мигали бы. Файлы — по финальным путям (утренний импорт №1/№7/№2 их заменит) -->
+        <a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><div><b>Safa Fleet</b><span>CRM для таксопарков</span></div></a>
+        <a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><div><b>Safa GPS</b><span>Мониторинг транспорта</span></div></a>
+        <a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><div><b>Safa PAY</b><span>Выплаты водителям</span></div></a>
+      </div>
+    </div>
+    <a class="nav__link" href="industries.html">Решения</a>
+    <a class="nav__link" href="services.html" data-sec="services">Услуги</a>
+    <a class="nav__link" href="about.html" data-sec="why" aria-current="page">О компании</a>
+    <a class="nav__link" href="contacts.html" data-sec="contact">Контакты</a>
+    <span class="nav__sep" aria-hidden="true"></span>
+    <div class="lang" role="group" aria-label="Язык">
+      <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+      <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+    </div>
+  </nav>
+  <div class="nav__end">
+    <!-- кабинет партнёра — текстовая ссылка у кнопки, как пункты меню; уже 1600px подпись короткая (места между меню и кнопкой мало) -->
+    <a class="nav__link nav__cab" href="cabinet.html" aria-label="Кабинет партнёра"><span class="nav__cab-l">Кабинет партнёра</span><span class="nav__cab-s">Кабинет</span></a>
+    <a class="btn btn--primary nav__cta" href="contacts.html#lead">Обсудить проект</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mnav"><i aria-hidden="true"></i><span class="burger__t">Меню</span></button>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Меню" data-lenis-prevent>
+  <!-- без подписей групп: группы разделены только отступом. Предметы — только у трёх продуктов, те же, что в выпадашке -->
+  <ul class="mnav__prod">
+    <li><a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><span>Safa Fleet</span></a></li>
+    <li><a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><span>Safa GPS</span></a></li>
+    <li><a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><span>Safa PAY</span></a></li>
+  </ul>
+  <ul>
+    <li><a href="industries.html">Решения</a></li>
+    <li><a href="services.html" data-sec="services">Услуги</a></li>
+    <li><a href="about.html" data-sec="why" aria-current="page">О компании</a></li>
+    <li><a href="contacts.html" data-sec="contact">Контакты</a></li>
+  </ul>
+  <a class="mnav__cab" href="cabinet.html">Кабинет партнёра<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  <div class="lang" role="group" aria-label="Язык">
+    <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+    <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+  </div>
+  <div class="mnav__end"><a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a></div>
+</nav>
+<!-- nav:end -->
+<div class="page"><div class="canvas pg-canvas">
+<main id="main">
+
+  <!-- 1. Герой --split: текст слева, плитка-знак на земле справа (единственное стекло страницы) -->
+  <section class="pg-hero pg-hero--split ab-hero">
+    <div class="grid">
+      <div class="pg-hero__text">
+        <h1 class="pg-h1" data-mask><span class="ln"><span data-raw>Мы&nbsp;не агентство</span></span><span class="ln"><span>со&nbsp;стороны.</span></span></h1>
+        <p class="pg-lead" data-rv>SAFA ONE — компания из&nbsp;Ташкента. Делаем&nbsp;собственные продукты для таксопарков и&nbsp;автопарков и&nbsp;<a class="pg-tl" href="services.html">разрабатываем решения на&nbsp;заказ</a>.</p>
+        <div class="pg-actions" data-rv>
+          <a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a>
+          <a class="pg-ulink" href="#products">Наши продукты<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+      <div class="pg-hero__obj">
+        <div class="pg-obj ab-tile" style="--obj-w:clamp(200px,24cqw,400px);--sink:3.7%">
+          <div class="pg-obj__f"><img src="media/logo_tile.webp" alt="" width="976" height="941" fetchpriority="high"></div>
+          <i class="cshadow" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+    <div class="pg-ground" aria-hidden="true"></div>
+  </section>
+
+  <!-- 2. Заявление: кто мы, одним абзацем от левого поля (маска по строкам — модуль aboutRead в js/pages.js) -->
+  <section class="pg-sec grid ab-read-sec" aria-label="Коротко о нас">
+    <p class="ab-read" data-ab-read><a class="pg-tl" href="fleet.html">Fleet</a>, <a class="pg-tl" href="gps.html">GPS</a> и&nbsp;<a class="pg-tl" href="pay.html">PAY</a> — наши собственные продукты. <b>Всё&nbsp;пишем&nbsp;сами</b> — сервер, интеграции с&nbsp;банком, приложения. <a class="pg-tl" href="contacts.html">Офис в&nbsp;Юнусабаде</a>.</p>
+  </section>
+
+  <!-- 3. Продукты: три строки-ссылки с лок-апами; в описании — что команда написала сама. Разработка на заказ — ссылкой в лиде героя и в финале -->
+  <section class="pg-sec pg-sec--rule grid" id="products">
+    <div class="pg-head pg-head--wide">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Три продукта —</span></span><span class="ln"><span>от&nbsp;сервера до&nbsp;приложения</span></span></h2>
+    </div>
+    <ul class="pg-rows pg-rows--nonum ab-prod" data-rv-group>
+      <li class="pg-row" data-rv><a class="pg-row__in" href="fleet.html"><h3 class="pg-row__t ab-prod__t"><img class="ab-prod__lk" src="img/safa-fleet-color.svg" alt="Safa Fleet" width="381" height="144"></h3><p class="pg-row__d ab-prod__d"><b>CRM для таксопарков.</b> Свой сервер и&nbsp;интеграция с&nbsp;Яндекс Fleet.</p><span class="pg-row__x"><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+      <li class="pg-row" data-rv><a class="pg-row__in" href="gps.html"><h3 class="pg-row__t ab-prod__t"><img class="ab-prod__lk ab-prod__lk--gps" src="img/safa-gps-color.svg" alt="Safa GPS" width="447" height="164"></h3><p class="pg-row__d ab-prod__d"><b>Мониторинг транспорта.</b> Свой трекинг: от&nbsp;трекера в&nbsp;машине до&nbsp;карты и&nbsp;отчётов.</p><span class="pg-row__x"><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+      <li class="pg-row" data-rv><a class="pg-row__in" href="pay.html"><h3 class="pg-row__t ab-prod__t"><img class="ab-prod__lk" src="img/safa-pay-color.svg" alt="Safa PAY" width="381" height="144"></h3><p class="pg-row__d ab-prod__d"><b>Выплаты водителям.</b> Свой платёжный контур с&nbsp;банком — до&nbsp;карты Uzcard или HUMO.</p><span class="pg-row__x"><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></a></li>
+    </ul>
+  </section>
+
+  <!-- 4. Принципы: три колонки на сетке 1–4 / 5–8 / 9–12 -->
+  <section class="pg-sec pg-sec--rule grid" id="principles">
+    <div class="pg-head">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>На&nbsp;чём <span class="ab-nw">держится работа</span></span></span></h2>
+      <p class="pg-lead" data-rv>Как мы работаем с&nbsp;клиентами и&nbsp;партнёрами.</p>
+    </div>
+    <ol class="ab-pr" data-rv-group>
+      <li class="ab-pr__i" data-rv><span class="pg-num ab-pr__n" aria-hidden="true">01</span><div class="ab-pr__b"><h3 class="pg-h3">Делаем то, чем пользуемся сами</h3><p class="pg-p">Разрабатываем собственные продукты, поэтому заказные проекты ведём так&nbsp;же: с&nbsp;аналитикой, тестами и&nbsp;мониторингом.</p></div></li>
+      <li class="ab-pr__i" data-rv><span class="pg-num ab-pr__n" aria-hidden="true">02</span><div class="ab-pr__b"><h3 class="pg-h3">Прозрачно с&nbsp;первого дня</h3><p class="pg-p">Понятные этапы и&nbsp;стоимость. Вы видите, что сделано и&nbsp;что будет дальше.</p></div></li>
+      <li class="ab-pr__i" data-rv><span class="pg-num ab-pr__n" aria-hidden="true">03</span><div class="ab-pr__b"><h3 class="pg-h3">Рядом после запуска</h3><p class="pg-p">Поддерживаем и&nbsp;развиваем продукты, а&nbsp;не&nbsp;исчезаем после сдачи.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- 5. Реквизиты — одной строкой; полная таблица с «Скопировать все» только в contacts.html#requisites -->
+  <section class="grid ab-req" id="requisites" aria-label="Реквизиты">
+    <p class="ab-req__t"><b class="ab-req__i">SAFA ONE MChJ</b><span class="ab-req__dot" aria-hidden="true">·</span><span class="ab-req__i">ИНН&nbsp;312911394</span><span class="ab-req__dot" aria-hidden="true">·</span><span class="ab-req__i">Ташкент, Юнусабад</span></p>
+    <a class="pg-ulink ab-req__a" href="contacts.html#requisites">Реквизиты и&nbsp;контакты<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  </section>
+
+  <!-- 6. Финал -->
+  <section class="pg-next grid ab-next">
+    <h2 class="pg-next__t" data-mask><span class="ln"><span>Давайте работать</span></span><span class="ln"><span>вместе.</span></span></h2>
+    <p class="pg-p pg-next__sub" data-rv>Подключите парк к&nbsp;Safa PAY или расскажите о&nbsp;задаче.</p>
+    <div class="pg-next__a" data-rv>
+      <a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a>
+      <a class="pg-ulink" href="pay.html">Подключить парк к&nbsp;Safa PAY<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+  </section>
+</main>
+  <!-- about: плитка logo_tile уже в герое — в подвале её (и пустое кольцо орбиты) прячет css/p-about.css: .pg-about .foot__orbit -->
+  <!-- foot:start -->
+  <footer class="pg-foot">
+    <div class="grid foot__colophon">
+      <div class="foot__brand"><img src="img/safa-color.svg" alt="safa" width="96" height="34"><p>Собственные продукты и&nbsp;разработка на&nbsp;заказ для транспорта и&nbsp;бизнеса в&nbsp;Узбекистане.</p></div>
+      <nav class="foot__col foot__col--a" aria-label="Продукты"><h3>Продукты</h3><ul><li><a href="fleet.html">Safa Fleet</a></li><li><a href="gps.html">Safa GPS</a></li><li><a href="pay.html">Safa PAY</a></li><li><a href="industries.html">Решения по&nbsp;отраслям</a></li><li><a href="cabinet.html">Кабинет партнёра</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Услуги"><h3>Услуги</h3><ul><li><a href="services.html#mobile">Мобильные приложения</a></li><li><a href="services.html#web">Веб-платформы</a></li><li><a href="services.html#backend">Backend<span class="sl">/</span>API</a></li><li><a href="services.html#iot">IoT<span class="sl">/</span>телематика</a></li><li><a href="services.html#ai">AI<span class="sl">/</span>автоматизация</a></li><li><a href="services.html#integrations">Интеграции</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="about.html" aria-current="page">О компании</a></li><li><a href="services.html#process">Как мы работаем</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Документы"><h3>Документы</h3><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="data-deletion.html">Удаление данных</a></li><li><a href="terms.html">Условия использования</a></li></ul></nav>
+      <p class="foot__legal">© 2026 SAFA ONE MChJ&nbsp;· ИНН&nbsp;312911394<br>Узбекистан, г.&nbsp;Ташкент, Юнусабадский район, махалля Mirzo&nbsp;Ulugʻbek, <span style="white-space:nowrap">ул. Xalqobod-2,</span> д.&nbsp;65/6</p>
+    </div>
+  </footer>
+  <!-- foot:end -->
+</div></div>
+</body></html>

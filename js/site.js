@@ -1,6 +1,6 @@
 /* Safa One — главная: плавный скролл, меню, язык, форма заявки. Сцены разделов — js/scenes.js.
    Фильм в шапке — отдельно, js/film.js. С ним сайт общается двумя событиями:
-   safa:lang (сменить язык подписей фильма) и safa:jump (переход по якорю — фильм не запускает автоход). */
+   safa:lang (сменить язык подписей фильма) и safa:jump (переход по якорю). Фильм в шапке страницу не держит: идёт по времени. */
 (() => {
 const root = document.documentElement;
 const reduceMq = matchMedia('(prefers-reduced-motion: reduce)');
@@ -46,8 +46,8 @@ const filmEnd = () => film ? film.offsetTop + film.offsetHeight - innerHeight : 
 function jumpTo(hash){
   const el = hash === '#top' ? null : document.querySelector(hash);
   if (hash !== '#top' && !el) return false;
-  const pad = el ? parseFloat(getComputedStyle(el).paddingTop) || 0 : 0;   // у разделов большой верхний отступ — встаём ближе к содержимому
-  const y = el ? Math.max(0, el.getBoundingClientRect().top + scrollY + Math.max(0, pad - 120)) : 0;
+  const cs = el && getComputedStyle(el), pad = cs ? parseFloat(cs.paddingTop) || 0 : 0;   // у разделов большой верхний отступ — встаём ближе к содержимому
+  const y = el ? Math.max(0, el.getBoundingClientRect().top + scrollY + Math.max(0, pad - 120) - (parseFloat(cs.scrollMarginTop) || 0)) : 0;   // без отступа (#why) — scroll-margin, иначе текст под меню
   const fe = filmEnd(), cross = (scrollY < fe) !== (y < fe) || y < fe;   // путь задевает фильм
   document.dispatchEvent(new CustomEvent('safa:jump'));
   const L = window.lenis;
@@ -86,6 +86,8 @@ const ddBtn = nav.querySelector('.nav__dd > button'), drop = document.getElement
 const setDrop = open => { ddBtn.setAttribute('aria-expanded', open); drop.classList.toggle('is-open', open); };
 ddBtn.addEventListener('click', () => setDrop(ddBtn.getAttribute('aria-expanded') !== 'true'));
 document.addEventListener('click', e => { if (!e.target.closest('.nav__dd')) setDrop(false); });
+// фокус ушёл из выпадашки клавиатурой — закрываем (как на страницах, js/pages.js)
+nav.querySelector('.nav__dd').addEventListener('focusout', e => { if (!e.currentTarget.contains(e.relatedTarget) && e.relatedTarget) setDrop(false); });
 
 /* мобильное меню */
 const burger = nav.querySelector('.burger'), mnav = document.getElementById('mnav'), page = document.querySelector('.page');
@@ -102,13 +104,36 @@ burger.addEventListener('click', () => {
   setMobile(open); if (open) mnav.querySelector('a').focus({ preventScroll: true });
 });
 // окно расширили за порог бургера при открытом меню — закрываем, иначе лист и блокировка скролла остаются
-matchMedia('(min-width: 1281px)').addEventListener('change', e => { if (e.matches && burger.getAttribute('aria-expanded') === 'true') setMobile(false); });
+matchMedia('(min-width: 1366px)').addEventListener('change', e => { if (e.matches && burger.getAttribute('aria-expanded') === 'true') setMobile(false); });
 function closeMenus(){ setDrop(false); if (burger.getAttribute('aria-expanded') === 'true') setMobile(false); }
+addEventListener('pageshow', e => { if (e.persisted) closeMenus(); });   // ушли по ссылке на страницу продукта и вернулись «назад» — меню не должно остаться открытым
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if (drop.classList.contains('is-open')){ setDrop(false); ddBtn.focus(); }
   if (mnav.classList.contains('is-open')){ setMobile(false); burger.focus(); }
 });
+
+/* текущий раздел: aria-current у пункта меню (подчёркивание стоит постоянно), у продукта — ещё и в выпадашке и мобильном меню.
+   Текущий — тот, через который проходит линия на 40% высоты экрана; манифест и футер в меню не входят */
+const GROUP = { fleet: 'products', gps: 'products', pay: 'products' };
+// продукты ведут на свои страницы (fleet.html…), раздел главной у них в data-sec
+const navLinks = [...document.querySelectorAll('.nav a[href^="#"]:not(.nav__logo):not(.nav__cta), .mnav a[href^="#"]:not(.btn), .nav a[data-sec], .mnav a[data-sec]')];
+let curSec = null;
+function setCurrent(id){
+  if (id === curSec) return;
+  curSec = id;
+  navLinks.forEach(a => (a.dataset.sec ? '#' + a.dataset.sec : a.getAttribute('href')) === '#' + id ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current'));
+  id && (GROUP[id] || id) === 'products' ? ddBtn.setAttribute('aria-current', 'true') : ddBtn.removeAttribute('aria-current');   // «Продукты» — кнопка, у неё пункта-якоря нет
+}
+const secIn = new Set();
+const secIo = new IntersectionObserver(es => {
+  es.forEach(en => en.isIntersecting ? secIn.add(en.target.id) : secIn.delete(en.target.id));
+  setCurrent([...secIn].pop() || null);
+}, { rootMargin: '-40% 0px -59% 0px' });
+['why', 'products', 'fleet', 'gps', 'pay', 'services', 'process', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) secIo.observe(s); });
+// пока форма на экране, кнопка «Обсудить проект» гаснет: она ведёт туда же, где читатель уже стоит
+const formWrap = document.querySelector('.ct__formwrap');
+if (formWrap) new IntersectionObserver(es => nav.classList.toggle('is-form', es[0].isIntersecting), { rootMargin: '0px 0px -12% 0px' }).observe(formWrap);
 
 /* ---------- язык ----------
    Пока переводятся только подписи фильма; тексты разделов — на русском, узбекские добавим после вычитки.
@@ -131,12 +156,27 @@ const form = document.getElementById('lead'), done = document.getElementById('le
 const phone = form.elements.phone, msg = form.elements.message;
 // поля стоят прямо во фразе: ширина растёт по набранному тексту, описание задачи переносится и растёт вниз
 const ruler = document.createElement('canvas').getContext('2d');
+// номер в табличных цифрах, а canvas их не умеет — меряем строчным span тем же шрифтом
+const probe = document.createElement('span');
+probe.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden;white-space:pre;font-variant-numeric:tabular-nums';
+const textW = (el, t) => {
+  const cs = getComputedStyle(el);
+  probe.style.font = cs.font; probe.style.letterSpacing = cs.letterSpacing; probe.style.fontVariantNumeric = 'tabular-nums';   // шорткат font сбрасывает tnum
+  probe.textContent = t;
+  el.parentNode.append(probe); const w = probe.getBoundingClientRect().width; probe.remove(); return w;
+};
 function autosize(el){
   const cs = getComputedStyle(el, el.value ? null : '::placeholder'), fs = parseFloat(cs.fontSize), box = el.closest('.pform__text');
-  ruler.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;    // плейсхолдер тоньше набранного — меряем его же начертанием
-  ruler.letterSpacing = cs.letterSpacing;
-  const w = ruler.measureText(el.value || el.placeholder).width + fs * .12 + 4;   // поле вплотную к пунктуации фразы (+4 — поля по 2px)
-  el.style.width = `${Math.min(box.clientWidth - fs, Math.max(fs * (el === msg ? 7 : 4), w))}px`;
+  let w;
+  // телефон: ширина маски «+998 90 123 45 67» не меняется ни при фокусе, ни при наборе; растёт только под длинный чужой номер
+  if (el === phone) w = Math.ceil(Math.max(textW(el, el.placeholder), el.value ? textW(el, el.value) : 0)) + 1;
+  else {
+    ruler.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;  // плейсхолдер тоньше набранного — меряем его же начертанием
+    ruler.letterSpacing = cs.letterSpacing;
+    w = ruler.measureText(el.value || el.placeholder).width + 1;     // поле вплотную к знаку препинания: своих полей у него нет
+    if (!el.value) w = Math.max(fs * (el === msg ? 7 : 4), w);       // запас — только у пустого: у короткого имени («Ли») он дал бы щель перед запятой
+  }
+  el.style.width = `${Math.min(box.clientWidth - fs, w)}px`;
   if (el === msg){ el.style.height = 'auto'; el.style.height = `${el.scrollHeight}px`; }
 }
 const fields = [...form.querySelectorAll('.pf')];
@@ -144,11 +184,31 @@ fields.forEach(el => el.addEventListener('input', () => requestAnimationFrame(()
 const sizeAll = () => fields.forEach(autosize);
 addEventListener('resize', sizeAll);
 document.fonts ? document.fonts.ready.then(sizeAll) : sizeAll();
-// строка услуги ведёт в форму: «Хочу обсудить мобильные приложения.»
+// кто пишет: «Хочу [подключить парк к Safa] или [заказать разработку]» — радиогруппа прямо во фразе.
+// Стрелки переводят выбор (фокус ходит по выбранному, как у обычных радиокнопок), Пробел и Enter — нажатие кнопки
+const intents = [...form.querySelectorAll('[role=radio][data-intent]')];
+function setIntent(v, focus){
+  intents.forEach(b => {
+    const on = b.dataset.intent === v;
+    b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1;
+    if (on && focus) b.focus();
+  });
+  form.elements.intent.value = v;
+}
+intents.forEach((b, i) => {
+  b.addEventListener('click', () => setIntent(b.dataset.intent));
+  b.addEventListener('keydown', e => {
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!d) return;
+    e.preventDefault(); setIntent(intents[(i + d + intents.length) % intents.length].dataset.intent, true);
+  });
+});
+// строка услуги ведёт в форму: «Хочу заказать разработку. Коротко: мобильные приложения.»
 document.addEventListener('click', e => {
   const s = e.target.closest('[data-service]');
   if (!s || form.hasAttribute('aria-busy')) return;                   // заявка уходит — её поля не трогаем
   if (form.hidden) resetLead();                                       // заявку уже отправили — открываем новую с этой услугой
+  setIntent('dev');
   if (msg.value && msg.dataset.auto !== msg.value) return;            // своё описание не затираем
   const name = s.dataset.service;
   msg.value = msg.dataset.auto = /^[А-ЯЁ][а-яё]/.test(name) ? name[0].toLowerCase() + name.slice(1) : name;
@@ -179,12 +239,21 @@ const checks = {
   phone: el => /^\+998 \d{2} \d{3} \d{2} \d{2}$/.test(el.value.trim()) || 'Номер: +998 XX XXX XX XX',
   consent: el => el.checked || 'Нужно согласие на обработку данных',
 };
+// ошибка стоит под своим полем (css: .err:not(:empty)); у согласия квадрат ещё раз покачивается
+const consentWrap = form.elements.consent.closest('.check'), liveErrs = document.getElementById('lead-errs');
 function validate(name){
   const el = form.elements[name], res = checks[name](el), msg = res === true ? '' : res;
   el.setAttribute('aria-invalid', !!msg);
   document.getElementById('e-' + name).textContent = msg;
+  if (name === 'consent'){ consentWrap.classList.remove('is-err'); if (msg){ void consentWrap.offsetWidth; consentWrap.classList.add('is-err'); } }
   return !msg;
 }
+// на время отправки поля только для чтения, фокус остаётся на кнопке (fieldset disabled снял бы его)
+const sendBtn = form.querySelector('[type=submit]');
+const lockLead = on => {
+  form.querySelectorAll('.pf').forEach(el => el.readOnly = on); form.elements.consent.disabled = on;
+  sendBtn.setAttribute('aria-disabled', on);
+};
 Object.keys(checks).forEach(n => form.elements[n].addEventListener(n === 'consent' ? 'change' : 'blur', () => {
   if (form.elements[n].getAttribute('aria-invalid') === 'true' || form.elements[n].value) validate(n);
 }));
@@ -194,11 +263,13 @@ form.addEventListener('submit', e => {
   e.preventDefault();
   if (form.hasAttribute('aria-busy')) return;
   const bad = Object.keys(checks).filter(n => !validate(n));
+  liveErrs.textContent = bad.map(n => document.getElementById('e-' + n).textContent).join('. ');   // список ошибок — только для читалки
   if (bad.length){ form.elements[bad[0]].focus(); return; }
   const who = form.elements.name.value.trim().split(/\s+/)[0], still = reduceMq.matches;
   done.querySelector('.done__text .ln>span').textContent = nb(`Спасибо, ${who}! Свяжемся с вами по номеру ${phone.value.replace(/ /g, ' ')}.`);
-  form.setAttribute('aria-busy', 'true');
+  form.setAttribute('aria-busy', 'true'); lockLead(true); sendBtn.focus({ preventScroll: true });
   const show = () => {
+    lockLead(false);
     form.hidden = true; form.removeAttribute('aria-busy'); form.classList.remove('is-gone'); form.style.height = '';
     done.hidden = false; done.querySelector('h3').focus({ preventScroll: true });
     requestAnimationFrame(() => requestAnimationFrame(() => done.classList.add('is-in')));
@@ -211,10 +282,34 @@ form.addEventListener('submit', e => {
   }, still ? 0 : 900);
 });
 function resetLead(){
-  clearTimeout(sendT); form.reset(); phonePrev = '';
+  clearTimeout(sendT); form.reset(); phonePrev = ''; lockLead(false);
   form.removeAttribute('aria-busy'); form.classList.remove('is-gone'); form.style.height = '';
   Object.keys(checks).forEach(n => { form.elements[n].removeAttribute('aria-invalid'); document.getElementById('e-' + n).textContent = ''; });
-  delete msg.dataset.auto; done.classList.remove('is-in'); done.hidden = true; form.hidden = false; sizeAll();
+  consentWrap.classList.remove('is-err'); liveErrs.textContent = '';
+  delete msg.dataset.auto; done.classList.remove('is-in'); done.hidden = true; form.hidden = false; setIntent('park'); sizeAll();
 }
 document.getElementById('lead-again').addEventListener('click', () => { resetLead(); form.elements.name.focus(); });
+
+/* ---------- номер-постер: на компьютере (точный указатель) клик копирует номер, рядом на 1.8 с — «Номер скопирован».
+   На телефоне ссылка звонит, как обычная tel:. Не удалось скопировать — тоже обычный переход по tel: ---------- */
+const ctPhone = document.querySelector('.ct__phone'), copied = document.querySelector('.ct__copied'), fineMq = matchMedia('(pointer: fine)');
+let copiedT = 0;
+async function copyText(t){
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+  const ta = Object.assign(document.createElement('textarea'), { value: t, readOnly: true });   // без Clipboard API (http, старые браузеры)
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+  document.body.append(ta); ta.select();
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+  ta.remove(); return ok;
+}
+if (ctPhone && copied) ctPhone.addEventListener('click', e => {
+  if (!fineMq.matches || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  copyText(ctPhone.getAttribute('aria-label')).then(ok => {
+    if (!ok){ location.href = ctPhone.href; return; }
+    clearTimeout(copiedT);
+    copied.textContent = 'Номер скопирован'; copied.classList.add('is-on');   // role=status — читалка объявит
+    copiedT = setTimeout(() => { copied.classList.remove('is-on'); copiedT = setTimeout(() => copied.textContent = '', 300); }, 1800);
+  });
+});
 })();

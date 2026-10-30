@@ -36,6 +36,8 @@ const FILM = {
   //   seconds — весь фильм от начала до конца; backSpeed — во сколько раз быстрее назад (скролл вверх);
   //   startAt — с какой доли экрана после появления фильма включается; rampIn/rampOut — плавный разгон и торможение, с
   autoplay: { seconds: 13, backSpeed: 3, startAt: .15, rampIn: .35, rampOut: .7 },
+  // фильм в шапке (data-film="hero", с 30.10): скролл его не двигает. Первое действие — и он идёт сам по времени, один раз за загрузку
+  play: { seconds: 13, rampIn: .35, rampOut: .7 },
   cardMax: 996, cardGutter: 120, cardRatio: 560/996, cardRadius: 15,
   reducedF: 210,
   maxPixels: 3.7e6, maxPixelsMobile: 2.0e6,
@@ -988,7 +990,29 @@ function initFilm(track){
     skipBtn.hidden = true; root.classList.remove('is-film-auto');
   }
   const skip = () => { if (auto){ endAuto(); P = -1; } };
-  skipBtn.addEventListener('click', skip);
+  if (skipBtn) skipBtn.addEventListener('click', skip);
+
+  /* ---- шапка: фильм как фон, не привязан к скроллу ----
+     Стоит на 1-м кадре, пока человек ничего не сделал. Первое действие — движение мыши, касание, колесо, клавиша или скролл —
+     запускает его, дальше он идёт сам за FILM.play.seconds (разгон и торможение — та же трапеция, что у автохода).
+     Страница листается свободно; ушёл вниз — фильм доигрывает за экраном (время идёт по часам, а не по кадрам отрисовки).
+     Один раз за загрузку: в конце стоит на последнем кадре, обратный скролл его не повторяет. Пока вкладка скрыта — время стоит */
+  let playAt = -1, hiddenAt = 0;
+  const PLAY_EV = ['pointermove', 'pointerdown', 'touchstart', 'wheel', 'keydown', 'scroll'];
+  const playGo = () => {
+    if (playAt >= 0) return;
+    playAt = performance.now(); PLAY_EV.forEach(t => removeEventListener(t, playGo, { capture: true })); start();
+  };
+  if (hero && !reduce){
+    PLAY_EV.forEach(t => addEventListener(t, playGo, { passive: true, capture: true }));
+    document.addEventListener('visibilitychange', () => {
+      if (playAt < 0) return;
+      if (document.hidden) hiddenAt = performance.now();
+      else if (hiddenAt){ playAt += performance.now() - hiddenAt; hiddenAt = 0; }
+    });
+  }
+  const PL = FILM.play, playA = { D: 1, T: PL.seconds, a: PL.rampIn, b: PL.rampOut };
+  const played = now => { if (playAt < 0) return 0; const t = (now - playAt) / 1000; return t >= PL.seconds ? 1 : clamp(trap(playA, t)); };
   // переход по ссылке-якорю: сайт шлёт safa:jump — автоход не включается, кадр встаёт на место без промотки
   document.addEventListener('safa:jump', () => {
     if (auto){ auto = null; skipBtn.hidden = true; root.classList.remove('is-film-auto'); if (window.lenis) window.lenis.start(); }
@@ -1027,12 +1051,17 @@ function initFilm(track){
       return;
     }
     const dt = last ? Math.min(64, now - last) : 1000 / 60; last = now;
+    if (hero){                                                      // шапка: кадр по часам от первого действия, скролл не участвует
+      P = played(now); const F = 1 + P * 221; draw(F, now);
+      // цикл идёт, только пока фильм играет (или кадр ещё не нарисован): до первого действия и после конца — стоит
+      if ((playAt >= 0 && P < 1) || drawnF !== F) raf = requestAnimationFrame(tick);
+      return;
+    }
     autoStep(now, dt);                                              // сначала двигаем страницу, потом читаем её положение
     const r = track.getBoundingClientRect();
     setExpand(easeInOutCubic(clamp((clamp(1 - r.top / vh) - FILM.expandFrom) / (1 - FILM.expandFrom))));
-    // шапка: 1-й кадр, пока страница вверху; посреди страницы — как у vibr (кадры идут, пока секция въезжает)
-    const c = hero ? clamp(clamp(-r.top / Math.max(1, r.height - vh)) / FILM.endAt)
-                   : clamp(clamp((vh - r.top) / Math.max(1, r.height)) / FILM.endAt);
+    // посреди страницы — как у vibr (кадры идут, пока секция въезжает)
+    const c = clamp(clamp((vh - r.top) / Math.max(1, r.height)) / FILM.endAt);
     if (P < 0) P = c;
     // на ровном автоходе инерция не нужна — скролл и так плавный; при ручном скролле — как у vibr, мягче
     P += (c - P) * (1 - Math.pow(auto ? .55 : FILM.lerp, dt / (1000 / 60)));

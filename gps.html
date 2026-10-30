@@ -1,0 +1,272 @@
+<!doctype html><html lang="ru" class="no-js"><head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Safa GPS — мониторинг транспорта | Safa One</title><meta name="description" content="Каждая машина на карте в реальном времени: геозоны, маршруты, события и отчёты.">
+<meta property="og:title" content="Safa GPS — мониторинг транспорта | Safa One"><meta property="og:description" content="Каждая машина на карте в реальном времени: геозоны, маршруты, события и отчёты."><meta property="og:image" content="media/poster_wide_f1.webp">
+<meta name="theme-color" content="#F3EEF6">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@200..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&text=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ%20&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css"><link rel="stylesheet" href="css/pages.css"><link rel="stylesheet" href="css/p-gps.css">
+<link rel="preload" as="image" href="img/map_tashkent.webp">
+<script defer src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script defer src="js/pages.js"></script>
+<script defer src="js/p-gps.js"></script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"index.html"},{"@type":"ListItem","position":2,"name":"Safa GPS","item":"gps.html"}]},
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Safa GPS","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"gps.html","description":"Мониторинг транспорта: каждая машина на карте в реальном времени, геозоны, маршруты, события и отчёты.","publisher":{"@type":"Organization","name":"SAFA ONE MChJ"}}]</script>
+</head><body class="pg" data-tone="gps">
+<a class="skip-link" href="#main">К содержимому</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="d-ok" viewBox="0 0 12 12"><path d="M2.4 6.4 4.9 8.8 9.6 3.4"/></symbol>
+  <symbol id="d-wait" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.7"/><path d="M6 3.5V6l1.7 1.1"/></symbol>
+  <symbol id="d-bad" viewBox="0 0 12 12"><path d="M6 2.3v4.6"/><path d="M6 9.6v.1" stroke-width="2"/></symbol>
+  <symbol id="pg-arr" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="2" vector-effect="non-scaling-stroke"/><path d="M10.5 3.2A1.8 1.8 0 0 0 8.8 2H4a2 2 0 0 0-2 2v4.8a1.8 1.8 0 0 0 1.2 1.7" vector-effect="non-scaling-stroke"/></symbol>
+  <!-- значок «Выезд из геозоны» внутри экрана: пунктирная дуга, точка, стрелка через разрыв -->
+  <symbol id="gp-exit" viewBox="0 0 16 16"><path d="M11.3 4.6A5.6 5.6 0 1 0 11.3 12.4" stroke-dasharray="1.7 1.9"/><circle cx="5.9" cy="8.5" r="1.6" fill="currentColor" stroke="none"/><path d="M9.4 8.5H15M12.8 6.3 15 8.5l-2.2 2.2"/></symbol>
+</svg>
+<!-- nav:start -->
+<!-- меню сайта: одна разметка на всех страницах (scratchpad/pages/tools/chrome.py). Лого | разделы и язык по центру | кнопка — без внутренних плашек -->
+<header class="nav is-light" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Safa One — на главную">
+    <img class="is-white" src="img/safa-white.svg" alt="" width="71" height="25">
+    <img class="is-color" src="img/safa-color.svg" alt="" width="71" height="25">
+  </a>
+  <nav class="nav__menu" aria-label="Основное меню">
+    <div class="nav__dd">
+      <button class="nav__link" type="button" aria-expanded="false" aria-controls="drop-products" aria-current="true">Продукты
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 3.7 5 6.5l2.8-2.8"/></svg></button>
+      <div class="drop drop--fit" id="drop-products">
+        <!-- герои продуктов, 96px, без loading=lazy: выпадашка открывается сразу, ленивые мигали бы. Файлы — по финальным путям (утренний импорт №1/№7/№2 их заменит) -->
+        <a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><div><b>Safa Fleet</b><span>CRM для таксопарков</span></div></a>
+        <a href="gps.html" data-sec="gps" aria-current="page"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><div><b>Safa GPS</b><span>Мониторинг транспорта</span></div></a>
+        <a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><div><b>Safa PAY</b><span>Выплаты водителям</span></div></a>
+      </div>
+    </div>
+    <a class="nav__link" href="industries.html">Решения</a>
+    <a class="nav__link" href="services.html" data-sec="services">Услуги</a>
+    <a class="nav__link" href="about.html" data-sec="why">О компании</a>
+    <a class="nav__link" href="contacts.html" data-sec="contact">Контакты</a>
+    <span class="nav__sep" aria-hidden="true"></span>
+    <div class="lang" role="group" aria-label="Язык">
+      <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+      <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+    </div>
+  </nav>
+  <div class="nav__end">
+    <!-- кабинет партнёра — текстовая ссылка у кнопки, как пункты меню; уже 1600px подпись короткая (места между меню и кнопкой мало) -->
+    <a class="nav__link nav__cab" href="cabinet.html" aria-label="Кабинет партнёра"><span class="nav__cab-l">Кабинет партнёра</span><span class="nav__cab-s">Кабинет</span></a>
+    <a class="btn btn--primary nav__cta" href="contacts.html#lead">Обсудить проект</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mnav"><i aria-hidden="true"></i><span class="burger__t">Меню</span></button>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Меню" data-lenis-prevent>
+  <!-- без подписей групп: группы разделены только отступом. Предметы — только у трёх продуктов, те же, что в выпадашке -->
+  <ul class="mnav__prod">
+    <li><a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><span>Safa Fleet</span></a></li>
+    <li><a href="gps.html" data-sec="gps" aria-current="page"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><span>Safa GPS</span></a></li>
+    <li><a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><span>Safa PAY</span></a></li>
+  </ul>
+  <ul>
+    <li><a href="industries.html">Решения</a></li>
+    <li><a href="services.html" data-sec="services">Услуги</a></li>
+    <li><a href="about.html" data-sec="why">О компании</a></li>
+    <li><a href="contacts.html" data-sec="contact">Контакты</a></li>
+  </ul>
+  <a class="mnav__cab" href="cabinet.html">Кабинет партнёра<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  <div class="lang" role="group" aria-label="Язык">
+    <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+    <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+  </div>
+  <div class="mnav__end"><a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a></div>
+</nav>
+<!-- nav:end -->
+<div class="page"><div class="canvas pg-canvas">
+<main id="main">
+
+  <!-- 1. Герой: текст 1–8, пин в геозоне на земле -->
+  <section class="pg-hero pg-hero--split gp-hero">
+    <div class="grid">
+      <div class="pg-hero__text">
+        <h1 class="pg-h1" data-mask><span class="ln"><span><img class="pg-lk" src="img/safa-gps-color.svg" alt="Safa GPS" width="82" height="30">Каждая машина —</span></span><span class="ln"><span>на&nbsp;карте</span></span><span class="ln"><span>в&nbsp;реальном времени</span></span></h1>
+        <p class="pg-lead" data-rv>Safa&nbsp;GPS показывает, где транспорт, как он едет и&nbsp;где простаивает. Геозоны, маршруты, события и&nbsp;отчёты — для такси, доставки и&nbsp;корпоративных автопарков.</p>
+        <div class="pg-actions" data-rv>
+          <a class="btn btn--primary" href="contacts.html?intent=park&amp;product=gps#lead">Поставить GPS на&nbsp;машины</a>
+          <a class="pg-ulink" href="#trip">Как это выглядит<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+      <div class="pg-hero__obj">
+        <div class="pg-obj gp-pin" style="--obj-w:clamp(180px,22cqw,360px);--obj-w-m:56%">
+          <div class="pg-obj__f"><img src="media/xl/pin_gps.webp?v=30132645" alt="" width="1092" height="1600" fetchpriority="high"></div>
+          <i class="cshadow" aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+    <div class="pg-ground" aria-hidden="true"></div>
+  </section>
+
+  <!-- 2. Одна поездка: липкая сцена (≥1280), iPad слева, рельс времени справа -->
+  <section class="gp-trip" aria-labelledby="trip-h">
+    <!-- якорь «Как это выглядит»: стоит на 110 px ниже верха сцены — pages.js доводит его до 110 px под меню, и кадр сцены встаёт ровно -->
+    <i class="gp-trip__a" id="trip" aria-hidden="true"></i>
+    <h2 class="sr" id="trip-h">Одна поездка в&nbsp;Safa&nbsp;GPS</h2>
+    <div class="gp-trip__stage">
+      <div class="grid gp-trip__grid">
+        <figure class="gp-trip__dev">
+          <div class="gp-dev" role="img" aria-label="Экран Safa&nbsp;GPS на планшете: карта Ташкента, машина 01 K 784 MA выезжает из геозоны «Центр» в 08:42 и в 08:46 встаёт на стоянку. Рядом список машин парка и события.">
+            <div class="gp-ipad" aria-hidden="true">
+              <i class="gp-ipad__cam"></i>
+              <div class="gp-scr">
+
+                <div class="gp-scr__st"><span class="gp-scr__time"><b data-g="clk">08:46</b><span>Чт 29 окт.</span></span><span class="gp-scr__sys"><svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.6 4.4a9.4 9.4 0 0 1 12.8 0"/><path d="M4.2 7.2a5.6 5.6 0 0 1 7.6 0"/><circle cx="8" cy="10" r="1.3" fill="currentColor" stroke="none"/></svg><svg viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.5" height="11.8" rx="3.6" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2.2" y="2.2" width="15.6" height="8.6" rx="2.2" fill="currentColor"/><path d="M24.6 4.4v4.2a2.1 2.1 0 0 0 0-4.2z" fill="currentColor" fill-opacity=".45"/></svg></span></div>
+
+                <div class="gp-map" data-g="map">
+                  <svg class="gp-map__svg" data-g="svg" viewBox="0 400 640 600" preserveAspectRatio="xMidYMid slice">
+                    <image href="img/map_tashkent.webp" x="0" y="0" width="1600" height="1000"/>
+                    <circle class="gp-map__zone" data-g="zone" cx="1121.7" cy="312.5" r="105"/>
+                    <path class="gp-map__plan" data-g="plan" d="M1108 280.7 L914.8 395.3 L910.5 399.7 L908.5 405 L906.6 440.6 L904.8 452.2 L899.6 468.5 L894.4 479.6 L889 488 L880 497 L869.3 502.3 L858.2 504.2 L842.4 503.2 L834 504.3 L828.6 506 L824.5 509.3 L821.7 515 L782 756.3 L776.1 759.2 L767 756.4 L715.2 708.2 L640.7 641.5 L629.3 633.9 L620.2 629.1 L604.8 622.5 L386.6 555.4 L322.9 534.9 L250.8 762.9 L242.8 767 L230.5 768.8"/>
+                    <path class="gp-map__case" data-g="case" d="M1108 280.7 L914.8 395.3 L910.5 399.7 L908.5 405 L906.6 440.6 L904.8 452.2 L899.6 468.5 L894.4 479.6 L889 488 L880 497 L869.3 502.3 L858.2 504.2 L842.4 503.2 L834 504.3 L828.6 506 L824.5 509.3 L821.7 515 L782 756.3 L776.1 759.2 L767 756.4 L715.2 708.2 L640.7 641.5 L629.3 633.9 L620.2 629.1 L604.8 622.5 L386.6 555.4 L322.9 534.9 L250.8 762.9 L242.8 767 L230.5 768.8"/>
+                    <path class="gp-map__done" data-g="done" d="M1108 280.7 L914.8 395.3 L910.5 399.7 L908.5 405 L906.6 440.6 L904.8 452.2 L899.6 468.5 L894.4 479.6 L889 488 L880 497 L869.3 502.3 L858.2 504.2 L842.4 503.2 L834 504.3 L828.6 506 L824.5 509.3 L821.7 515 L782 756.3 L776.1 759.2 L767 756.4 L715.2 708.2 L640.7 641.5 L629.3 633.9 L620.2 629.1 L604.8 622.5 L386.6 555.4 L322.9 534.9 L250.8 762.9 L242.8 767 L230.5 768.8"/>
+                    <circle class="gp-map__start" data-g="start" cx="1108" cy="280.7" r="9"/>
+                    <circle class="gp-map__dest" data-g="dest" cx="230.5" cy="768.8" r="9"/>
+                  </svg>
+                  <span class="gp-ztag" data-g="ztag">Центр</span>
+
+                  <div class="gp-veh" data-g="veh"><i class="gp-veh__pulse"></i><span class="gp-veh__dot"><svg class="gp-veh__arrow" data-g="arrow" viewBox="0 0 16 16"><path d="M8 1.3 13 12.8 8 9.9 3 12.8z"/></svg></span><span class="pg-plate pg-plate--s gp-veh__plate" data-g="vplate"><span class="pg-plate__reg">01</span><span class="pg-plate__num">K<i></i>784<i></i>MA</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span></div>
+
+                  <!-- узкий экран: мини-карточка; тост живёт 0,25 хода после выезда, потом сворачивается в значок -->
+                  <div class="gp-mini is-stop has-ev" data-g="mini"><span class="pg-plate pg-plate--s"><span class="pg-plate__reg">01</span><span class="pg-plate__num">K<i></i>784<i></i>MA</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span><i class="gp-dot"></i><span class="gp-mini__v"><b data-g="miniV">0</b><small>км/ч</small></span><i class="gp-ico gp-ico--warn gp-mini__ev"><svg viewBox="0 0 16 16"><use href="#gp-exit"/></svg></i></div>
+                  <div class="gp-toast" data-g="toast"><i class="gp-ico gp-ico--warn"><svg viewBox="0 0 16 16"><use href="#gp-exit"/></svg></i><span><b class="js-evt">08:42</b> Выезд из&nbsp;«Центра»</span></div>
+
+                  <div class="gp-zoom"><span><svg viewBox="0 0 12 12"><path d="M6 1.5v9M1.5 6h9"/></svg></span><span><svg viewBox="0 0 12 12"><path d="M1.5 6h9"/></svg></span></div>
+                  <div class="gp-scale"><i></i><span>100&nbsp;м</span></div>
+                  <span class="gp-osm">© OpenStreetMap</span>
+                </div>
+
+                <div class="gp-side">
+                  <div class="gp-side__head"><b>Машины</b><span class="gp-sbtn"><svg viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.6"/><path d="m10.4 10.4 3.4 3.4"/></svg></span></div>
+                  <div class="gp-seg"><span class="on">Все 4</span><span>В пути <b data-g="segGo">2</b></span><span>Стоят <b data-g="segStop">2</b></span></div>
+
+                  <div class="gp-car is-stop" data-g="car">
+                    <div class="gp-car__r1"><span class="pg-plate"><span class="pg-plate__reg">01</span><span class="pg-plate__num">K<i></i>784<i></i>MA</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span><span class="gp-gst"><i class="gp-dot"></i><span data-g="stTxt">Стоит</span></span></div>
+                    <div class="gp-car__spd"><span class="gp-spd"><span class="gp-spd__d gp-spd__d--t is-off"><span class="gp-spd__tape"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span><span class="gp-spd__d gp-spd__d--u"><span class="gp-spd__tape"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b></span></span></span><small>км/ч</small></div>
+                    <div class="gp-car__who"><b>Алишер Каримов</b><span>Chevrolet Cobalt · белый</span></div>
+                    <div class="gp-car__stats"><div><span>Пробег</span><b data-g="stKm">2,8&nbsp;км</b></div><div><span>Поездка</span><b data-g="stMin">5&nbsp;мин</b></div></div>
+                  </div>
+
+                  <ul class="gp-list">
+                    <li><span class="pg-plate pg-plate--s"><span class="pg-plate__reg">01</span><span class="pg-plate__num">Y<i></i>362<i></i>MB</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span><span class="gp-list__s"><i class="gp-dot"></i>38&nbsp;км/ч</span></li>
+                    <li><span class="pg-plate pg-plate--s"><span class="pg-plate__reg">10</span><span class="pg-plate__num">H<i></i>519<i></i>AB</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span><span class="gp-list__s"><i class="gp-dot"></i>51&nbsp;км/ч</span></li>
+                    <li class="is-stop"><span class="pg-plate pg-plate--s"><span class="pg-plate__reg">01</span><span class="pg-plate__num">T<i></i>947<i></i>CA</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span><span class="gp-list__s"><i class="gp-dot"></i>Стоит 12&nbsp;мин</span></li>
+                  </ul>
+
+                  <div class="gp-ev">
+                    <b class="gp-ev__h">События</b>
+                    <ul class="gp-ev__list">
+                      <li class="gp-ev__row gp-ev__row--zone is-on" data-g="evZone"><i class="gp-ico gp-ico--warn"><svg viewBox="0 0 16 16"><use href="#gp-exit"/></svg></i><span class="gp-ev__t"><b>Выезд из&nbsp;геозоны</b><span>Центр, <span class="js-evt">08:42</span></span></span></li>
+                      <li class="gp-ev__row gp-ev__row--line"><i class="gp-ico"><svg viewBox="0 0 16 16"><path d="M5 3.6a5.6 5.6 0 1 0 6 0"/><path d="M8 1.6v5.6"/></svg></i><span class="gp-ev__t"><b>Вышел на&nbsp;линию</b><span>08:16</span></span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="pg-cap gp-trip__cap"><b>Safa&nbsp;GPS.</b> Трек машины за&nbsp;смену, стоянки и&nbsp;выезд из&nbsp;геозоны. Карта ©&nbsp;OpenStreetMap.</figcaption>
+        </figure>
+
+        <!-- рельс времени: текущая метка --ink, прошедшие --ink-3, будущие --ghost -->
+        <ol class="gp-rail">
+          <li class="gp-mark"><time class="pg-num gp-mark__t" datetime="08:16">08:16</time><p class="pg-p gp-mark__p"><b>Вышел на&nbsp;линию.</b> Машина появляется на&nbsp;карте, как только начинает смену.</p></li>
+          <li class="gp-mark"><time class="pg-num gp-mark__t" datetime="08:41">08:41</time><p class="pg-p gp-mark__p"><b>В&nbsp;пути.</b> Скорость, пробег и&nbsp;время поездки обновляются, пока машина едет.</p></li>
+          <li class="gp-mark"><time class="pg-num gp-mark__t" datetime="08:42">08:42</time><p class="pg-p gp-mark__p"><img class="og" src="media/g2/bell_blue_256.webp?v=30132720" srcset="media/g2/bell_blue_512.webp?v=30132720 2x" alt="" width="24" height="24" style="--os:.98"><b>Выезд из&nbsp;геозоны «Центр».</b> Вы&nbsp;узнаёте в&nbsp;ту же минуту, а&nbsp;не из&nbsp;отчёта в&nbsp;конце месяца.</p></li>
+          <li class="gp-mark"><time class="pg-num gp-mark__t" datetime="08:46">08:46</time><p class="pg-p gp-mark__p"><b>Стоянка.</b> Статус «Стоит», остальные машины парка&nbsp;— в&nbsp;списке рядом.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Возможности -->
+  <section class="pg-sec pg-sec--rule grid gp-caps" id="features">
+    <div class="pg-head">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Контроль автопарка</span></span><span class="ln"><span>без звонков водителям</span></span></h2>
+      <div class="pg-head__aside" data-rv>
+        <p class="pg-lead">Всё, что видно на&nbsp;карте, приходит уведомлением и&nbsp;попадает в&nbsp;отчёт.</p>
+        <a class="pg-ulink" href="industries.html">Решения по&nbsp;отраслям<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <ul class="pg-rows pg-rows--nonum" data-rv-group>
+      <li class="pg-row" data-rv><div class="pg-row__in"><h3 class="pg-h3 pg-row__t">Карта в&nbsp;реальном времени</h3><p class="pg-p pg-row__d">Все машины на&nbsp;одной карте с&nbsp;фильтром по&nbsp;статусу.</p><span class="pg-row__x gp-x"><span>Все 4&nbsp;· В&nbsp;пути 3&nbsp;· Стоят 1</span><span class="gp-x__t">08:42</span></span></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><h3 class="pg-h3 pg-row__t">Геозоны</h3><p class="pg-p pg-row__d">Рисуете зону на&nbsp;карте&nbsp;— система сообщает о&nbsp;въезде, выезде и&nbsp;стоянке в&nbsp;ней.</p><span class="pg-row__x gp-x"><span>Выезд из&nbsp;геозоны «Центр»</span><span class="gp-x__t">08:42</span></span></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><h3 class="pg-h3 pg-row__t">Уведомления</h3><p class="pg-p pg-row__d">Скорость, простой, выезд из&nbsp;зоны&nbsp;— сразу в&nbsp;кабинете.</p><span class="pg-row__x gp-x"><span class="pg-plate pg-plate--s" role="img" aria-label="01 T 947 CA"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">T<i></i>947<i></i>CA</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span><span class="pg-st pg-st--off">Стоит 12&nbsp;мин</span></span></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><h3 class="pg-h3 pg-row__t">Треки и&nbsp;маршруты</h3><p class="pg-p pg-row__d">История поездок за&nbsp;выбранный день: где ехала машина, где и&nbsp;сколько стояла.</p><span class="pg-row__x gp-x"><span class="pg-plate pg-plate--s" role="img" aria-label="01 K 784 MA"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">K<i></i>784<i></i>MA</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span><span class="gp-x__t">08:41–08:46</span></span></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><h3 class="pg-h3 pg-row__t">Отчёты</h3><p class="pg-p pg-row__d">Пробег, простои и&nbsp;нарушения&nbsp;— по&nbsp;машинам и&nbsp;водителям.</p><span class="pg-row__x gp-x"><span class="gp-x__n">Каримов А.</span><span class="gp-x__t">2,8&nbsp;км&nbsp;· 5&nbsp;мин в&nbsp;пути</span></span></div></li>
+    </ul>
+  </section>
+
+  <!-- 4. Подключение: схема «трекер → сервер Safa GPS → карта» из трёх узлов на одной линии -->
+  <section class="pg-sec pg-sec--rule grid gp-conn">
+    <div class="pg-head pg-head--wide">
+      <div class="pg-hrow"><img class="pg-gl" src="media/g2/tracker_blue_256.webp?v=30132709" srcset="media/g2/tracker_blue_512.webp?v=30132709 2x" alt="" width="48" height="48"><h2 class="pg-h2" data-mask><span class="ln"><span>Подключаем трекер&nbsp;—</span></span><span class="ln"><span>и&nbsp;машина уже на&nbsp;карте</span></span></h2></div>
+    </div>
+    <ol class="gp-flow" data-rv aria-label="Как данные идут от машины к вам">
+      <li class="gp-flow__n" style="--t:0ms"><div class="gp-flow__hd"><span class="gp-flow__ic" aria-hidden="true"><svg viewBox="0 0 20 20"><rect x="2.5" y="8" width="10" height="9" rx="2.2"/><circle cx="7.5" cy="12.5" r="1.3" class="f"/><path d="M12.5 4.6a2.9 2.9 0 0 1 2.9 2.9"/><path d="M12.5 1.6a5.9 5.9 0 0 1 5.9 5.9"/></svg></span><h3 class="pg-h3">Трекер в&nbsp;машине</h3></div><p class="pg-p">Тот, что уже стоит, или подберём новый.</p></li>
+      <li class="gp-flow__via" style="--t:300ms"><span class="gp-flow__lb">координаты, скорость, события</span><i class="gp-flow__ln" aria-hidden="true"></i><svg class="gp-flow__arr" viewBox="0 0 8 10" aria-hidden="true"><path d="M1.5 1.5 6 5l-4.5 3.5"/></svg></li>
+      <li class="gp-flow__n" style="--t:600ms"><div class="gp-flow__hd"><span class="gp-flow__ic" aria-hidden="true"><svg viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="13" height="5.6" rx="1.6"/><rect x="3.5" y="10.9" width="13" height="5.6" rx="1.6"/><circle cx="6.7" cy="6.3" r=".9" class="f"/><circle cx="6.7" cy="13.7" r=".9" class="f"/><path d="M10.5 6.3h3M10.5 13.7h3"/></svg></span><h3 class="pg-h3">Сервер Safa&nbsp;GPS</h3></div><p class="pg-p">Геозоны, маршруты, лимиты скорости и&nbsp;уведомления настраиваем под&nbsp;ваш автопарк.</p></li>
+      <li class="gp-flow__via" style="--t:900ms"><span class="gp-flow__lb">положение машин и&nbsp;уведомления</span><i class="gp-flow__ln" aria-hidden="true"></i><svg class="gp-flow__arr" viewBox="0 0 8 10" aria-hidden="true"><path d="M1.5 1.5 6 5l-4.5 3.5"/></svg></li>
+      <li class="gp-flow__n" style="--t:1200ms"><div class="gp-flow__hd"><span class="gp-flow__ic" aria-hidden="true"><svg viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="2.2"/><path d="M2.5 7.2h15"/><path d="M10 14.6s-2.1-2.1-2.1-3.6a2.1 2.1 0 0 1 4.2 0c0 1.5-2.1 3.6-2.1 3.6z"/></svg></span><h3 class="pg-h3">Карта в&nbsp;браузере</h3></div><p class="pg-p">Карта, события и&nbsp;отчёты&nbsp;— на&nbsp;компьютере и&nbsp;телефоне.</p></li>
+    </ol>
+  </section>
+
+  <!-- 5. Вместе с Safa&nbsp;Fleet -->
+  <section class="pg-sec pg-sec--rule grid">
+    <div class="pg-head"><h2 class="pg-h2" data-mask><span class="ln"><span>Вместе с&nbsp;Safa&nbsp;Fleet</span></span></h2></div>
+    <div class="pg-xlinks">
+      <a class="pg-xl" href="fleet.html"><span class="pg-xl__lk"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="104" height="30"></span><span class="pg-xl__t">Машина в&nbsp;карточке Safa&nbsp;Fleet показывает, где она и&nbsp;кто&nbsp;за&nbsp;рулём</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="pg-xl" href="services.html#iot"><span class="pg-xl__lk"><img src="img/safa-color.svg" alt="Safa One" width="85" height="30"></span><span class="pg-xl__t">Свои трекеры и&nbsp;датчики на&nbsp;заказ&nbsp;— <span class="nw">IoT<span class="sl">/</span>телематика</span></span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="pg-xl" href="industries.html#logistics"><span class="pg-xl__lk"><img src="img/safa-color.svg" alt="Safa One" width="85" height="30"></span><span class="pg-xl__t">Решения для&nbsp;логистики и&nbsp;автопарков</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+  </section>
+
+  <!-- 6. FAQ -->
+  <section class="pg-sec pg-sec--rule grid pg-faq" id="faq">
+    <div class="pg-faq__aside">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Вопросы</span></span><span class="ln"><span>и&nbsp;ответы</span></span></h2>
+      <p class="pg-marg">Не нашли ответ&nbsp;— позвоните или напишите.</p>
+      <a class="pg-ulink" href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+      <a class="pg-ulink" href="mailto:dev@safaone.uz">dev@safaone.uz</a>
+    </div>
+    <div class="pg-faq__list">
+      <details class="pg-qa"><summary><h3>Какие трекеры подходят?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Если трекеры у&nbsp;вас уже стоят&nbsp;— проверим модели и&nbsp;скажем, можно&nbsp;ли подключить их без замены. Если нет&nbsp;— подберём новые.</p></div></details>
+      <details class="pg-qa"><summary><h3>Как часто обновляется положение машины?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Частота зависит от&nbsp;настроек трекера и&nbsp;качества связи&nbsp;— настроим под вашу задачу.</p></div></details>
+      <details class="pg-qa"><summary><h3>Можно смотреть с&nbsp;телефона?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Да. Карта, события и&nbsp;отчёты открываются в&nbsp;браузере на&nbsp;компьютере и&nbsp;на&nbsp;телефоне.</p></div></details>
+      <details class="pg-qa"><summary><h3>Работает ли вместе с&nbsp;Safa&nbsp;Fleet?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Да. Машины из&nbsp;Safa&nbsp;GPS видны в&nbsp;карточках автомобилей и&nbsp;водителей в&nbsp;<a class="pg-tl" href="fleet.html">Safa&nbsp;Fleet</a>.</p></div></details>
+    </div>
+  </section>
+
+  <!-- 7. Финал -->
+  <section class="pg-next grid">
+    <h2 class="pg-next__t" data-mask><span class="ln"><span>Покажем Safa&nbsp;GPS</span></span><span class="ln"><span>на&nbsp;ваших машинах.</span></span></h2>
+    <div class="pg-next__a" data-rv>
+      <a class="btn btn--primary" href="contacts.html?intent=park&amp;product=gps#lead">Поставить GPS на&nbsp;машины</a>
+      <a class="pg-ulink" href="tel:+998503333900">Позвонить +998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+    </div>
+  </section>
+</main>
+  <!-- foot:start -->
+  <footer class="pg-foot">
+    <div class="grid foot__colophon">
+      <div class="foot__brand"><img src="img/safa-color.svg" alt="safa" width="96" height="34"><p>Собственные продукты и&nbsp;разработка на&nbsp;заказ для транспорта и&nbsp;бизнеса в&nbsp;Узбекистане.</p></div>
+      <nav class="foot__col foot__col--a" aria-label="Продукты"><h3>Продукты</h3><ul><li><a href="fleet.html">Safa Fleet</a></li><li><a href="gps.html" aria-current="page">Safa GPS</a></li><li><a href="pay.html">Safa PAY</a></li><li><a href="industries.html">Решения по&nbsp;отраслям</a></li><li><a href="cabinet.html">Кабинет партнёра</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Услуги"><h3>Услуги</h3><ul><li><a href="services.html#mobile">Мобильные приложения</a></li><li><a href="services.html#web">Веб-платформы</a></li><li><a href="services.html#backend">Backend<span class="sl">/</span>API</a></li><li><a href="services.html#iot">IoT<span class="sl">/</span>телематика</a></li><li><a href="services.html#ai">AI<span class="sl">/</span>автоматизация</a></li><li><a href="services.html#integrations">Интеграции</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="about.html">О компании</a></li><li><a href="services.html#process">Как мы работаем</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Документы"><h3>Документы</h3><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="data-deletion.html">Удаление данных</a></li><li><a href="terms.html">Условия использования</a></li></ul></nav>
+      <p class="foot__legal">© 2026 SAFA ONE MChJ&nbsp;· ИНН&nbsp;312911394<br>Узбекистан, г.&nbsp;Ташкент, Юнусабадский район, махалля Mirzo&nbsp;Ulugʻbek, <span style="white-space:nowrap">ул. Xalqobod-2,</span> д.&nbsp;65/6</p>
+    </div>
+  </footer>
+  <!-- foot:end -->
+</div></div>
+</body></html>

@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F3EEF6">
+<title>Подключение к Safa PAY</title>
+<meta name="description" content="Кабинет партнёра Safa PAY: чек-лист подключения парка — реквизиты, документы, счёт, ключ Яндекс Fleet, договор и проверка модератором.">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@200..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/cabinet.css">
+<link rel="stylesheet" href="css/cab-connect.css">
+<script src="js/cabinet.js" defer></script>
+</head>
+<body data-page="connect">
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<div class="cab">
+  <div class="cab-canvas">
+
+    <header class="cab-head">
+      <div class="cab-brand">
+        <a class="cab-logo" href="index.html" aria-label="Safa One — на главную"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="75" height="28"></a>
+        <span class="cab-sep" aria-hidden="true"></span>
+        <span class="cab-brand__t">Кабинет партнёра</span>
+      </div>
+      <div class="cab-tools">
+        <a class="cab-link cab-about" href="pay.html">О&nbsp;Safa PAY</a>
+        <span class="cab-sep cab-about__sep" aria-hidden="true"></span>
+        <span class="cab-help">Помощь</span>
+        <a class="cab-link cab-phone" href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+        <a class="cab-icon cab-icon--phone" href="tel:+998503333900" aria-label="Позвонить: +998 50 333 39 00"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 3.8H5.6a1.8 1.8 0 0 0-1.8 2c.9 7.6 6.8 13.5 14.4 14.4a1.8 1.8 0 0 0 2-1.8v-2.6l-4-1.6-2 2a12 12 0 0 1-6-6l2-2-1.6-4.4z"/></svg></a>
+        <span class="cab-sep" aria-hidden="true"></span>
+        <span class="cab-user"><span class="cab-ava" aria-hidden="true" id="user-ava">Т1</span><span class="cab-user__name" id="user-name">taksopark1</span></span>
+        <a class="cab-icon" href="cabinet.html#login" aria-label="Выйти" title="Выйти"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6.5A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20H10M14.5 8l4 4-4 4M18.5 12H9.5"/></svg></a>
+      </div>
+    </header>
+
+    <main id="main" class="cab-main">
+      <div class="grid cn">
+
+        <div class="cab-hero cn__hero">
+          <h1 class="cab-title" id="page-title" tabindex="-1"><span class="ln"><span>Подключение к&nbsp;Safa&nbsp;PAY</span></span></h1>
+          <p class="cab-meta" data-fade><span id="meta-park">Таксопарк №&#8239;1</span><span id="meta-agg">Яндекс Go</span><span id="meta-size">500–2&#8239;000 водителей</span><span class="st st--wait" id="meta-wait" hidden>На проверке</span></p>
+          <p class="cab-lead" id="cn-lead" data-fade>Заполните обязательные пункты, подпишите договор и&nbsp;отправьте документы на&nbsp;проверку.</p>
+        </div>
+
+        <!-- прогресс: 5 обязательных пунктов (1, 2, 3, 4, 6) -->
+        <div class="prog cn__prog">
+          <div class="prog__head">
+            <p class="prog__n" aria-hidden="true"><span id="prog-n">3</span><i>/5</i></p>
+            <div class="prog__txt" aria-live="polite">
+              <p class="prog__t"><span class="sr-only" id="prog-sr">Готово 3 из 5: </span>обязательных пунктов готово&nbsp;·&nbsp;<span id="prog-pct">60</span>%</p>
+              <p class="prog__s">Список водителей&nbsp;— по&nbsp;желанию</p>
+            </div>
+          </div>
+          <div class="prog__bar" id="prog-bar" role="progressbar" aria-label="Подключение к Safa PAY" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3" aria-valuetext="Готово 3 из 5 обязательных пунктов">
+            <i class="is-done"></i><i class="is-done"></i><i class="is-done"></i><i></i><i></i>
+          </div>
+        </div>
+
+        <ol class="steps cn__steps" aria-label="Пункты подключения">
+
+          <!-- 01 Реквизиты организации -->
+          <li class="step is-done" id="step-1" data-step="1">
+            <span class="step__n" aria-hidden="true">01</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s1-h"><img class="glass" src="media/g2/id_card_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Реквизиты организации</span></h3><span class="st st--ok" data-st>Готово</span></div>
+              <p class="step__d">ИНН и&nbsp;юридическое наименование&nbsp;— как в&nbsp;карточке счёта в&nbsp;банке</p>
+              <p class="step__v" data-val>«TAXI PARK» MChJ · ИНН&nbsp;301&#8239;234&#8239;567</p>
+              <p class="step__ex" data-ex hidden><b>Пример:</b> «TAXI PARK» MChJ · ИНН&nbsp;301&#8239;234&#8239;567</p>
+            </div>
+            <button class="step__act ulink" type="button" data-act aria-expanded="false" aria-controls="s1-panel"><span data-act-t>Изменить</span><span class="sr-only">: Реквизиты организации</span></button>
+            <div class="step__panel" id="s1-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s1-h">
+                  <div class="fgrid">
+                    <div class="fld is-wide">
+                      <label class="fld__label" for="s1-legal">Юридическое наименование</label>
+                      <div class="fld__box"><input class="fld__in" id="s1-legal" name="legal" type="text" placeholder="«TAXI PARK» MChJ" autocomplete="organization" data-rule="req" aria-describedby="s1-legal-m"></div>
+                      <p class="fld__msg" id="s1-legal-m" data-hint="Как в&nbsp;карточке счёта в&nbsp;банке">Как в&nbsp;карточке счёта в&nbsp;банке</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s1-inn">ИНН</label>
+                      <div class="fld__box"><input class="fld__in" id="s1-inn" name="inn" type="text" inputmode="numeric" placeholder="123 456 789" autocomplete="off" data-mask="inn" data-rule="inn" aria-describedby="s1-inn-m"></div>
+                      <p class="fld__msg" id="s1-inn-m" data-hint="9 цифр">9 цифр</p>
+                    </div>
+                  </div>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <!-- 02 Документы юрлица -->
+          <li class="step is-done" id="step-2" data-step="2">
+            <span class="step__n" aria-hidden="true">02</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s2-h"><img class="glass" src="media/g2/document_check_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Документы юрлица</span></h3><span class="st st--ok" data-st>Готово</span></div>
+              <p class="step__d">Свидетельство о&nbsp;регистрации, устав, решение о&nbsp;назначении директора и&nbsp;паспорт директора</p>
+              <p class="step__v" data-val>Загружено 4&nbsp;файла</p>
+              <p class="step__ex" data-ex hidden><b>Пример:</b> ustav.pdf, svidetelstvo.jpg&nbsp;— PDF или фото</p>
+            </div>
+            <button class="step__act ulink" type="button" data-act aria-expanded="false" aria-controls="s2-panel"><span data-act-t>Изменить</span><span class="sr-only">: Документы юрлица</span></button>
+            <div class="step__panel" id="s2-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s2-h">
+                  <div class="fld">
+                    <div class="drop" data-drop>
+                      <p class="drop__t">Перетащите файлы сюда или&nbsp;выберите на&nbsp;компьютере<span class="drop__s">PDF, JPG или PNG</span></p>
+                      <input class="sr-only drop__in" type="file" id="s2-file" name="docs" multiple accept=".pdf,.jpg,.jpeg,.png" data-rule="files" aria-describedby="s2-file-m">
+                      <label class="btn btn--line btn--sm drop__btn" for="s2-file">Выбрать файлы</label>
+                    </div>
+                    <p class="fld__msg" id="s2-file-m" aria-live="polite"></p>
+                    <ul class="files" data-files aria-label="Загруженные файлы"></ul>
+                  </div>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <!-- 03 Расчётный счёт -->
+          <li class="step is-done" id="step-3" data-step="3">
+            <span class="step__n" aria-hidden="true">03</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s3-h"><img class="glass" src="media/g2/bank_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Расчётный счёт</span></h3><span class="st st--ok" data-st>Готово</span></div>
+              <p class="step__d">Расчётный счёт в&nbsp;сумах&nbsp;— 20&nbsp;цифр&nbsp;— и&nbsp;МФО филиала банка, где он открыт. Во&nbsp;время проверки банк закрепит счёт за&nbsp;Safa</p>
+              <p class="step__v" data-val>Счёт •••• 0412 · МФО указан</p>
+              <p class="step__ex" data-ex hidden><b>Пример:</b> <span class="nw">2020 8000 0000 0000 0001</span> · МФО&nbsp;— 5&nbsp;цифр</p>
+            </div>
+            <button class="step__act ulink" type="button" data-act aria-expanded="false" aria-controls="s3-panel"><span data-act-t>Изменить</span><span class="sr-only">: Расчётный счёт</span></button>
+            <div class="step__panel" id="s3-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s3-h">
+                  <div class="fgrid fgrid--acc">
+                    <div class="fld">
+                      <label class="fld__label" for="s3-acc">Расчётный счёт</label>
+                      <div class="fld__box"><input class="fld__in" id="s3-acc" name="account" type="text" inputmode="numeric" placeholder="0000 0000 0000 0000 0000" autocomplete="off" data-mask="account" data-rule="account" aria-describedby="s3-acc-m"></div>
+                      <p class="fld__msg" id="s3-acc-m" data-hint="20 цифр, счёт в&nbsp;сумах">20 цифр, счёт в&nbsp;сумах</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s3-mfo">МФО филиала банка</label>
+                      <div class="fld__box"><input class="fld__in" id="s3-mfo" name="mfo" type="text" inputmode="numeric" placeholder="00000" autocomplete="off" data-mask="mfo" data-rule="mfo" aria-describedby="s3-mfo-m"></div>
+                      <p class="fld__msg" id="s3-mfo-m" data-hint="5 цифр">5 цифр</p>
+                    </div>
+                  </div>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <!-- 04 Ключ Яндекс Fleet -->
+          <li class="step is-next" id="step-4" data-step="4">
+            <span class="step__n" aria-hidden="true">04</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s4-h"><img class="glass" src="media/g2/access_key_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Ключ Яндекс&nbsp;Fleet</span></h3><span class="st st--todo" data-st>Не подключён</span></div>
+              <p class="step__d">Park ID, Client ID и&nbsp;API-ключ с&nbsp;правом на&nbsp;создание транзакций. Ключ выпускает директор в&nbsp;Диспетчерской</p>
+              <p class="step__v" data-val hidden></p>
+              <p class="step__ex" data-ex><b>Пример:</b> Client ID: <span class="mono">taxi/park/<wbr>7ad35b6e1a1a4b1e8c3b2a1c9d8e7f6a</span></p>
+            </div>
+            <button class="step__act btn btn--primary btn--sm" type="button" data-act aria-expanded="false" aria-controls="s4-panel"><span data-act-t>Подключить</span><span class="sr-only">: Ключ Яндекс&nbsp;Fleet</span></button>
+            <div class="step__panel" id="s4-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s4-h">
+                  <div class="fgrid fgrid--one">
+                    <div class="fld">
+                      <label class="fld__label" for="s4-park">Park ID</label>
+                      <div class="fld__box"><input class="fld__in fld__in--mono" id="s4-park" name="park_id" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="40" data-rule="parkId" aria-describedby="s4-park-m"></div>
+                      <p class="fld__msg" id="s4-park-m" data-hint="32 символа: цифры и&nbsp;a–f">32 символа: цифры и&nbsp;a–f</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s4-client">Client ID</label>
+                      <div class="fld__box"><input class="fld__in fld__in--mono" id="s4-client" name="client_id" type="text" placeholder="taxi/park/…" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="60" data-rule="clientId" aria-describedby="s4-client-m"></div>
+                      <p class="fld__msg" id="s4-client-m" data-hint="Если вставить Client ID первым, Park ID заполнится из&nbsp;него">Если вставить Client ID первым, Park ID заполнится из&nbsp;него</p>
+                    </div>
+                    <div class="fld">
+                      <label class="fld__label" for="s4-key">API-ключ</label>
+                      <div class="fld__box"><input class="fld__in fld__in--mono" id="s4-key" name="api_key" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" data-secret data-rule="apiKey" aria-describedby="s4-key-m"><button class="fld__eye" type="button" data-pw-toggle aria-controls="s4-key" aria-pressed="false">Показать</button></div>
+                      <p class="fld__msg" id="s4-key-m"></p>
+                    </div>
+                    <div class="fld">
+                      <label class="check"><input type="checkbox" name="perm" value="" data-rule="perm" aria-describedby="s4-perm-m"><span>Ключ выпущен с&nbsp;правом на&nbsp;создание транзакций</span></label>
+                      <p class="fld__msg" id="s4-perm-m"></p>
+                    </div>
+                  </div>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <!-- 05 Список водителей — необязательно -->
+          <li class="step" id="step-5" data-step="5">
+            <span class="step__n" aria-hidden="true">05</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s5-h"><img class="glass" src="media/g2/people_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Список водителей</span></h3><span class="st st--opt" data-st>Необязательно</span></div>
+              <p class="step__d">Файл с&nbsp;колонками «ПИНФЛ» и&nbsp;«Телефон». CSV или XLSX до&nbsp;6&nbsp;МБ. Можно пропустить</p>
+              <p class="step__v" data-val hidden></p>
+              <p class="step__ex" data-ex><b>Пример строки:</b> ПИНФЛ&nbsp;<span class="nw">31234567890123</span> · Телефон&nbsp;<span class="nw">998901234567</span></p>
+            </div>
+            <button class="step__act btn btn--line btn--sm" type="button" data-act aria-expanded="false" aria-controls="s5-panel"><span data-act-t>Загрузить файл</span><span class="sr-only">: Список водителей</span></button>
+            <div class="step__panel" id="s5-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s5-h">
+                  <div class="fld">
+                    <div class="drop" data-drop>
+                      <p class="drop__t">Перетащите файл сюда или&nbsp;выберите на&nbsp;компьютере<span class="drop__s">CSV или XLSX до&nbsp;6&nbsp;МБ</span></p>
+                      <input class="sr-only drop__in" type="file" id="s5-file" name="drivers" accept=".csv,.xlsx" aria-describedby="s5-file-m">
+                      <label class="btn btn--line btn--sm drop__btn" for="s5-file">Выбрать файл</label>
+                    </div>
+                    <p class="fld__msg" id="s5-file-m" aria-live="polite"></p>
+                    <ul class="files" data-files aria-label="Загруженный файл"></ul>
+                  </div>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+
+          <!-- 06 Договор и полномочие — после шагов 1–4 -->
+          <li class="step is-locked" id="step-6" data-step="6">
+            <span class="step__n" aria-hidden="true">06</span>
+            <div class="step__main">
+              <div class="step__h"><h3 class="hx" id="s6-h"><img class="glass" src="media/g2/signature_pen_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Договор и&nbsp;полномочие</span></h3><span class="st st--todo" data-st>Не подписано</span></div>
+              <p class="step__warn" id="s6-warn" aria-live="polite"></p>
+              <p class="step__d">Оферта, полномочие на&nbsp;распоряжение счётом и&nbsp;согласие на&nbsp;списание с&nbsp;балансов водителей в&nbsp;Fleet. Подписывает директор своей ЭЦП</p>
+              <p class="step__v" data-val hidden></p>
+              <p class="step__ex" data-ex><b>Пример:</b> подпись ЭЦП директора, полномочие до&nbsp;31.12.2027</p>
+            </div>
+            <button class="step__act btn btn--line btn--sm" type="button" data-act aria-expanded="false" aria-controls="s6-panel" aria-describedby="s6-lock" disabled><span data-act-t>Подписать ЭЦП</span><span class="sr-only">: Договор и&nbsp;полномочие</span></button>
+            <p class="step__lock" id="s6-lock">Станет доступно после шагов&nbsp;1–4</p>
+            <div class="step__panel" id="s6-panel">
+              <div class="step__pin">
+                <form class="step__form" novalidate aria-labelledby="s6-h">
+                  <p class="fld__label" id="s6-docs-l">Что подписывает директор</p>
+                  <ul class="sign-list" aria-labelledby="s6-docs-l">
+                    <li>Оферта Safa PAY</li>
+                    <li>Полномочие на&nbsp;распоряжение счётом</li>
+                    <li>Согласие на&nbsp;списание с&nbsp;балансов водителей в&nbsp;Яндекс&nbsp;Fleet</li>
+                  </ul>
+                  <div class="fgrid sign-date">
+                    <div class="fld">
+                      <label class="fld__label" for="s6-until">Полномочие действует до</label>
+                      <div class="fld__box"><input class="fld__in" id="s6-until" name="until" type="text" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" autocomplete="off" maxlength="10" data-mask="date" data-rule="until" aria-describedby="s6-until-m"><button class="fld__cal" type="button" id="s6-cal" aria-label="Выбрать дату в календаре" title="Выбрать дату в календаре" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></button><input class="fld__pick" type="date" id="s6-pick" tabindex="-1" aria-hidden="true"></div>
+                      <p class="fld__msg" id="s6-until-m" data-hint="Не раньше завтрашнего дня">Не раньше завтрашнего дня</p>
+                    </div>
+                  </div>
+                  <p class="sign-note">В&nbsp;демо подпись имитируется: ключ ЭЦП не&nbsp;запрашивается.</p>
+                  <div class="step__btns">
+                    <button class="btn btn--primary btn--sm" type="submit"><span>Подписать ЭЦП</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
+                    <button class="ulink" type="button" data-cancel>Отмена</button>
+                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <!-- проверка модератором -->
+        <section class="mod cn__mod" aria-labelledby="mod-h">
+          <div class="sec-h">
+            <h2 class="hx" id="mod-h"><img class="glass" src="media/g2/shield_check_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async">Проверка модератором</h2>
+            <span class="st st--wait" id="mod-wait" hidden>На проверке</span>
+          </div>
+          <div id="mod-pre">
+            <p class="mod__t">Когда обязательные пункты готовы и&nbsp;договор подписан, отправьте документы на&nbsp;проверку. Модератор проверит документы, банк закрепит счёт за&nbsp;Safa. Результат появится здесь, в&nbsp;кабинете.</p>
+            <div class="mod__send">
+              <button class="btn btn--primary" id="mod-send" type="button" disabled aria-describedby="mod-left"><span>Отправить на&nbsp;проверку<span class="mod__w"> модератору</span></span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i><svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+              <p class="mod__left" id="mod-left">Осталось: Ключ Яндекс&nbsp;Fleet, Договор и&nbsp;полномочие</p>
+            </div>
+          </div>
+          <div id="mod-done" hidden>
+            <p class="mod__done" id="mod-status" role="status" tabindex="-1">Документы отправлены на&nbsp;проверку. Результат появится здесь, в&nbsp;кабинете.</p>
+            <p class="mod__demo"><a class="ulink ulink--sm" href="cabinet-dashboard.html">Демо: открыть кабинет после проверки →</a></p>
+          </div>
+        </section>
+
+      </div>
+      <p class="sr-only" id="cn-live" aria-live="polite"></p>
+    </main>
+
+    <footer class="cab-foot">
+      <span>©&nbsp;2026 SAFA ONE MChJ · ИНН&nbsp;312911394</span>
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="terms.html">Условия использования</a>
+      <span class="cab-foot__demo">Демо-версия: данные условные, формы ничего не&nbsp;отправляют</span>
+    </footer>
+
+  </div>
+</div>
+<div class="toast" role="status" aria-live="polite" hidden></div>
+<script>
+/* cabinet-connect.html — чек-лист подключения. Работает на общих помощниках window.Cab из js/cabinet.js.
+   Состояние только в памяти: перезагрузка возвращает демо-старт (шаги 1–3 готовы, 4–6 нет).
+   API-ключ после сохранения стирается из DOM; ничего не уходит в сеть и в хранилище. */
+document.addEventListener('DOMContentLoaded', function(){
+'use strict';
+var C = window.Cab; if (!C) return;
+var d = document, NN = C.NNBSP, NB = C.NBSP;
+var $ = function(s, r){ return (r || d).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r || d).querySelectorAll(s)); };
+var REQ = [1, 2, 3, 4, 6];
+var TITLE = { 1:'Реквизиты организации', 2:'Документы юрлица', 3:'Расчётный счёт', 4:'Ключ Яндекс' + ' ' + 'Fleet', 5:'Список водителей', 6:'Договор и' + ' ' + 'полномочие' };
+var ST = {            // [класс не готов, текст не готов, текст готов]
+  1:['todo','Не заполнено','Готово'], 2:['todo','Не загружено','Готово'], 3:['todo','Не заполнено','Готово'],
+  4:['todo','Не подключён','Подключён'], 5:['opt','Необязательно','Загружено'], 6:['todo','Не подписано','Подписано ЭЦП директора'] };
+var BTN = { 1:'Заполнить', 2:'Загрузить', 3:'Добавить счёт', 4:'Подключить', 5:'Загрузить файл', 6:'Подписать ЭЦП' };
+var MB = 1048576;
+var EX_DOCS = [
+  { name:'ustav.pdf', size:1.2 * MB }, { name:'svidetelstvo.jpg', size:840 * 1024 },
+  { name:'reshenie_direktor.pdf', size:310 * 1024 }, { name:'pasport_direktora.jpg', size:1.6 * MB } ];
+var EX = {
+  1:{ legal:'«TAXI PARK» MChJ', inn:'301 234 567' },   // как в строке «Пример» шага 1
+  3:{ account:'2020 8000 0000 0000 0412', mfo:'00000' },
+  4:{ park_id:'7ad35b6e1a1a4b1e8c3b2a1c9d8e7f6a', client_id:'taxi/park/7ad35b6e1a1a4b1e8c3b2a1c9d8e7f6a', api_key:'demo-key-not-real', perm:true },
+  5:{ name:'voditeli.xlsx', size:0, rows:1148 },
+  6:{ until:'31.12.2027' } };
+
+/* демо-старт */
+var S = {
+  1:{ done:true, legal:EX[1].legal, inn:EX[1].inn },
+  2:{ done:true, files:EX_DOCS.slice() },
+  3:{ done:true, account:EX[3].account, mfo:EX[3].mfo },
+  4:{ done:false, park_id:'', client_id:'' },
+  5:{ done:false, file:null },
+  6:{ done:false, until:'' },
+  sent:false, resign:false };
+var draft = { 2:[], 5:null };
+var openN = 0;
+
+/* ---------- мелочи ---------- */
+var grp = function(s){ return String(s).replace(/ /g, NN); };
+var size = function(b){ return b >= MB ? C.fmt(b / MB, 1) + NB + 'МБ' : C.fmt(Math.max(1, Math.round(b / 1024))) + NB + 'КБ'; };
+var ext = function(n){ var m = /\.([a-z0-9]+)$/i.exec(n); return m ? m[1].toLowerCase() : ''; };
+var rows = function(n){ return C.fmt(n) + NB + C.plural(n, ['строка','строки','строк']); };
+var dateRu = function(iso){ var p = iso.split('-'); return p[2] + '.' + p[1] + '.' + p[0]; };
+var isoDay = function(dt){ return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0'); };
+// «31.12.2027» → «2027-12-31»; несуществующая дата → ''
+var toIso = function(t){
+  var m = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(String(t).trim()); if (!m) return '';
+  var dt = new Date(+m[3], +m[2] - 1, +m[1]);
+  return dt.getFullYear() === +m[3] && dt.getMonth() === +m[2] - 1 && dt.getDate() === +m[1] ? m[3] + '-' + m[2] + '-' + m[1] : '';
+};
+var MIN_DAY = (function(){ var t = new Date(); t.setDate(t.getDate() + 1); return isoDay(t); })();
+var live = $('#cn-live'), sayT = 0;
+var lead = $('#cn-lead'), LEAD = lead.innerHTML;
+var LEAD_SENT = 'Документы на' + NB + 'проверке. Если изменить пункт, документы нужно будет отправить заново.';
+function say(t){ clearTimeout(sayT); live.textContent = ''; sayT = setTimeout(function(){ live.textContent = t; }, 80); }
+var step = function(n){ return $('#step-' + n); };
+var formOf = function(n){ return $('form', step(n)); };
+var actOf = function(n){ return $('[data-act]', step(n)); };
+var locked = function(){ return ![1, 2, 3, 4].every(function(n){ return S[n].done; }); };
+
+/* ---------- имя парка и пользователь из регистрации (только {park, login}) ---------- */
+var saved = C.store.get();
+if (saved && saved.park){
+  $('#meta-park').textContent = saved.park;
+  // агрегатор и размер парка в хранилище не пишутся (там только {park, login}) — чужие демо-значения рядом со своим парком не показываем
+  $('#meta-agg').hidden = true; $('#meta-size').hidden = true;
+  // реквизиты демо-юрлица к своему парку не подставляем: шаг 1 новый парк заполняет сам (кнопка «Пример» в форме остаётся)
+  S[1] = { done:false, legal:'', inn:'' };
+  var ini = saved.park.split(/\s+/).map(function(w){ return (w.match(/[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳ0-9]/) || [''])[0]; }).join('').slice(0, 2).toUpperCase();
+  if (ini) $('#user-ava').textContent = ini;
+}
+if (saved && saved.login){ $('#user-name').textContent = saved.login; $('#user-name').title = saved.login; }
+
+/* ---------- правила полей ---------- */
+var HEX = /^[0-9a-f]{32}$/i, CID = /^taxi\/park\/([0-9a-f]{32})$/i;
+var digits = function(el){ return el.value.replace(/\D/g, '').length; };
+C.rules.inn = function(el){ return digits(el) === 9 || 'ИНН — 9 цифр'; };
+C.rules.account = function(el){ return digits(el) === 20 || 'Счёт — 20 цифр'; };
+C.rules.mfo = function(el){ return digits(el) === 5 || 'МФО — 5 цифр'; };
+C.rules.parkId = function(el){ return HEX.test(el.value.trim()) || 'Park ID — 32 символа: цифры и a–f'; };
+C.rules.clientId = function(el){
+  var m = CID.exec(el.value.trim()); if (!m) return 'Формат: taxi/park/…';
+  var p = el.form.elements.park_id.value.trim();
+  return !HEX.test(p) || p.toLowerCase() === m[1].toLowerCase() || 'Park ID и Client ID относятся к разным паркам';
+};
+C.rules.apiKey = function(el){ return !!el.value.trim() || 'Вставьте ключ'; };
+C.rules.perm = function(el){ return el.checked || 'Без этого права выводы не пройдут'; };
+C.rules.until = function(el){
+  if (!el.value.trim()) return 'Укажите дату';
+  if (!/^\d{2}\.\d{2}\.\d{4}$/.test(el.value.trim())) return 'Дата в формате ДД.ММ.ГГГГ';
+  var iso = toIso(el.value); if (!iso) return 'Такой даты нет';
+  return iso >= MIN_DAY || 'Не раньше завтрашнего дня';
+};
+C.rules.files = function(){ return draft[2].length > 0 || 'Добавьте хотя бы один файл'; };
+
+/* дата полномочия: поле с маской ДД.ММ.ГГГГ (как остальные поля — без системной синей подсветки сегментов);
+   календарь — своя кнопка с иконкой, открывает системный выбор даты через невидимый input[type=date] */
+var pick = $('#s6-pick'), cal = $('#s6-cal'), until = $('#s6-until');
+pick.min = MIN_DAY;
+if (typeof pick.showPicker === 'function'){
+  cal.hidden = false;
+  cal.addEventListener('click', function(){
+    var iso = toIso(until.value); pick.value = iso && iso >= MIN_DAY ? iso : '';
+    try { pick.showPicker(); } catch (e) { until.focus(); }
+  });
+  pick.addEventListener('change', function(){
+    if (!pick.value) return;
+    until.value = dateRu(pick.value);
+    if (until.getAttribute('aria-invalid') === 'true') C.validate(until);
+    until.focus();
+  });
+}
+
+/* Client ID вставлен первым — Park ID из него; при смене Park ID пересчитать совпадение */
+var f4 = formOf(4);
+f4.elements.client_id.addEventListener('input', function(){
+  var m = CID.exec(this.value.trim()), p = f4.elements.park_id;
+  if (m && !p.value.trim()){ p.value = m[1].toLowerCase(); if (p.getAttribute('aria-invalid') === 'true') C.validate(p); }
+});
+f4.elements.park_id.addEventListener('input', function(){
+  var c = f4.elements.client_id; if (c.getAttribute('aria-invalid') === 'true') C.validate(c);
+});
+
+/* ---------- отрисовка всего состояния ---------- */
+function value(n){
+  var s = S[n];
+  if (n === 1) return s.legal + ' · ИНН' + NB + grp(s.inn);
+  if (n === 2) return 'Загружено ' + s.files.length + NB + C.plural(s.files.length, ['файл','файла','файлов']);
+  if (n === 3) return 'Счёт ••••' + NB + s.account.replace(/\D/g, '').slice(-4) + ' · МФО указан';
+  if (n === 4) return 'Ключ подключён · Park' + NB + 'ID ••••' + NB + s.park_id.slice(-4);
+  if (n === 5) return s.file.name + ' · ' + (s.file.rows != null ? rows(s.file.rows) : size(s.file.size));
+  if (n === 6) return 'Подписано ЭЦП директора · полномочие до' + NB + dateRu(s.until);
+}
+function render(){
+  var lock = locked();
+  var next = REQ.filter(function(n){ return !S[n].done && !(n === 6 && lock); })[0] || 0;
+  [1, 2, 3, 4, 5, 6].forEach(function(n){
+    var li = step(n), s = S[n], st = $('[data-st]', li), v = $('[data-val]', li), ex = $('[data-ex]', li), a = actOf(n);
+    li.classList.toggle('is-done', s.done);
+    li.classList.toggle('is-next', n === next);
+    st.className = 'st st--' + (s.done ? 'ok' : ST[n][0]);
+    st.textContent = s.done ? ST[n][2] : ST[n][1];
+    v.hidden = !s.done; if (s.done) v.textContent = value(n);
+    ex.hidden = s.done;
+    a.className = 'step__act ' + (s.done ? 'ulink' : (n === next ? 'btn btn--primary btn--sm' : 'btn btn--line btn--sm'));
+    $('[data-act-t]', a).textContent = s.done ? 'Изменить' : BTN[n];
+  });
+  // шаг 6: блокировка и сброс подписи
+  var a6 = actOf(6);
+  a6.disabled = lock && !S[6].done;
+  $('#s6-lock').hidden = !a6.disabled;
+  step(6).classList.toggle('is-locked', a6.disabled);
+  if (a6.disabled) a6.setAttribute('aria-describedby', 's6-lock'); else a6.removeAttribute('aria-describedby');
+  var warn = S.resign && !S[6].done ? 'Реквизиты изменились — договор нужно подписать заново' : '';
+  if ($('#s6-warn').textContent !== warn) $('#s6-warn').textContent = warn;
+  // прогресс
+  var k = REQ.filter(function(n){ return S[n].done; }).length, pct = k * 20;
+  $('#prog-n').textContent = k; $('#prog-pct').textContent = pct;
+  $('#prog-sr').textContent = 'Готово ' + k + ' из 5: ';
+  var bar = $('#prog-bar');
+  bar.setAttribute('aria-valuenow', k); bar.setAttribute('aria-valuetext', 'Готово ' + k + ' из 5 обязательных пунктов');
+  $$('i', bar).forEach(function(i, j){ i.classList.toggle('is-done', j < k); });
+  // проверка модератором
+  var left = REQ.filter(function(n){ return !S[n].done; }).map(function(n){ return TITLE[n]; });
+  var send = $('#mod-send');
+  send.disabled = left.length > 0;
+  $('#mod-left').hidden = !left.length;
+  $('#mod-left').textContent = left.length ? 'Осталось: ' + left.join(', ') : '';
+  if (left.length) send.setAttribute('aria-describedby', 'mod-left'); else send.removeAttribute('aria-describedby');
+  $('#mod-pre').hidden = S.sent; $('#mod-done').hidden = !S.sent;
+  $('#mod-wait').hidden = !S.sent; $('#meta-wait').hidden = !S.sent;
+  // лид: после отправки — что происходит сейчас и что будет при правке
+  if (S.sent){ if (lead.textContent !== LEAD_SENT) lead.textContent = LEAD_SENT; }
+  else if (lead.innerHTML !== LEAD) lead.innerHTML = LEAD;
+}
+
+/* ---------- файлы в строке шага ---------- */
+function fileRow(f, onDel){
+  var li = d.createElement('li');
+  var t = d.createElement('div'); t.className = 'files__t';
+  var nm = d.createElement('span'); nm.className = 'files__name'; nm.textContent = f.name;
+  var mt = d.createElement('span'); mt.className = 'files__meta'; mt.textContent = f.rows != null ? rows(f.rows) : size(f.size);
+  t.appendChild(nm); t.appendChild(mt);
+  var b = d.createElement('button'); b.type = 'button'; b.className = 'ulink ulink--sm ulink--mute'; b.textContent = 'Удалить';
+  var sr = d.createElement('span'); sr.className = 'sr-only'; sr.textContent = ': ' + f.name; b.appendChild(sr);
+  b.addEventListener('click', onDel);
+  li.appendChild(t); li.appendChild(b);
+  return li;
+}
+function drawFiles(n){
+  var form = formOf(n), ul = $('[data-files]', form), inp = $('.drop__in', form);
+  ul.textContent = '';
+  var list = n === 2 ? draft[2] : (draft[5] ? [draft[5]] : []);
+  list.forEach(function(f, i){
+    ul.appendChild(fileRow(f, function(){
+      if (n === 2) draft[2].splice(i, 1); else draft[5] = null;
+      drawFiles(n);
+      say('Файл ' + f.name + ' удалён');
+      (n === 2 ? (ul.querySelector('li:nth-child(' + Math.min(i + 1, draft[2].length) + ') .ulink') || inp) : inp).focus();
+    }));
+  });
+  ul.hidden = !list.length;
+  if (n === 5) $('[data-drop]', form).hidden = !!draft[5];
+}
+function fileErr(n, msg){
+  var inp = $('.drop__in', formOf(n));
+  if (n === 2) C.setError(inp, msg);
+  else { var m = $('#s5-file-m'); m.textContent = msg; m.classList.toggle('is-err', !!msg); msg ? inp.setAttribute('aria-invalid', 'true') : inp.removeAttribute('aria-invalid'); }
+}
+function addFiles(n, files){
+  files = Array.prototype.slice.call(files || []);
+  if (!files.length) return;
+  if (n === 2){
+    var bad = 0, added = 0;
+    files.forEach(function(f){
+      if (['pdf','jpg','jpeg','png'].indexOf(ext(f.name)) < 0){ bad++; return; }
+      if (draft[2].some(function(x){ return x.name === f.name && x.size === f.size; })) return;
+      draft[2].push({ name:f.name, size:f.size }); added++;
+    });
+    drawFiles(2);
+    fileErr(2, bad ? 'Только PDF или фото' : '');
+    if (added) say('Добавлено ' + added + NB + C.plural(added, ['файл','файла','файлов']));
+  } else {
+    var f = files[0], e = ext(f.name);
+    if (e !== 'csv' && e !== 'xlsx'){ fileErr(5, 'Только CSV или XLSX'); return; }
+    if (f.size > 6 * MB){ fileErr(5, 'Файл больше 6' + NB + 'МБ'); return; }
+    fileErr(5, '');
+    var done = function(r){
+      draft[5] = { name:f.name, size:f.size, rows:r };
+      drawFiles(5);
+      say('Файл ' + f.name + ' добавлен' + (r != null ? ', ' + rows(r) : ''));
+      var del = $('[data-files] .ulink', formOf(5)); if (del) del.focus();
+    };
+    if (e === 'csv' && window.FileReader){
+      var rd = new FileReader();
+      rd.onload = function(){ var c = String(rd.result).split(/\r\n|\n|\r/).filter(function(l){ return l.trim(); }).length; done(Math.max(0, c - 1)); };
+      rd.onerror = function(){ done(null); };
+      rd.readAsText(f);
+    } else done(null);
+  }
+}
+[2, 5].forEach(function(n){
+  var form = formOf(n), inp = $('.drop__in', form), zone = $('[data-drop]', form);
+  inp.addEventListener('change', function(){ addFiles(n, inp.files); inp.value = ''; });
+  ['dragenter', 'dragover'].forEach(function(t){ zone.addEventListener(t, function(e){ e.preventDefault(); zone.classList.add('is-over'); }); });
+  zone.addEventListener('dragleave', function(e){ if (!zone.contains(e.relatedTarget)) zone.classList.remove('is-over'); });
+  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('is-over'); addFiles(n, e.dataTransfer && e.dataTransfer.files); });
+});
+// файл, брошенный мимо зоны, не открывается в браузере
+addEventListener('dragover', function(e){ e.preventDefault(); });
+addEventListener('drop', function(e){ e.preventDefault(); });
+
+/* ---------- раскрытие строки ---------- */
+function fill(n, v){
+  var f = formOf(n);
+  Object.keys(v).forEach(function(k){
+    var el = f.elements[k]; if (!el) return;
+    if (el.type === 'checkbox') el.checked = !!v[k]; else el.value = v[k] || '';
+  });
+}
+function open(n){
+  if (openN === n) return;
+  if (openN) close(openN, false);
+  var s = S[n], li = step(n), form = formOf(n);
+  C.clearErrors(form); form.removeAttribute('aria-busy');
+  if (n === 1) fill(1, { legal:s.legal, inn:s.inn });
+  if (n === 3) fill(3, { account:s.account, mfo:s.mfo });
+  if (n === 4) fill(4, { park_id:s.park_id, client_id:s.client_id, api_key:'', perm:s.done });
+  if (n === 6) fill(6, { until:s.until ? dateRu(s.until) : '' });
+  if (n === 2){ draft[2] = s.files.slice(); drawFiles(2); }
+  if (n === 5){ draft[5] = s.file; fileErr(5, ''); drawFiles(5); }
+  li.classList.add('is-open'); actOf(n).setAttribute('aria-expanded', 'true');
+  openN = n;
+  var first = $('input:not([type=checkbox]):not([hidden]), .drop:not([hidden]) input', form);
+  if (first) first.focus({ preventScroll:true });
+  // строка раскрывается на месте; если низ формы ушёл за экран — мягко подтянуть
+  setTimeout(function(){
+    if (openN !== n) return;
+    var r = $('.step__pin', li).getBoundingClientRect();
+    if (r.bottom > innerHeight - 16) li.scrollIntoView({ block:'nearest', behavior: C.reduceMq.matches ? 'auto' : 'smooth' });
+  }, C.reduceMq.matches ? 30 : 520);
+}
+function close(n, focusAct){
+  var li = step(n), form = formOf(n);
+  li.classList.remove('is-open'); actOf(n).setAttribute('aria-expanded', 'false');
+  form.removeAttribute('aria-busy'); C.clearErrors(form); C.hideSecrets(form);
+  if (n === 4) form.elements.api_key.value = '';                  // ключ не задерживается в DOM
+  if (n === 5) fileErr(5, '');
+  $$('.drop', form).forEach(function(z){ z.classList.remove('is-over'); });
+  if (openN === n) openN = 0;
+  if (focusAct) actOf(n).focus();
+}
+$$('[data-act]').forEach(function(a){
+  a.addEventListener('click', function(){ var n = +a.closest('.step').dataset.step; if (openN === n) close(n, true); else open(n); });
+});
+$$('[data-cancel]').forEach(function(b){
+  b.addEventListener('click', function(){ close(+b.closest('.step').dataset.step, true); });
+});
+d.addEventListener('keydown', function(e){
+  if (e.key !== 'Escape' || !openN) return;
+  e.preventDefault(); close(openN, true);
+});
+
+/* «Заполнить примером» — демо: подставляет данные примера */
+$$('[data-example]').forEach(function(b){
+  b.addEventListener('click', function(){
+    var n = +b.closest('.step').dataset.step, form = formOf(n);
+    C.clearErrors(form);
+    if (n === 2){ draft[2] = EX_DOCS.slice(); drawFiles(2); }
+    else if (n === 5){ draft[5] = { name:EX[5].name, size:0, rows:EX[5].rows }; fileErr(5, ''); drawFiles(5); }
+    else fill(n, EX[n]);
+    say('Подставлены данные примера');
+  });
+});
+
+/* ---------- сохранение шага ---------- */
+function commit(n, changed){
+  if (n !== 5) S[n].done = true;
+  if ((n === 1 || n === 3 || n === 4) && changed && S[6].done){ S[6].done = false; S.resign = true; }
+  if (n === 6) S.resign = false;
+  S.sent = false;
+  close(n, false);
+  render();
+  actOf(n).focus();
+  say(n === 5 && !S[5].done ? 'Список водителей: файл не загружен' : TITLE[n] + ': готово');
+}
+var SAVE = {
+  1: function(f){ var v = { legal:f.elements.legal.value.trim(), inn:f.elements.inn.value }; var ch = v.legal !== S[1].legal || v.inn !== S[1].inn; S[1].legal = v.legal; S[1].inn = v.inn; return ch; },
+  2: function(){ S[2].files = draft[2].slice(); return true; },
+  3: function(f){ var v = { account:f.elements.account.value, mfo:f.elements.mfo.value }; var ch = v.account !== S[3].account || v.mfo !== S[3].mfo; S[3].account = v.account; S[3].mfo = v.mfo; return ch; },
+  4: function(f){
+    var p = f.elements.park_id.value.trim().toLowerCase(), c = f.elements.client_id.value.trim().replace(/^taxi\/park\//i, 'taxi/park/').toLowerCase();
+    S[4].park_id = p; S[4].client_id = c; f.elements.api_key.value = '';
+    return true;                                                     // ключ введён заново — подпись по старым реквизитам не годится
+  },
+  5: function(){ S[5].file = draft[5]; S[5].done = !!draft[5]; return true; },
+  6: function(f){ S[6].until = toIso(f.elements.until.value); return true; } };
+var WAIT = { 1:0, 2:0, 3:0, 4:900, 5:0, 6:1200 };
+[1, 2, 3, 4, 5, 6].forEach(function(n){
+  var form = formOf(n);
+  C.bindForm(form, function(f){ var ch = SAVE[n](f); f.removeAttribute('aria-busy'); commit(n, ch); }, WAIT[n]);
+  form.addEventListener('submit', function(){
+    if (form.getAttribute('aria-busy') !== 'true') return;
+    if (n === 4) say('Проверяем ключ');
+    if (n === 6) say('Подписываем ЭЦП директора');
+  });
+});
+
+/* ---------- отправка на проверку ---------- */
+var send = $('#mod-send');
+send.addEventListener('click', function(){
+  if (send.disabled || send.classList.contains('is-busy')) return;
+  send.classList.add('is-busy'); send.setAttribute('aria-busy', 'true');
+  setTimeout(function(){
+    send.classList.remove('is-busy'); send.removeAttribute('aria-busy');
+    S.sent = true; render();
+    $('#mod-status').focus();
+  }, C.reduceMq.matches ? 300 : 900);
+});
+
+render();
+});
+</script>
+</body>
+</html>

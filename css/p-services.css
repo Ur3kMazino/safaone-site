@@ -1,0 +1,170 @@
+/* Safa One — services.html «Разработка на заказ» (ТЗ_страницы.md §2.4).
+   Своё у страницы: строка лок-апов под лидом героя, строки-полосы направлений (.pg-rows--wide), процесс шагами .pg-steps с тиками,
+   три формата через волосяные линии с ритмом работы линией. Классы — sv-*, плюс модификатор .pg-rows--wide (только здесь). */
+
+/* ============================== 1. Герой: под лидом одна строка «Сделали для себя:» + три лок-апа ============================== */
+.sv-hero .pg-hero__h{margin-bottom:clamp(28px,3.2cqw,52px)}
+.sv-hero .pg-hero__lead{margin-top:0;max-width:36ch}
+.sv-hero .pg-hero__marg.sv-made{grid-column:1/-1;align-self:start;padding-bottom:0;margin-top:clamp(20px,2cqw,30px);
+  display:flex;align-items:center;flex-wrap:nowrap;gap:14px;min-width:0}
+.sv-made__l{white-space:nowrap;color:var(--ink-3)}
+.sv-made__lks{list-style:none;margin:0;padding:0;display:flex;align-items:center;flex-wrap:nowrap;gap:14px}
+.sv-made__lks li,.sv-made__l{display:flex;flex:none}
+.sv-made__lks a{display:flex;align-items:center;min-height:44px;transition:translate .24s var(--e-enter)}
+.sv-made__lks a:hover{translate:0 -2px}
+.sv-made__lks a:focus-visible{border-radius:6px}
+.sv-made__lks img{--lk:22px;height:var(--lk);width:auto;display:block;flex:none}
+/* в лок-апе GPS есть пин: при общей высоте слово «safa» мельче — подтягиваем по строчным, высоту строки не меняем */
+.sv-made__lks .sv-lk-gps{--gk:1.24;height:calc(var(--lk) * var(--gk));margin-block:calc(var(--lk) * (1 - var(--gk)) / 2)}
+/* align-items:center ставит по центру лок-ап вместе с запасом под подпись продукта — слова safa ниже центра; подпись опускаем к их базовой линии */
+.sv-made__l{position:relative;top:.2em}
+.sv-hero .pg-hero__act{margin-top:clamp(28px,2.8cqw,44px)}
+/* ≥1024: лок-апы 28 px — подписи fleet / GPS / pay читаются, места справа хватает */
+@media (min-width:1024px){
+  .sv-made__lks img{--lk:28px}
+  .sv-hero .pg-hero__marg.sv-made,.sv-made__lks{gap:18px}
+}
+
+/* ============================== 2. Направления: строки-полосы ============================== */
+.pg-rows--wide .pg-row__in{align-items:first baseline;padding-block:clamp(36px,4cqw,64px)}
+.pg-rows--wide .pg-row__n{grid-column:1;color:var(--ink-3)}
+/* строка названия: предмет слева, по центру строки; базовая линия строки — у названия (предмет из неё выведен) */
+.sv-dir__h{grid-column:2/7;align-items:baseline}
+.sv-dir__h .pg-gl{align-self:center;margin-block:calc((var(--gs) - 1.08em) / -2);font-size:clamp(28px,3.2cqw,46px)}
+.sv-dir__t{font:500 clamp(28px,3.2cqw,46px)/1.08 var(--font);letter-spacing:-.03em;color:var(--ink);text-wrap:balance}
+.sv-dir .pg-row__d{grid-column:7/11;padding-right:clamp(0px,1cqw,16px)}
+/* доказательство — одна схема на все строки: лок-ап продукта (у 06 — три мини-лок-апа) + фраза-ссылка */
+.sv-proof{grid-column:11/13;display:block;color:var(--ink-2);text-wrap:wrap}
+.sv-proof__lk{display:inline-block;height:18px;width:auto;vertical-align:-.3em;margin-right:8px}
+.sv-proof__lk--gps{height:21px;vertical-align:-.4em;margin-block:-1.5px}
+/* у 06 три лок-апа стоят в строке фразы, как один лок-ап у 01–04 */
+.sv-proof__lks{display:inline;white-space:nowrap;margin:0 8px 0 0}
+.sv-proof__lks .sv-proof__lk{margin-right:10px}
+.sv-proof__lks .sv-proof__lk:last-child{margin-right:0}
+.sv-proof__a{display:inline;color:var(--ink-2);transition:color .24s}
+.sv-nw{white-space:nowrap}
+.sv-proof__a .pg-arr{width:13px;height:13px;vertical-align:-.1em;margin-left:.35em}
+.sv-proof__a:hover{color:var(--ink)}
+/* фокус: ссылка в несколько строк — box-shadow рвался на рамки по строкам; outline Chrome обводит строки одним контуром */
+.pg .sv-proof__a:focus-visible{box-shadow:none;outline:2px solid var(--purple);outline-offset:2px;border-radius:4px}
+/* наведение на строку: предмет приподнимается и поворачивается */
+.sv-dir .pg-gl{transition:translate .24s var(--e-enter),rotate .24s var(--e-enter),transform .6s var(--e-enter) .12s}
+.sv-dir:hover .pg-gl{translate:0 -4px;rotate:-4deg}
+/* появление: строка проявляется, предмет — на 120 ms позже. data-rv стоит на .pg-row__in, не на li с якорем:
+   иначе сдвиг 16 px до проявления сбивает остановку якоря (offset 110) */
+.js .pg .sv-dir [data-rv] .pg-gl{transform:scale(0) rotate(-24deg)}
+.js .pg .sv-dir [data-rv].is-in .pg-gl{transform:none}
+
+/* ≥1024: название на 2–7 (все шесть — в одну строку), описание на 8–12 ровно под лидом раздела,
+   доказательство — второй строкой под описанием (у 05 его нет — строка просто короче, без пустой ячейки) */
+@media (min-width:1024px){
+  .sv-dir__h{grid-column:2/8}
+  .sv-dir .pg-row__d{grid-column:8/13;max-width:44ch;padding-right:0}
+  .sv-proof{grid-column:8/13;grid-row:2;margin-top:16px;max-width:44ch}
+}
+/* 1024–1279: при 3.2cqw «Мобильные приложения» не входит в 2–7 и встаёт в две строки — чуть меньше кегль, все шесть в одну */
+@media (min-width:1024px) and (max-width:1279px){.sv-dir__t{font-size:3cqw}}
+/* телефон — узкий предмет: видимое стекло на 10 px левее остальных, зазор до названия 27 px против 14–17.
+   Сдвигаем сам предмет вправо, название остаётся на месте (+x слева, −x справа) */
+.sv-dir .pg-gl[src*="smartphone"]{margin-inline:calc(var(--gs) * .14) calc(var(--gs) * -.14)}
+
+/* ============================== 3. Процесс: .pg-steps (линия, заливка тоном, тики — pages.css) ============================== */
+/* текст шага проявляется отдельно от линии: линия стоит на месте и заливается, тики загораются */
+.sv-st__h{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.sv-st__h .pg-row__n{flex:none}
+.sv-st__h .pg-h3{min-width:0}
+.sv-st__o{color:var(--ink)}
+.sv-st__ol{color:var(--ink-3)}
+/* ≥1024: четыре шага в ряд — названия, текст и «На выходе» на общих горизонталях (subgrid), а не лесенкой по числу строк H3 */
+@media (min-width:1024px){
+  .sv-steps{grid-template-rows:auto auto auto}
+  .sv-steps .pg-step,.sv-st{display:grid;grid-template-rows:subgrid;grid-row:span 3;align-content:start}
+  .sv-st{grid-row:1/4}
+  .sv-st>.pg-marg{margin-top:14px}
+}
+/* 1024–1199: «Проектирование» подходило к «03» соседнего шага на 11 px — плотнее номер и кегль на ступень меньше */
+@media (min-width:1024px) and (max-width:1199px){.sv-st__h{gap:8px}.sv-st__h .pg-h3{font-size:21px}}
+
+/* ============================== 4. Форматы ============================== */
+.sv-fmt{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto 1fr auto;column-gap:0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sv-fmt__c{display:grid;grid-template-rows:subgrid;grid-row:span 3;row-gap:14px;padding:clamp(32px,3.2cqw,48px) clamp(20px,2.4cqw,40px) clamp(32px,3.2cqw,48px)}
+.sv-fmt__c:first-child{padding-left:0}
+.sv-fmt__c:last-child{padding-right:0}
+.sv-fmt__c+.sv-fmt__c{border-left:1px solid var(--line)}
+.sv-fmt__c .pg-p{max-width:34ch}
+/* ≥1024: колонки на 12-колоночной сетке страницы (текст с col 1 / 5 / 9, как вертикали других разделов),
+   волосяная линия — посередине промежутка между колонками */
+@media (min-width:1024px){
+  .sv-fmt{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cg)}
+  .sv-fmt__c{grid-column:span 4;padding-inline:0;position:relative}
+  .sv-fmt__c+.sv-fmt__c{border-left:0}
+  .sv-fmt__c+.sv-fmt__c::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--cg) / -2);width:1px;background:var(--line)}
+}
+/* ритм работы: линия по --acc, тики — белые с ободом; прорисовка при появлении */
+.sv-rh{display:block;width:min(100%,240px);height:24px;margin-top:clamp(20px,2.4cqw,36px);overflow:visible}
+.sv-rh__l{fill:none;stroke:var(--acc);stroke-width:1.5;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:0}
+.sv-rh__k{fill:none;stroke:var(--acc);stroke-width:1.5;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.55}
+.sv-rh__t{fill:#fff;stroke:var(--acc);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.sv-rh__end{fill:var(--acc);stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke}
+.js .pg .sv-fmt__c[data-rv] .sv-rh__l{stroke-dashoffset:1;transition:stroke-dashoffset 1s var(--e-travel) .25s}
+.js .pg .sv-fmt__c[data-rv].is-in .sv-rh__l{stroke-dashoffset:0}
+.js .pg .sv-fmt__c[data-rv] :is(.sv-rh__t,.sv-rh__end,.sv-rh__k){opacity:0;transition:opacity .4s var(--e-enter) .9s}
+.js .pg .sv-fmt__c[data-rv].is-in :is(.sv-rh__t,.sv-rh__end){opacity:1}
+.js .pg .sv-fmt__c[data-rv].is-in .sv-rh__k{opacity:.55}
+
+/* FAQ: телефон и почта столбиком — общее правило pages.css */
+
+/* финал: кнопка на всю колонку действий — общее правило pages.css, как на остальных страницах */
+
+/* раздел форматов кончается линией — над FAQ вторая не нужна */
+.sv-fmt-sec+.pg-sec--rule::before{display:none}
+
+/* ============================== 5. Планшет и телефон ============================== */
+@media (max-width:1023px){
+  .sv-hero .pg-hero__lead{max-width:40ch}
+  .sv-hero .pg-hero__marg.sv-made{margin-top:24px}
+  .pg-rows--wide .pg-row__in{grid-template-columns:auto minmax(0,1fr);column-gap:16px;row-gap:16px;padding-block:32px}
+  .sv-dir__h{grid-column:2}
+  .sv-dir__h .pg-gl{--gs:40px}
+  .sv-dir__t{font-size:clamp(24px,5.4cqw,34px)}
+  .sv-dir .pg-row__d,.sv-proof{grid-column:2;padding-right:0}
+  .sv-proof{margin-top:4px}
+  .sv-steps .pg-p{max-width:44ch}
+  .sv-fmt{grid-template-columns:minmax(0,1fr);grid-template-rows:none;border-bottom:0}
+  .sv-fmt__c{grid-template-rows:none;grid-row:auto;padding:32px 0;border-bottom:1px solid var(--line)}
+  .sv-fmt__c+.sv-fmt__c{border-left:0}
+  .sv-rh{margin-top:12px}
+}
+@media (max-width:767px){
+  /* 390: подпись + три лок-апа по 18 px — одной строкой, промежутки чуть плотнее */
+  .sv-hero .pg-hero__marg.sv-made,.sv-made__lks{gap:10px}
+  .sv-made__l{font-size:14px}
+  .sv-made__lks img{--lk:18px}
+  .sv-made__lks .sv-lk-gps{--gk:1.12}
+}
+@media (max-width:440px){
+  /* H1 в три строки, а не в четыре со словами-сиротами «вашего» / «бизнеса» */
+  .sv-hero .pg-h1{font-size:clamp(38px,10.5vw,44px)}
+}
+@media (max-width:389px){
+  /* 360: по 18 px строка не входит — лок-апы 15 px, подпись 13 px, всё ещё одна строка */
+  .sv-hero .pg-hero__marg.sv-made,.sv-made__lks{gap:10px}
+  .sv-made__l{font-size:13px}
+  .sv-made__lks img{--lk:15px}
+  .pg-rows--wide .pg-row__in{column-gap:12px}
+  .pg-rows--wide .pg-row__n{min-width:2ch}
+  .sv-dir__h{gap:12px}
+}
+
+/* ============================== 6. Без движения ============================== */
+@media (prefers-reduced-motion:reduce){
+  .js .pg .sv-dir [data-rv] .pg-gl{transform:none!important}
+  .sv-dir .pg-gl,.sv-made__lks a,.sv-proof__a{transition:none!important}
+  .js .pg .sv-fmt__c[data-rv] .sv-rh__l{stroke-dashoffset:0!important;transition:none!important}
+  .js .pg .sv-fmt__c[data-rv] :is(.sv-rh__t,.sv-rh__end){opacity:1!important;transition:none!important}
+  .js .pg .sv-fmt__c[data-rv] .sv-rh__k{opacity:.55!important;transition:none!important}
+}
+@media print{
+  .sv-dir .pg-gl,.sv-rh{display:none}
+}

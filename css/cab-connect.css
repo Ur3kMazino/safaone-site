@@ -1,0 +1,162 @@
+/* cabinet-connect.html — чек-лист «Подключение к Safa PAY».
+   Поверх css/cabinet.css. Шаги — строки списка с волосяными линиями, без карточек; раскрытие для ввода — на месте, внутри строки.
+   Обведена только зона сброса файла (пунктир, из cabinet.css). */
+
+/* ========== раскладка: шаги и прогресс — колонки 1–10, при 1024–1279 — все 12 ========== */
+.cn{align-items:start}
+.cn>*{grid-column:1/11;min-width:0;max-width:1040px}   /* на 1920 строка шага не шире 1040: «Изменить» не уезжает от текста */
+@media (max-width:1279px){.cn>*{grid-column:1/-1}}
+
+/* ========== прогресс: тонкая цифра, как одометр процесса на главной ========== */
+.prog{display:flex;align-items:center;gap:20px clamp(28px,4cqw,64px);margin-top:clamp(40px,4cqw,64px)}
+.prog__head{display:flex;align-items:center;gap:20px;flex:none}
+.prog__n{font:300 clamp(56px,5.6cqw,88px)/.8 var(--font);letter-spacing:-.05em;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+.prog__n i{margin-left:.06em;font-style:normal;font-size:.5em;letter-spacing:-.03em;color:#CFC6D6}
+.prog__t{font:var(--marg);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.prog__s{margin-top:2px;font:var(--cap);color:var(--ink-3)}
+.prog__bar{flex:1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;min-width:0}
+.prog__bar i{position:relative;height:2px;border-radius:1px;background:var(--line-2);overflow:hidden}
+.prog__bar i::after{content:"";position:absolute;inset:0;background:var(--purple);transform:scaleX(0);transform-origin:0 50%;transition:transform .45s var(--ease-out)}
+.prog__bar i.is-done::after{transform:scaleX(1)}
+@media (max-width:640px){
+  .prog{flex-wrap:wrap}
+  .prog__n{font-size:48px}
+  .prog__head{flex:1 1 auto;min-width:0;align-items:center;gap:12px}
+  .prog__t{text-wrap:balance}
+  .prog__txt{min-width:0}
+  .prog__bar{flex-basis:100%}
+}
+
+/* ========== шаги: строки с линиями ==========
+   ряд 1: номер | заголовок, описание, значение/пример | действие (по центру ряда)
+   ряд 2: форма в колонке 2 — на одной вертикали с заголовком */
+.steps{margin-top:clamp(32px,3cqw,48px);border-top:1px solid var(--line)}
+.step{--gs:40px;position:relative;display:grid;grid-template-columns:56px minmax(0,1fr) auto;column-gap:var(--cg);
+  padding:28px 0 30px;border-bottom:1px solid var(--line)}
+/* у следующего шага и у раскрытой строки верхняя линия заливается слева направо */
+.step::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--purple);
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .5s var(--ease)}
+.step.is-next::before,.step.is-open::before{transform:scaleX(1)}
+.step__n{grid-row:1;grid-column:1;align-self:baseline;font:500 15px/1 var(--font-ui);font-variant-numeric:tabular-nums;color:var(--ink-3);transition:color .3s}
+.step.is-next .step__n,.step.is-open .step__n{color:var(--purple)}
+.step__main{grid-row:1;grid-column:2;align-self:baseline;min-width:0}
+.step__act{grid-row:1;grid-column:3;align-self:center;justify-self:end}
+/* у текстовой «Изменить» зона нажатия не меньше 44×44 */
+/* пока строка раскрыта, действия — в самой форме («Сохранить», «Отмена»); место кнопки сохраняется, текст не прыгает */
+.step.is-open .step__act{visibility:hidden}
+.step__act.ulink{position:relative}
+.step__act.ulink::before{content:"";position:absolute;inset:-13px -12px -10px}
+
+/* заголовок шага: [стекло] Название ● статус — на базовой линии; стекло слева в той же строке */
+.step__h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;font:600 clamp(22px,2cqw,28px)/1.15 var(--font);letter-spacing:-.022em;color:var(--ink)}
+.step__h>h3{font:inherit;letter-spacing:inherit}
+.step__h .hx{align-items:baseline}
+.step__h .hx>.glass{align-self:flex-start}
+.step__h .hx>span{padding-top:max(0px,calc((var(--gs) - 1.15em) / 2))}   /* первая строка текста — по центру стекла */
+.step__h .st{flex:none}
+.step__warn{margin-top:10px;font:var(--cap);color:var(--warn)}
+.step__warn:empty{display:none}
+.step__d{margin-top:10px;max-width:58ch;font:400 16px/1.5 var(--font);color:var(--ink-2)}
+.step__v{margin-top:14px;font:500 17px/1.4 var(--font);font-variant-numeric:tabular-nums;color:var(--ink);overflow-wrap:anywhere}
+.step__ex{margin-top:10px;max-width:64ch;font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.step__ex b{font-weight:500;color:var(--ink-2)}
+.step__ex .mono{font:400 12.5px/1.45 var(--mono);overflow-wrap:anywhere}
+/* причина блокировки — под самой кнопкой, по её правому краю. Обе по центру ряда: кнопка поднята на высоту подписи + 8px,
+   подпись опущена на высоту кнопки + 8px — пара стоит по центру строки, как действия остальных шагов */
+.step__lock{grid-row:1;grid-column:3;align-self:center;justify-self:end;margin-top:48px;font:var(--cap);color:var(--ink-3);text-align:right;white-space:nowrap}
+.step.is-locked .step__act{margin-bottom:27px}
+
+/* раскрытие на месте: 0fr → 1fr. Закрытая форма скрыта и от клавиатуры (visibility) */
+.step__panel{grid-row:2;grid-column:2;display:grid;grid-template-rows:0fr;visibility:hidden;
+  transition:grid-template-rows .5s var(--ease-out),visibility 0s linear .5s}
+.step.is-open .step__panel{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .5s var(--ease-out),visibility 0s}
+.step__pin{min-height:0;overflow:hidden;margin:-8px -24px -44px;padding:8px 24px 44px}   /* поле под кольца фокуса и тень кнопки */
+.step__form{max-width:720px;padding-top:36px;opacity:0;transition:opacity .3s var(--ease)}
+.step.is-open .step__form{opacity:1;transition:opacity .4s var(--ease) .08s}
+.fgrid--one{grid-template-columns:minmax(0,1fr)}
+.fgrid--acc{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
+.step__btns{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:36px}
+.step__demo{margin-left:auto}
+
+/* зона сброса внутри строки */
+.drop__t{flex:1 1 260px;min-width:0}
+.drop__s{display:block;margin-top:2px;font:var(--cap);color:var(--ink-3)}
+.drop__btn{flex:none;margin-left:auto}
+.drop:has(.drop__in[aria-invalid="true"]){border-color:var(--err)}
+.drop__in:focus-visible+.drop__btn{box-shadow:inset 0 0 0 1px #1C132640,0 0 0 3px #fff,0 0 0 5px var(--purple)}
+.drop+.fld__msg{margin-top:2px}
+.fld .files{margin-top:12px}
+.fld .files:empty{display:none}
+.files__t{min-width:0}
+
+/* шаг 6: что подписывает директор */
+.sign-list{margin-top:12px;border-top:1px solid var(--line)}
+.sign-list>li{padding:12px 0;border-bottom:1px solid var(--line);font:var(--marg);color:var(--ink-2)}
+.sign-date{margin-top:32px}
+/* дата: текстовое поле с маской (системный input[type=date] красит сегмент в фокусе синим, и это не переопределить);
+   справа — кнопка-календарь 44×44 с линейной иконкой штрихом 1.6, как в шапке */
+.fld__cal{flex:none;display:grid;place-items:center;width:44px;height:44px;margin:6px -10px 0 8px;padding:0;border:0;border-radius:10px;background:none;cursor:pointer;
+  color:var(--ink-2);transition:color .2s}
+.fld__cal:hover{color:var(--purple)}
+.fld__cal svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* невидимый системный выбор даты: стоит у правого края поля, чтобы календарь открывался под иконкой */
+.fld__pick{position:absolute;right:0;bottom:0;width:44px;height:1px;margin:0;padding:0;border:0;opacity:0;pointer-events:none}
+.sign-note{margin-top:20px;font:var(--cap);color:var(--ink-3)}
+
+/* ========== проверка модератором ========== */
+/* над разделом — только нижняя линия шага 06: своя линия дала бы две подряд */
+.mod{margin-top:clamp(72px,7cqw,112px)}
+/* заголовок может уйти в две строки: стекло — по центру первой строки, как у шагов */
+.mod .hx{align-items:flex-start}
+.mod .hx>.glass{margin-top:calc((1.1em - 40px) / 2)}
+.mod__t{max-width:60ch;margin-top:20px;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink-2)}
+.mod__send{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:36px}
+.mod__left{max-width:44ch;font:var(--cap);color:var(--ink-3)}
+.mod__done{max-width:60ch;margin-top:20px;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink)}
+.mod__demo{margin-top:20px}
+
+/* ========== телефон ========== */
+@media (max-width:640px){
+  .step{--gs:34px;grid-template-columns:32px minmax(0,1fr);padding:24px 0 26px}
+  .step__n{font-size:13px}
+  .step__h{gap:6px 12px}
+  .step__act{grid-row:2;grid-column:2;margin-top:18px}
+  .step__act.btn{justify-self:stretch;width:100%}
+  .step__act.ulink{justify-self:start}
+  .step.is-open .step__act{display:none}
+  .step__panel{grid-row:3}
+  /* шаг 06 заблокирован: кнопка, под ней причина */
+  .step__lock{grid-row:3;grid-column:2;justify-self:start;margin-top:10px;text-align:left;white-space:normal}
+  .step.is-locked .step__act{margin-bottom:0}
+  .step.is-locked .step__panel{grid-row:4}
+  .step__form{padding-top:28px}
+  .fgrid--acc{grid-template-columns:minmax(0,1fr)}
+  .step__btns{gap:14px 24px;margin-top:32px}
+  .step__btns .btn{flex-basis:100%}
+  .drop{padding:18px 18px}
+  .drop__btn{margin-left:0}
+  .mod{margin-top:56px}
+  .mod .hx>.glass{margin-top:calc((1.1em - 34px) / 2)}
+  .mod__send{flex-direction:column;align-items:stretch}
+  .mod__send .btn{width:100%}
+  .mod__w{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}   /* «модератору» — только для скринридера: в заголовке раздела уже сказано */
+  .step .fld__in--mono{font-size:13px}
+}
+
+/* узкий телефон: номер шага скрыт (он и так aria-hidden, порядок задаёт список) — заголовку достаётся вся ширина */
+@media (max-width:420px){
+  .step{grid-template-columns:minmax(0,1fr)}
+  .step__n{display:none}
+  .step__main,.step__act,.step__panel,.step__lock{grid-column:1}
+  /* «Реквизиты организации» — самое длинное название — помещается в одну строку и на 360: кегль 22px на 390, 20px к 360 */
+  .step__h{font-size:clamp(20px,5.64cqw,22px)}
+  /* статус всегда отдельной строкой под названием: иначе «Готово» то рядом, то ниже — в зависимости от длины названия */
+  .step__h .st{flex-basis:100%}
+}
+@media (max-width:380px){.step .hx{gap:10px}}
+
+@media (prefers-reduced-motion:reduce){
+  .step__panel,.step.is-open .step__panel{transition:visibility 0s}
+  .step__form,.step.is-open .step__form{transition:opacity .2s}
+  .prog__bar i::after,.step::before{transition:none}
+}

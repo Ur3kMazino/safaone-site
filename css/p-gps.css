@@ -1,0 +1,361 @@
+/* Safa GPS — страница продукта (gps.html). Подключается после site.css и pages.css.
+   Свои классы — с префиксом gp-. Экран iPad — порт прототипа microcraft/proto/gps-screen (gps.css, PORT.md) под префиксом gp-:
+   у главной в site.css есть свои .ipad/.gscr/.gico/.plate — здесь они не используются, номера — .pg-plate из pages.css. */
+
+/* ============================== 1. Герой: пин в геозоне ============================== */
+/* текст 1–8; заголовок в три строки: «Каждая машина —» / «на карте» / «в реальном времени» */
+.gp-hero .pg-lead{max-width:38ch}
+.gp-hero .pg-hero__obj{grid-column:8/13;justify-content:center}
+/* пин стоит остриём на линии земли; под ним только серая тень касания, как у машины Fleet и карты PAY. Геозоны в герое нет */
+.gp-pin .cshadow{left:24%;width:52%}
+
+/* ============================== 2. Одна поездка ============================== */
+.gp-trip{position:relative;padding-block:clamp(72px,8cqw,128px)}
+.gp-trip__grid{align-items:center;row-gap:0}
+/* якорь #trip: до 1280 — у верха iPad, на липкой сцене — на 110 px ниже её верха (кадр встаёт целиком) */
+.gp-trip__a{position:absolute;left:0;top:calc(clamp(72px,8cqw,128px) - 24px);width:1px;height:1px;pointer-events:none}
+@media (min-width:1280px){.js .gp-trip__a{top:110px}}
+@media (min-width:1280px) and (prefers-reduced-motion:reduce){.js .gp-trip__a{top:calc(clamp(72px,8cqw,128px) - 24px)}}
+.gp-trip__dev{grid-column:1/-1;margin:0;min-width:0}
+.gp-trip__cap{margin-top:18px}
+.gp-dev{container:gpdev/inline-size}
+
+/* ≥1280: липкая сцена 240vh, кадр 100vh под меню; iPad 1–8, рельс 9–12 */
+@media (min-width:1280px){
+  .gp-trip__dev{grid-column:1/9}
+  /* iPad вписан в кадр и по высоте: кадр = 100vh − меню − поля − подпись */
+  .gp-trip__dev .gp-ipad{max-width:min(100%,calc((100vh - var(--nav-top) - 60px - 16px - 24px - 56px - 24px) * 1180 / 820 + 24px))}
+  .gp-rail{grid-column:9/13}
+  .js .gp-trip{height:240vh;padding-block:0}
+  .js .gp-trip__stage{position:sticky;top:0;height:100vh;display:flex;align-items:center;
+    padding:calc(var(--nav-top) + 60px + 16px) 0 24px}
+  .js .gp-trip__grid{width:100%}
+}
+
+/* ---------- рельс времени ---------- */
+.gp-rail{--ts:clamp(40px,3.6cqw,56px);--rg:clamp(22px,3.4vh,40px);list-style:none;margin:0;padding:0;display:grid;row-gap:var(--rg);align-content:center;min-width:0}
+/* ≥1280: воздух между рамкой iPad и тиками рельса — не меньше 48 px (гаттер + поле) */
+@media (min-width:1280px){.gp-rail{padding-left:clamp(28px,2.6cqw,52px)}}
+.gp-mark{--c:var(--ink);--cp:var(--ink-2);--f:1;position:relative;padding-left:34px;min-width:0}
+.gp-mark__t{display:block;font-size:var(--ts);line-height:.9;color:var(--c);transition:color .3s var(--e-enter)}
+.gp-mark__p{margin-top:12px;font-size:16px;line-height:1.5;color:var(--cp);max-width:34ch;transition:color .3s var(--e-enter)}
+.gp-mark__p b{font-weight:500;color:var(--c);transition:color .3s var(--e-enter)}
+.gp-mark .og{--gw:1.4em;margin:0 .32em 0 0;vertical-align:-.36em}
+/* линия к следующей метке: заливается тоном по ходу сцены (--f), тик на середине цифры */
+.gp-mark::before{content:"";position:absolute;left:4px;top:calc(var(--ts) * .45);width:1px;height:calc(100% + var(--rg));
+  background:linear-gradient(var(--acc),var(--acc)) 0 0/100% calc(var(--f) * 100%) no-repeat,var(--line)}
+.gp-mark:last-child::before{display:none}
+.gp-mark::after{content:"";position:absolute;left:0;top:calc(var(--ts) * .45);width:9px;height:9px;margin-top:-4.5px;border-radius:50%;
+  background:var(--acc);box-shadow:0 0 0 2px #fff;transition:background-color .24s,box-shadow .24s,width .24s,height .24s,margin .24s,left .24s}
+/* состояния (только с JS): будущая — --ghost, прошедшая — --ink-3, текущая — --ink */
+.js .gp-mark{--c:var(--ghost);--cp:var(--ghost);--f:0}
+.js .gp-mark::after{background:#fff;box-shadow:0 0 0 1.5px #1C132640}
+.js .gp-mark.is-past{--c:var(--ink-3);--cp:var(--ink-3);--f:1}
+.js .gp-mark.is-past::after{background:var(--acc);box-shadow:0 0 0 2px #fff}
+.js .gp-mark.is-cur{--c:var(--ink);--cp:var(--ink-2)}
+.js .gp-rail.is-done .gp-mark{--c:var(--ink);--cp:var(--ink-2)}
+.js .gp-mark.is-cur::after{left:-1.5px;width:12px;height:12px;margin-top:-6px;background:var(--acc);
+  box-shadow:0 0 0 3px #fff,0 0 0 4.5px color-mix(in srgb,var(--acc) 40%,transparent)}
+.gp-mark.is-cur::before{background-size:100% calc(var(--f) * 100%),auto}
+/* колокольчик выезда: в будущей метке бледный, как её текст; когда сцена доходит до 08:42 — один толчок */
+.js .gp-mark .og{opacity:.38;transition:opacity .3s var(--e-enter)}
+.js .gp-mark:is(.is-cur,.is-past) .og{opacity:1}
+.js .gp-mark.is-cur .og{animation:gp-bell .6s var(--e-enter) .05s 1}
+@keyframes gp-bell{0%{transform:scale(.6) rotate(-24deg)}55%{transform:scale(1.12) rotate(6deg)}100%{transform:none}}
+
+/* до 1280: сцена не липкая; рельс под iPad. 1024–1279 — в одну строку, тики на общей линии сверху;
+   700–1023 — столбиком, время и фраза в строку; до 700 — столбиком, компактно */
+@media (max-width:1279px){
+  .gp-rail{grid-column:1/-1;margin-top:clamp(40px,5cqw,64px)}
+}
+@media (min-width:1024px) and (max-width:1279px){
+  .gp-rail{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--cg);row-gap:0}
+  .gp-mark{padding:clamp(28px,3cqw,40px) clamp(8px,1.4cqw,24px) 0 0}
+  .gp-mark::before{left:0;top:0;width:calc(100% + var(--cg));height:1px;
+    background:linear-gradient(var(--acc),var(--acc)) 0 0/calc(var(--f) * 100%) 100% no-repeat,var(--line)}
+  .gp-mark.is-cur::before{background-size:calc(var(--f) * 100%) 100%,auto}
+  .gp-mark::after{top:0;left:0}
+  .js .gp-mark.is-cur::after{left:-1.5px}
+  .gp-mark:last-child::before{display:block;width:100%;background:var(--line)}
+}
+
+/* ============================== 3a. Подключение: схема из трёх узлов ============================== */
+.gp-conn{--h2fs:clamp(34px,4.2cqw,60px)}
+.gp-conn .pg-h2{font-size:var(--h2fs)}
+.gp-conn .pg-hrow{align-items:flex-start}
+.gp-conn .pg-hrow>.pg-gl{margin-top:calc((var(--h2fs) - var(--gs)) / 2 + .02 * var(--h2fs))}
+
+/* узел = значок на линии + название в той же строке; линия идёт от конца названия к следующему узлу,
+   над переходом — что именно передаётся. Синий GPS, без номеров шагов */
+.gp-flow{--ic:48px;--fill:#0145F2;grid-column:1/-1;min-width:0;list-style:none;margin:clamp(8px,1.6cqw,24px) 0 0;padding:0;
+  display:grid;grid-template-columns:minmax(0,3fr) minmax(128px,2fr) minmax(0,3fr) minmax(128px,2fr) minmax(0,3fr);align-items:start}
+.gp-flow__n{min-width:0}
+.gp-flow__hd{display:flex;align-items:center;height:var(--ic)}
+.gp-flow__ic{position:relative;flex:none;display:grid;place-items:center;width:var(--ic);height:var(--ic);border-radius:50%;background:#fff;
+  box-shadow:inset 0 0 0 1px #1C132626;color:var(--ink-3);transition:box-shadow .5s var(--e-enter) var(--t,0ms),color .5s var(--e-enter) var(--t,0ms)}
+.gp-flow__ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.gp-flow__ic svg .f{fill:currentColor;stroke:none}
+.gp-flow .pg-h3{margin:0 0 0 14px;font-size:clamp(20px,1.6cqw,26px);white-space:nowrap}
+/* хвост линии от названия до края колонки узла */
+.gp-flow__hd::after{content:"";flex:1 1 0;min-width:16px;height:2px;margin-left:16px;
+  background:linear-gradient(var(--fill),var(--fill)) 0 0/0 100% no-repeat,linear-gradient(var(--line),var(--line)) 0 50%/100% 1px no-repeat;
+  transition:background-size .3s linear var(--t,0ms)}
+.gp-flow__n:last-child .gp-flow__hd::after{display:none}
+.gp-flow .pg-p{margin-top:24px;font-size:17px;width:min(33ch,100% + 72px);max-width:none}
+/* текст узла может зайти под линию перехода: там пусто. Последний узел — строго в своей колонке */
+.gp-flow__n:last-child .pg-p{width:auto;max-width:33ch}
+/* переход между узлами */
+.gp-flow__via{position:relative;height:var(--ic);min-width:0}
+.gp-flow__ln{position:absolute;left:0;right:8px;top:calc(50% - 1px);height:2px;
+  background:linear-gradient(var(--fill),var(--fill)) 0 0/0 100% no-repeat,linear-gradient(var(--line),var(--line)) 0 50%/100% 1px no-repeat;
+  transition:background-size .3s linear var(--t,0ms)}
+.gp-flow__arr{position:absolute;right:6px;top:calc(50% - 5px);width:8px;height:10px;fill:none;stroke:#1C132640;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke .2s var(--e-enter) calc(var(--t,0ms) + 280ms)}
+.gp-flow__lb{position:absolute;left:8px;right:16px;bottom:calc(50% + 12px);font:400 14px/1.35 var(--font-ui);color:var(--ink-3);text-align:center;text-wrap:balance}
+/* появление: узел загорается, линия от него заливается к следующему */
+.gp-flow.is-in .gp-flow__ic,.no-js .gp-flow__ic{color:var(--fill);box-shadow:inset 0 0 0 1.5px var(--fill)}
+.gp-flow.is-in .gp-flow__hd::after{background-size:100% 100%,100% 1px}
+.no-js .gp-flow__hd::after{background-size:100% 100%,100% 1px}
+.gp-flow.is-in .gp-flow__ln,.no-js .gp-flow__ln{background-size:100% 100%,100% 1px}
+.gp-flow.is-in .gp-flow__arr,.no-js .gp-flow__arr{stroke:var(--fill)}
+/* хвост узла начинает заливаться вместе с узлом, переход — сразу после него */
+.gp-flow__n .gp-flow__hd::after{transition-delay:calc(var(--t,0ms) + 100ms)}
+
+/* до 1180: схема столбиком — линия вертикальная через центр значков, подпись перехода справа от неё */
+@media (max-width:1179px){
+  .gp-flow{grid-template-columns:minmax(0,1fr);max-width:640px;margin-top:0}
+  .gp-flow__n{position:relative}
+  .gp-flow__hd::after{display:none}
+  .gp-flow .pg-h3{white-space:normal}
+  .gp-flow .pg-p,.gp-flow__n:last-child .pg-p{margin-top:8px;width:auto;max-width:44ch;padding-left:calc(var(--ic) + 14px);padding-right:0;box-sizing:content-box}
+  .gp-flow__n:not(:last-child)::after{content:"";position:absolute;left:calc(var(--ic) / 2 - 1px);top:calc(var(--ic) + 6px);bottom:0;width:2px;
+    background:linear-gradient(var(--fill),var(--fill)) 0 0/100% 0 no-repeat,linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat;
+    transition:background-size .3s linear calc(var(--t,0ms) + 100ms)}
+  .gp-flow.is-in .gp-flow__n::after,.no-js .gp-flow__n::after{background-size:100% 100%,1px 100%}
+  .gp-flow__via{height:auto;min-height:64px;display:flex;align-items:center;padding:14px 0 14px calc(var(--ic) + 14px)}
+  .gp-flow__ln{left:calc(var(--ic) / 2 - 1px);right:auto;top:0;bottom:6px;width:2px;height:auto;
+    background:linear-gradient(var(--fill),var(--fill)) 0 0/100% 0 no-repeat,linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat}
+  .gp-flow.is-in .gp-flow__ln,.no-js .gp-flow__ln{background-size:100% 100%,1px 100%}
+  .gp-flow__arr{right:auto;top:auto;bottom:4px;left:calc(var(--ic) / 2 - 4px);rotate:90deg}
+  .gp-flow__lb{position:static;text-align:left;font-size:15px}
+}
+@media (max-width:640px){.gp-flow{--ic:42px}.gp-flow .pg-h3{margin-left:12px}.gp-flow .pg-p,.gp-flow__n:last-child .pg-p,.gp-flow__via{padding-left:calc(var(--ic) + 12px)}}
+
+/* ============================== 3. Возможности ============================== */
+.gp-caps .pg-head__aside{align-self:end}
+.gp-caps .pg-head__aside .pg-lead{max-width:34ch}
+.gp-caps .pg-head__aside .pg-ulink{margin-top:20px}
+/* пример в строке — всегда две строки «предмет → время/значение»: сверху --ink-2 (или номер), снизу --ink-3 */
+.gp-x{display:inline-flex;flex-direction:column;align-items:flex-end;gap:6px;font:var(--marg);line-height:1.35;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.gp-x>span{white-space:nowrap}
+.gp-x .pg-plate{margin:0;--h:24px}
+@media (max-width:1023px){.gp-x .pg-plate{--h:22px}}
+.gp-x .pg-st,.gp-x__t{font:400 15px/1.35 var(--font-ui);color:var(--ink-3)}
+.gp-x__n{color:inherit}
+/* ≥1280 пример шире своей колонки (до 192 px) и заходит в зазор — описание держит поле справа, чтобы текст не подходил к примеру ближе 20 px */
+@media (min-width:1280px){.gp-caps .pg-row__d{padding-right:clamp(24px,2.5vw,40px)}}
+/* 1024–1279: колонка примера узкая (2 из 12) — пример встаёт под описанием, в одну строку, как на телефоне */
+@media (min-width:1024px) and (max-width:1279px){
+  .gp-caps .pg-row__x{grid-column:7/13;justify-self:start;text-align:left;margin-top:12px}
+  .gp-x{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 12px}
+}
+@media (max-width:1023px){.gp-x{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 12px}.gp-x>span{white-space:normal}.gp-x__t{white-space:nowrap}}
+
+/* ============================== 4. Экран iPad (порт gps-screen) ============================== */
+.gp-scr{--ink-4:#8E8399;--ok-dot:#19B36B;--ok-ink:#0E7A47;--idle-dot:#A49BAD;--idle-ink:#6F6677;--ev-bg:#FFF1DE;--ev-ink:#A35A00;
+  --gps:#0145F2;--gps-ink:#050170;--hair:#1C132614;--hair-2:#1C13260f;
+  --ui-sh:0 0 0 .5px #1C13261f,0 1px 2px #1C13260f,0 10px 24px -12px #12182A40;
+  --e-roll:cubic-bezier(.25,1,.5,1);
+  --w-plan:4;--w-case:13;--w-line:6;--w-zone:2.5;--zone-dash:10 9}
+.gp-ipad{position:relative;width:100%;max-width:1100px;padding:12px;border-radius:30px;
+  background:linear-gradient(140deg,#8e8c94,#3a393f 7%,#17171a 40%,#1d1d21 70%,#4a4950 94%,#9a98a0);
+  box-shadow:inset 0 0 0 1px #ffffff14,inset 0 0 0 2.5px #0a0a0c,0 0 0 1px #1C13260f,0 2px 4px #12182A0f,12px 24px 48px -28px #12182A59}
+.gp-ipad__cam{position:absolute;left:50%;top:3px;width:6px;height:6px;margin-left:-3px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#5a6b8c 0 1px,#1a1a1d 1.6px)}
+/* zoom экрана ставит p-gps.js: на iPad шире 800 px интерфейс растёт целиком, пропорции колонки и карты как на 1440 */
+.gp-scr{position:relative;display:flex;width:100%;aspect-ratio:1180/820;border-radius:18px;overflow:hidden;background:#fff;isolation:isolate;
+  font-family:var(--font-ui);color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.5}
+.gp-scr svg{max-width:none;display:block}
+.gp-scr ul{margin:0;padding:0;list-style:none}
+
+.gp-scr__st{position:absolute;z-index:6;inset:0 0 auto;height:22px;display:flex;align-items:center;justify-content:space-between;padding:0 14px 0 16px;
+  font:500 11px/1 var(--font-ui);color:var(--ink);pointer-events:none}
+.gp-scr__time{display:flex;gap:5px}
+.gp-scr__time b{font-weight:600;font-variant-numeric:tabular-nums}
+.gp-scr__time span{font-weight:500}
+.gp-scr__sys{display:flex;align-items:center;gap:5px}
+.gp-scr__sys svg{height:11px;width:auto}
+.gp-scr__sys svg:first-child{height:9.5px}
+
+/* карта */
+.gp-map{position:relative;flex:1;min-width:0;background:#EEEEF3;overflow:hidden}
+.gp-map__svg{position:absolute;inset:0;width:100%;height:100%}
+.gp-map__zone{fill:#0145F20d;stroke:var(--gps);stroke-opacity:.55;stroke-width:2.5px;stroke-dasharray:10 9;vector-effect:non-scaling-stroke}
+.gp-map__plan{fill:none;stroke:var(--gps);stroke-opacity:.22;stroke-width:4px;stroke-linejoin:round;stroke-linecap:round}
+.gp-map__case{fill:none;stroke:#fff;stroke-width:13px;stroke-linejoin:round;stroke-linecap:round}
+.gp-map__done{fill:none;stroke:var(--gps);stroke-width:6px;stroke-linejoin:round;stroke-linecap:round}
+.js .gp-map__zone{vector-effect:none}
+.gp-map__start{fill:#fff;stroke:var(--gps);stroke-width:2.5px;vector-effect:non-scaling-stroke}
+.gp-map__dest{fill:var(--gps-ink);stroke:#fff;stroke-width:2.5px;vector-effect:non-scaling-stroke}
+.gp-ztag{position:absolute;z-index:2;left:83%;top:42%;transform:translate(-50%,-50%);padding:2px 6px;border-radius:5px;background:#fff;box-shadow:var(--ui-sh);
+  font:500 10.5px/1.25 var(--font-ui);color:var(--gps);white-space:nowrap}
+
+/* машина: синий диск с белым кольцом, белая стрелка (центроид в 8,8 — не качается при повороте) */
+.gp-veh{position:absolute;z-index:3;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;will-change:transform}
+.no-js .gp-veh{display:none}
+.gp-veh__dot{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;background:var(--gps);border:3px solid #fff;box-shadow:0 2px 6px -1px #12182A59}
+.gp-veh__arrow{width:12px;height:12px;fill:#fff}
+.gp-veh__pulse{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--gps);opacity:0}
+.gp-veh.is-moving .gp-veh__pulse{animation:gp-vpulse 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+@keyframes gp-vpulse{from{transform:scale(.7);opacity:.55}to{transform:scale(1.9);opacity:0}}
+.gp-veh__plate{position:absolute;top:50%;left:calc(100% + 7px);transform:translateY(-50%);
+  box-shadow:inset 0 0 0 .5px #fff,0 0 0 2px #fff,0 .5px 1px 2px #1C132626,0 4px 10px -3px #12182A4d}
+.gp-veh .gp-veh__plate{--h:16px}
+.gp-veh.is-left .gp-veh__plate{left:auto;right:calc(100% + 7px)}
+
+.gp-zoom{position:absolute;z-index:2;right:12px;bottom:30px;display:grid;width:30px;border-radius:10px;background:#fff;box-shadow:var(--ui-sh)}
+.gp-zoom span{display:grid;place-items:center;height:30px}
+.gp-zoom span+span{border-top:1px solid var(--hair)}
+.gp-zoom svg{width:12px;height:12px;fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round}
+.gp-scale{position:absolute;z-index:2;left:12px;bottom:10px;display:flex;align-items:flex-end;gap:6px;font:400 10px/1 var(--font-ui);color:var(--ink-2)}
+.gp-scale i{display:block;width:55px;height:4px;border:1.5px solid var(--ink-2);border-top:0;border-radius:0 0 1px 1px}
+.gp-osm{position:absolute;z-index:2;right:6px;bottom:5px;padding:1px 4px;border-radius:3px;background:#ffffffb3;font:400 10px/1.3 var(--font-ui);color:var(--ink-4)}
+.gp-mini,.gp-toast{display:none}
+
+/* правая колонка: шапка → сегменты → выбранная машина → остальные машины → события */
+.gp-side{flex:none;width:197px;display:flex;flex-direction:column;padding:32px 14px 14px;border-left:1px solid var(--hair);background:#fff}
+.gp-side__head{display:flex;align-items:center;justify-content:space-between;height:28px}
+.gp-side__head b{font:600 15px/1 var(--font);letter-spacing:-.01em}
+.gp-sbtn{display:grid;place-items:center;width:28px;height:28px;margin-right:-6px;border-radius:8px}
+.gp-sbtn svg{width:14px;height:14px;fill:none;stroke:var(--ink-2);stroke-width:1.6;stroke-linecap:round}
+.gp-seg{display:flex;gap:2px;height:26px;margin-top:10px;padding:2px;border-radius:8px;background:#1C13260a;font:500 11px/1 var(--font-ui);color:var(--ink-2)}
+.gp-seg span{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;border-radius:6px;white-space:nowrap}
+.gp-seg b{font-weight:500;margin-left:.25em}
+.gp-seg .on{background:#fff;color:var(--ink);box-shadow:0 1px 2px #1C132626}
+
+.gp-dot{position:relative;flex:none;width:6px;height:6px;border-radius:50%;background:var(--ok-dot)}
+.is-stop .gp-dot,.gp-car.is-stop .gp-dot,.gp-mini.is-stop .gp-dot{background:var(--idle-dot)}
+
+.gp-car{margin-top:12px;padding:10px;border:1px solid #0145F22e;border-radius:12px;background:#0145F208}
+.gp-car__r1{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gp-car__r1 .pg-plate{--h:20px}
+.gp-gst{display:inline-flex;align-items:center;gap:5px;font:500 11px/1 var(--font-ui);color:var(--ok-ink);white-space:nowrap}
+.gp-gst .gp-dot::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid var(--ok-dot);opacity:0}
+.gp-car:not(.is-stop) .gp-gst .gp-dot::after{animation:gp-sping 1.6s cubic-bezier(.2,.6,.3,1) infinite}
+@keyframes gp-sping{from{transform:scale(1);opacity:.7}to{transform:scale(2.6);opacity:0}}
+.gp-car.is-stop .gp-gst{color:var(--idle-ink)}
+
+/* скорость: барабаны в потоке, выровнены влево; разряд десятков схлопывается по ширине */
+.gp-car__spd{display:flex;align-items:baseline;gap:4px;margin-top:10px}
+.gp-car__spd small{font:400 11px/1 var(--font-ui);color:var(--ink-3)}
+.gp-spd{display:inline-flex;font:600 30px/1 var(--font);font-variant-numeric:tabular-nums;color:var(--ink)}
+.gp-spd__d{display:block;width:1ch;height:1em;overflow:hidden;transition:width 240ms var(--e-roll),margin 240ms var(--e-roll),opacity .2s}
+.gp-spd__d--t{margin-right:-.03em}
+.gp-spd__d--t.is-off{width:0;margin-right:0;opacity:0}
+.gp-spd__tape{display:block;transition:transform 240ms var(--e-roll)}
+.gp-spd__tape b{display:block;height:1em;font-weight:600}
+.gp-noanim .gp-spd__tape,.gp-noanim .gp-spd__d{transition:none}
+
+.gp-car__who{display:grid;gap:2px;margin-top:9px}
+.gp-car__who b{font:500 12.5px/1.25 var(--font-ui);color:var(--ink)}
+.gp-car__who span{font:400 11.5px/1.25 var(--font-ui);color:var(--ink-3)}
+.gp-car__stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--hair-2)}
+.gp-car__stats div{display:grid;gap:3px}
+.gp-car__stats span{font:400 10.5px/1.2 var(--font-ui);color:var(--ink-3)}
+.gp-car__stats b{font:600 13px/1.2 var(--font);font-variant-numeric:tabular-nums;color:var(--ink)}
+
+.gp-list{margin-top:6px}
+.gp-list li{display:grid;grid-template-columns:auto 1fr;align-items:center;height:36px;border-top:1px solid var(--hair-2)}
+.gp-list li:first-child{border-top:0}
+.gp-list .pg-plate{--h:16px}
+.gp-list__s{justify-self:end;width:84px;display:inline-flex;align-items:center;gap:5px;font:400 11px/1 var(--font-ui);color:var(--ink-2);white-space:nowrap}
+.gp-list .is-stop .gp-list__s{color:var(--ink-3)}
+
+.gp-ev{margin-top:auto;padding-top:10px}
+.gp-ev__h{display:block;font:600 12px/1.2 var(--font);color:var(--ink)}
+.gp-ev__list{margin-top:2px}
+.gp-ev__row{position:relative;isolation:isolate;display:flex;align-items:center;gap:9px;height:44px;overflow:hidden}
+.gp-ev__t{display:grid;gap:3px;min-width:0}
+.gp-ev__t b{font:500 12px/1.2 var(--font-ui);color:var(--ink);white-space:nowrap}
+.gp-ev__t>span{font:400 11px/1.2 var(--font-ui);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.gp-ico{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#1C13260a;color:var(--ink-3)}
+.gp-ico svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.gp-ico--warn{background:var(--ev-bg);color:var(--ev-ink)}
+.gp-ev__row--zone{height:0;opacity:0;transform:translateY(-6px);transition:height 240ms var(--e-roll),opacity 240ms,transform 240ms var(--e-roll)}
+.gp-ev__row--zone.is-on{height:44px;opacity:1;transform:none}
+.gp-ev__row::before{content:"";position:absolute;z-index:-1;inset:2px 0;border-radius:8px;background:var(--ev-bg);opacity:0}
+.gp-ev__row--zone.is-new::before{animation:gp-evflash 1.2s ease-out}
+@keyframes gp-evflash{from{opacity:1}to{opacity:0}}
+.gp-ev__row--line{transition:height 240ms var(--e-roll),opacity 240ms}
+.gp-noanim .gp-ev__row{transition:none;animation:none}
+
+/* средний iPad (560–759 px): событие одно — «Выезд из геозоны» после выезда, «Вышел на линию» до него */
+@container gpdev (max-width:759px){
+  .gp-side{padding-top:28px}
+  .gp-ev__list:has(.gp-ev__row--zone.is-on) .gp-ev__row--line{height:0;opacity:0}
+  /* экран ниже ~470 px: список машин прокручивается под закреплёнными событиями, как в приложении — нижняя строка уходит под край */
+  .gp-list{flex:0 1 auto;min-height:0;overflow:hidden;-webkit-mask-image:linear-gradient(#000 calc(100% - 18px),transparent);mask-image:linear-gradient(#000 calc(100% - 18px),transparent)}
+  .gp-ev{flex:none}
+}
+
+/* узкий iPad (< 560 px, как в ТЗ): без колонки, мини-карточка, тост, значок */
+@container gpdev (max-width:559px){
+  .gp-scr{--w-plan:3;--w-case:9;--w-line:4;--w-zone:1.75;--zone-dash:7 6;border-radius:12px}
+  .gp-ipad{border-radius:24px;padding:10px}
+  .gp-side,.gp-zoom,.gp-scale,.gp-scr__st{display:none}
+  .gp-veh{width:18px;height:18px;margin:-9px 0 0 -9px}
+  .gp-veh__dot{border-width:2.5px}
+  .gp-veh__arrow{width:10px;height:10px}
+  .gp-veh__plate{display:none}
+  .gp-ztag{font-size:10px;padding:1px 5px;border-radius:4px}
+  .gp-mini{position:absolute;z-index:4;left:8px;top:8px;display:flex;align-items:center;gap:7px;height:30px;padding:0 8px;border-radius:10px;background:#fff;box-shadow:var(--ui-sh)}
+  .gp-mini .pg-plate{--h:16px}
+  .gp-mini__v{display:inline-flex;align-items:baseline;gap:3px}
+  .gp-mini__v b{font:600 15px/1 var(--font);letter-spacing:-.01em;font-variant-numeric:tabular-nums;text-align:left}
+  .gp-mini__v small{font:400 10px/1 var(--font-ui);color:var(--ink-3)}
+  .gp-mini__ev{width:0;height:18px;margin-left:-7px;border-radius:5px;overflow:hidden;opacity:0;transform:scale(.6);
+    transition:width 240ms var(--e-roll),margin 240ms var(--e-roll),opacity 200ms,transform 240ms var(--e-roll)}
+  .gp-mini__ev svg{width:11px;height:11px;flex:none;stroke-width:1.8}
+  .gp-mini.has-ev .gp-mini__ev{width:18px;margin-left:0;opacity:1;transform:none}
+  .gp-toast{position:absolute;z-index:4;left:8px;top:44px;display:flex;align-items:center;gap:6px;max-width:calc(100% - 16px);padding:5px 9px 5px 5px;border-radius:9px;background:#fff;box-shadow:var(--ui-sh);
+    font:400 10.5px/1.2 var(--font-ui);color:var(--ink);opacity:0;transform:translateY(-6px);pointer-events:none;
+    transition:opacity 240ms,transform 240ms var(--e-roll)}
+  .gp-toast.is-on{opacity:1;transform:none}
+  .gp-toast.is-gone{opacity:0;transform:translate(-4px,-14px) scale(.92);transform-origin:20% 0}
+  .gp-toast .gp-ico{width:18px;height:18px;border-radius:5px}
+  .gp-toast .gp-ico svg{width:11px;height:11px;stroke-width:1.8}
+  .gp-toast>span{min-width:0;white-space:nowrap}
+  .gp-toast b{font-weight:600}
+  .gp-noanim .gp-toast,.gp-noanim .gp-mini__ev{transition:none}
+}
+
+/* ============================== 5. Телефон и планшет ============================== */
+@media (max-width:1023px){
+  .gp-hero .pg-hero__obj{grid-column:1/-1;justify-content:center;margin-top:clamp(40px,8cqw,64px)}
+  .gp-hero .pg-lead{max-width:40ch}
+  .gp-pin{width:min(var(--obj-w-m),300px)}
+}
+@media (min-width:700px) and (max-width:1023px){
+  .gp-rail{--ts:44px;--rg:28px}
+  .gp-mark{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);column-gap:var(--cg);align-items:baseline}
+  .gp-mark__p{margin-top:0;max-width:44ch}
+}
+@media (max-width:699px){
+  .gp-rail{--ts:34px;--rg:26px}
+  .gp-mark{padding-left:30px}
+  .gp-mark__p{margin-top:8px;font-size:16px}
+}
+
+/* ============================== 6. Без движения ============================== */
+@media (prefers-reduced-motion:reduce){
+  .js .gp-trip{height:auto!important;padding-block:clamp(72px,8cqw,128px)!important}
+  .js .gp-trip__stage{position:static!important;height:auto!important;padding:0!important}
+  .js .gp-mark .og{animation:none!important;transition:none}
+  .gp-mark,.gp-mark::after,.gp-mark__t,.gp-mark__p,.gp-mark__p b{transition:none!important}
+  .gp-veh__pulse,.gp-gst .gp-dot::after{animation:none!important;opacity:0!important}
+  .gp-flow__ic,.gp-flow__ln,.gp-flow__arr,.gp-flow__hd::after,.gp-flow__n::after{transition:none!important}
+  .gp-spd__tape,.gp-spd__d,.gp-ev__row,.gp-ev__row::before,.gp-toast,.gp-mini__ev{transition:none!important;animation:none!important}
+}
+
+/* герой на телефоне — как у Fleet и PAY (иначе 44 px и пять строк) */
+@media (max-width:640px){.gp-hero .pg-h1{font-size:clamp(34px,10cqw,52px)}}
