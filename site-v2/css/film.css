@@ -79,6 +79,12 @@
   inset:var(--gap);margin:0;width:auto;height:auto;border-radius:var(--hero-radius,22px);
   box-shadow:0 0 0 1px #ffffff14 inset,0 30px 70px -40px #18003380;
 }
+/* низ карточки — зеркало купола полотна под ней (.canvas в site.css): те же радиусы и тот же --dome от scenes.js,
+   поэтому дуги снизу у фильма и сверху у листа одинаковые и распрямляются вместе. Без scenes.js --dome = 1 — обычные углы */
+.film--hero .film__media{--dome-h:7.5cqw;
+  border-bottom-left-radius:calc(var(--hero-radius,22px) + (1 - var(--dome,1)) * (50% - var(--hero-radius,22px))) calc(var(--hero-radius,22px) + (1 - var(--dome,1)) * var(--dome-h));
+  border-bottom-right-radius:calc(var(--hero-radius,22px) + (1 - var(--dome,1)) * (50% - var(--hero-radius,22px))) calc(var(--hero-radius,22px) + (1 - var(--dome,1)) * var(--dome-h))}
+@media (max-width:640px){.film--hero .film__media{--dome-h:14cqw}}
 .film--hero .film__media::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none;
   box-shadow:inset 0 0 0 1px #ffffff17}
 /* поля и радиус карточки задаёт site.css (--hero-gap, --hero-radius); здесь только запасные значения */

@@ -99,9 +99,9 @@ function pxSvg(svg, vw, vh){
 
 /* ---------- купол: верхний край полотна — горизонт планеты из фильма, распрямляется, пока манифест поднимается к середине экрана ----------
    Это форма края, а не движение предметов, поэтому работает на любой ширине; при «уменьшить движение» край сразу прямой */
-const canvas = $('.canvas'), man = $('.s-man');
+const canvas = $('.canvas'), man = $('.s-man'), filmCard = $('.film--hero .film__media');   // низ карточки фильма — зеркало купола (film.css)
 let dome = -1, manTop = 0;
-const setDome = v => { v = Math.round(v * 1000) / 1000; if (v !== dome) canvas.style.setProperty('--dome', dome = v); };
+const setDome = v => { v = Math.round(v * 1000) / 1000; if (v !== dome){ canvas.style.setProperty('--dome', dome = v); if (filmCard) filmCard.style.setProperty('--dome', v); } };
 
 /* ---------- движок прогресса ----------
    У сцены свой режим жизни: пины — pinLive, потоковые — flowLive. Выключилась — один раз встаёт в финальный вид (final) */
