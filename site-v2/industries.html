@@ -1,0 +1,223 @@
+<!doctype html><html lang="ru" class="no-js"><head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Решения по отраслям — Safa One</title><meta name="description" content="Таксопарки, доставка, логистика и компании с самозанятыми: что из Safa Fleet, GPS и PAY подходит как есть, а что настроим под задачу.">
+<meta property="og:title" content="Решения по отраслям — Safa One"><meta property="og:description" content="Таксопарки, доставка, логистика и компании с самозанятыми: что из Safa Fleet, GPS и PAY подходит как есть, а что настроим под задачу."><meta property="og:image" content="media/poster_wide_f1.webp">
+<meta name="theme-color" content="#F3EEF6">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<!-- шрифты со своего сервера (css/fonts.css); кириллица и латиница Onest нужны первому экрану — грузим сразу -->
+<link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-latin.woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css?v=15e75de1">
+<link rel="stylesheet" href="css/site.css?v=7b95ca34"><link rel="stylesheet" href="css/pages.css?v=a5334afb"><link rel="stylesheet" href="css/p-industries.css?v=b064fa1f">
+<script defer src="js/vendor/lenis-1.1.13.min.js?v=44dcd10f"></script>
+<script defer src="js/pages.js?v=fdcdab16"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"index.html"},{"@type":"ListItem","position":2,"name":"Решения по отраслям","item":"industries.html"}]}</script>
+</head><body class="pg" data-tone="brand">
+<a class="skip-link" href="#main">К содержимому</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="d-ok" viewBox="0 0 12 12"><path d="M2.4 6.4 4.9 8.8 9.6 3.4"/></symbol>
+  <symbol id="d-wait" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.7"/><path d="M6 3.5V6l1.7 1.1"/></symbol>
+  <symbol id="d-bad" viewBox="0 0 12 12"><path d="M6 2.3v4.6"/><path d="M6 9.6v.1" stroke-width="2"/></symbol>
+  <symbol id="pg-arr" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="2" vector-effect="non-scaling-stroke"/><path d="M10.5 3.2A1.8 1.8 0 0 0 8.8 2H4a2 2 0 0 0-2 2v4.8a1.8 1.8 0 0 0 1.2 1.7" vector-effect="non-scaling-stroke"/></symbol>
+</svg>
+<!-- nav:start -->
+<!-- меню сайта: одна разметка на всех страницах (scratchpad/pages/tools/chrome.py). Лого | разделы и язык по центру | кнопка — без внутренних плашек -->
+<header class="nav is-light" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Safa One — на главную">
+    <img class="is-white" src="img/safa-white.svg" alt="" width="71" height="25">
+    <img class="is-color" src="img/safa-color.svg" alt="" width="71" height="25">
+  </a>
+  <nav class="nav__menu" aria-label="Основное меню">
+    <div class="nav__dd">
+      <button class="nav__link" type="button" aria-expanded="false" aria-controls="drop-products">Продукты
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 3.7 5 6.5l2.8-2.8"/></svg></button>
+      <div class="drop drop--fit" id="drop-products">
+        <!-- герои продуктов, 96px, без loading=lazy: выпадашка открывается сразу, ленивые мигали бы. Файлы — по финальным путям (утренний импорт №1/№7/№2 их заменит) -->
+        <a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><div><b>Safa Fleet</b><span>CRM для таксопарков</span></div></a>
+        <a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><div><b>Safa GPS</b><span>Мониторинг транспорта</span></div></a>
+        <a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><div><b>Safa PAY</b><span>Выплаты водителям</span></div></a>
+      </div>
+    </div>
+    <a class="nav__link" href="industries.html" aria-current="page">Решения</a>
+    <a class="nav__link" href="services.html" data-sec="services">Услуги</a>
+    <a class="nav__link" href="about.html" data-sec="why">О компании</a>
+    <a class="nav__link" href="contacts.html" data-sec="contact">Контакты</a>
+    <span class="nav__sep" aria-hidden="true"></span>
+    <div class="lang" role="group" aria-label="Язык">
+      <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+      <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+    </div>
+  </nav>
+  <div class="nav__end">
+    <!-- кабинет партнёра — текстовая ссылка у кнопки, как пункты меню; уже 1600px подпись короткая (места между меню и кнопкой мало) -->
+    <a class="nav__link nav__cab" href="cabinet.html" aria-label="Кабинет партнёра"><span class="nav__cab-l">Кабинет партнёра</span><span class="nav__cab-s">Кабинет</span></a>
+    <a class="btn btn--primary nav__cta" href="contacts.html#lead">Обсудить проект</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mnav"><i aria-hidden="true"></i><span class="burger__t">Меню</span></button>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Меню" data-lenis-prevent>
+  <!-- без подписей групп: группы разделены только отступом. Предметы — только у трёх продуктов, те же, что в выпадашке -->
+  <ul class="mnav__prod">
+    <li><a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><span>Safa Fleet</span></a></li>
+    <li><a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><span>Safa GPS</span></a></li>
+    <li><a href="pay.html" data-sec="pay"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><span>Safa PAY</span></a></li>
+  </ul>
+  <ul>
+    <li><a href="industries.html" aria-current="page">Решения</a></li>
+    <li><a href="services.html" data-sec="services">Услуги</a></li>
+    <li><a href="about.html" data-sec="why">О компании</a></li>
+    <li><a href="contacts.html" data-sec="contact">Контакты</a></li>
+  </ul>
+  <a class="mnav__cab" href="cabinet.html">Кабинет партнёра<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  <div class="lang" role="group" aria-label="Язык">
+    <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+    <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+  </div>
+  <div class="mnav__end"><a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a></div>
+</nav>
+<!-- nav:end -->
+<div class="page"><div class="canvas pg-canvas">
+<main id="main">
+
+  <!-- 1. Герой --type: заголовок, лид, действие; сразу под ним — матрица «отрасль × продукт» -->
+  <section class="pg-hero pg-hero--type in-hero">
+    <div class="grid">
+      <h1 class="pg-h1 pg-hero__h" data-mask><span class="ln"><span>Решения по&nbsp;отраслям</span></span></h1>
+      <p class="pg-lead pg-hero__lead" data-rv>Собираем Safa&nbsp;Fleet, Safa&nbsp;GPS и Safa&nbsp;PAY под ваши процессы и дописываем то,&nbsp;чего не хватает.</p>
+      <p class="pg-marg pg-hero__marg in-legend" id="in-legend" data-rv><span class="in-key"><b>Готово</b>&nbsp;— подходит как&nbsp;есть.</span><span class="in-key in-key--task"><b>Под задачу</b>&nbsp;— настроим или доработаем под&nbsp;ваши процессы.</span></p>
+      <div class="pg-actions pg-hero__act" data-rv>
+        <a class="btn btn--primary" href="contacts.html?intent=dev#lead">Обсудить задачу</a>
+      </div>
+
+      <div class="in-mx" role="table" aria-label="Что из продуктов Safa подходит по отраслям" aria-describedby="in-legend" data-rv>
+        <div class="in-mx__hd" role="row">
+          <span class="in-mx__c0" role="columnheader"><span class="sr">Отрасль</span></span>
+          <span class="in-mx__h" role="columnheader"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="69" height="26"></span>
+          <span class="in-mx__h" role="columnheader"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="71" height="26"></span>
+          <span class="in-mx__h" role="columnheader"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="69" height="26"></span>
+          <span class="in-mx__h in-mx__h--w" role="columnheader">Разработка</span>
+        </div>
+        <div class="in-mx__r" role="row">
+          <span class="in-mx__c0" role="rowheader"><a class="in-mx__a" href="#taxi"><span class="in-mx__t"><span class="in-nw">Таксопарки<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span></a></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;Fleet</span><span class="in-st">Готово</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;GPS</span><span class="in-st">Готово</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;PAY</span><span class="in-st">Готово</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Разработка</span><span class="in-st in-st--task">Под задачу</span></span>
+        </div>
+        <div class="in-mx__r" role="row">
+          <span class="in-mx__c0" role="rowheader"><a class="in-mx__a" href="#couriers"><span class="in-mx__t">Курьерские службы и&nbsp;<span class="in-nw">доставка<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span></a></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;Fleet</span><span class="in-st in-st--task">Под задачу</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;GPS</span><span class="in-st">Готово</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;PAY</span><span class="in-st in-st--task">Под задачу</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Разработка</span><span class="in-st in-st--task">Под задачу</span></span>
+        </div>
+        <div class="in-mx__r" role="row">
+          <span class="in-mx__c0" role="rowheader"><a class="in-mx__a" href="#logistics"><span class="in-mx__t">Логистика и&nbsp;<span class="in-nw">автопарки<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span></a></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;Fleet</span><span class="in-st in-st--task">Под задачу</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;GPS</span><span class="in-st">Готово</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;PAY</span><span class="in-st in-st--no"><span aria-hidden="true">—</span><span class="sr">Не применяется</span></span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Разработка</span><span class="in-st in-st--task">Под задачу</span></span>
+        </div>
+        <div class="in-mx__r" role="row">
+          <span class="in-mx__c0" role="rowheader"><a class="in-mx__a" href="#self-employed"><span class="in-mx__t">Компании с&nbsp;<span class="in-nw">самозанятыми<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></span></a></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;Fleet</span><span class="in-st in-st--no"><span aria-hidden="true">—</span><span class="sr">Не применяется</span></span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;GPS</span><span class="in-st in-st--no"><span aria-hidden="true">—</span><span class="sr">Не применяется</span></span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Safa&nbsp;PAY</span><span class="in-st in-st--task">Под задачу</span></span>
+          <span class="in-mx__c" role="cell"><span class="in-mx__l" aria-hidden="true">Разработка</span><span class="in-st in-st--task">Под задачу</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Таксопарки -->
+  <section class="pg-sec pg-sec--rule grid in-ind" id="taxi">
+    <div class="pg-hrow in-ind__h"><img class="pg-gl in-gl" src="media/g2/steering_wheel_256.webp" srcset="media/g2/steering_wheel_512.webp 2x" alt="" width="56" height="56" style="--os:1"><h2 class="pg-h2" data-mask><span class="ln"><span>Таксопарк без ручной рутины</span></span></h2></div>
+    <div class="in-ind__txt" data-rv>
+      <p class="pg-lead in-ind__lead">Водители, машины, выплаты и&nbsp;контроль&nbsp;— в&nbsp;одной связке. Данные приходят из&nbsp;Яндекс&nbsp;Fleet, заработок водители выводят сами, а&nbsp;машины видны на&nbsp;карте.</p>
+      <div class="in-ind__act">
+        <a class="pg-ulink" href="pay.html">Подключить выплаты<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a class="pg-ulink" href="contacts.html?intent=park#lead">Обсудить задачу<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <ul class="in-fit" aria-label="Что подойдёт таксопарку" data-rv-group>
+      <li data-rv><a class="in-fit__r" href="fleet.html"><span class="in-fit__lk"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="64" height="24"></span><span class="in-fit__t">Учёт водителей и&nbsp;документов</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="pay.html"><span class="in-fit__lk"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="64" height="24"></span><span class="in-fit__t">Выплаты без ручных переводов</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="gps.html"><span class="in-fit__lk"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="66" height="24"></span><span class="in-fit__t">Контроль машин на&nbsp;линии</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+    </ul>
+  </section>
+
+  <!-- 3. Курьерские службы и доставка -->
+  <section class="pg-sec pg-sec--rule grid in-ind" id="couriers">
+    <div class="pg-hrow in-ind__h"><img class="pg-gl in-gl" src="media/g2/courier_scooter_256.webp?v=30132744" srcset="media/g2/courier_scooter_512.webp?v=30132744 2x" alt="" width="56" height="56" loading="lazy" decoding="async" style="--os:1"><h2 class="pg-h2" data-mask><span class="ln"><span>Курьерские службы и&nbsp;доставка</span></span></h2></div>
+    <div class="in-ind__txt" data-rv>
+      <p class="pg-lead in-ind__lead">Машины доставки на&nbsp;карте&nbsp;— Safa&nbsp;GPS. Выплаты курьерам на&nbsp;карту и&nbsp;их учёт настроим под&nbsp;ваши процессы.</p>
+      <div class="in-ind__act">
+        <a class="pg-ulink" href="contacts.html?intent=dev#lead">Обсудить задачу<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <ul class="in-fit" aria-label="Что подойдёт службе доставки" data-rv-group>
+      <li data-rv><a class="in-fit__r" href="gps.html"><span class="in-fit__lk"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="66" height="24"></span><span class="in-fit__t">Курьеры и&nbsp;машины на&nbsp;карте</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="pay.html"><span class="in-fit__lk"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="64" height="24"></span><span class="in-fit__t">Выплаты на&nbsp;карты Uzcard и&nbsp;HUMO, личность через&nbsp;MyID<span class="in-st in-st--task in-fit__st">Под задачу</span></span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="services.html#integrations"><span class="in-fit__lk in-fit__w">Разработка</span><span class="in-fit__t">Интеграции</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+    </ul>
+  </section>
+
+  <!-- 4. Логистика и автопарки -->
+  <section class="pg-sec pg-sec--rule grid in-ind" id="logistics">
+    <div class="pg-hrow in-ind__h"><img class="pg-gl in-gl" src="media/g2/minibus_256.webp?v=30132749" srcset="media/g2/minibus_512.webp?v=30132749 2x" alt="" width="56" height="56" loading="lazy" decoding="async" style="--os:1"><h2 class="pg-h2" data-mask><span class="ln"><span>Автопарк на&nbsp;одной карте</span></span></h2></div>
+    <div class="in-ind__txt" data-rv>
+      <p class="pg-lead in-ind__lead">Мониторинг транспорта, маршруты и&nbsp;отчёты по&nbsp;пробегу&nbsp;— для доставки, грузоперевозок и&nbsp;служебных машин.</p>
+      <div class="in-ind__act">
+        <a class="pg-ulink" href="contacts.html?intent=park&amp;product=gps#lead">Обсудить задачу<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <ul class="in-fit" aria-label="Что подойдёт автопарку" data-rv-group>
+      <li data-rv><a class="in-fit__r" href="gps.html"><span class="in-fit__lk"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="66" height="24"></span><span class="in-fit__t">Маршруты и&nbsp;геозоны</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="gps.html"><span class="in-fit__lk"><img src="img/safa-gps-color.svg" alt="Safa GPS" width="66" height="24"></span><span class="in-fit__t">Учёт пробега и&nbsp;стоянок</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="fleet.html"><span class="in-fit__lk"><img src="img/safa-fleet-color.svg" alt="Safa Fleet" width="64" height="24"></span><span class="in-fit__t">Учёт машин и&nbsp;документов<span class="in-st in-st--task in-fit__st">Под задачу</span></span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="services.html#iot"><span class="in-fit__lk in-fit__w">Разработка</span><span class="in-fit__t">Датчики и&nbsp;телематика</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+    </ul>
+  </section>
+
+  <!-- 5. Компании с самозанятыми -->
+  <section class="pg-sec pg-sec--rule grid in-ind" id="self-employed">
+    <div class="pg-hrow in-ind__h"><img class="pg-gl in-gl" src="media/g2/people_256.webp" srcset="media/g2/people_512.webp 2x" alt="" width="56" height="56" loading="lazy" decoding="async" style="--os:1.05"><h2 class="pg-h2" data-mask><span class="ln"><span>Выплаты исполнителям</span></span></h2></div>
+    <div class="in-ind__txt" data-rv>
+      <p class="pg-lead in-ind__lead">Работаете с&nbsp;исполнителями-самозанятыми&nbsp;— водителями, курьерами? Обсудим, как настроить выплаты через Safa&nbsp;PAY и&nbsp;подключить их&nbsp;к&nbsp;вашей системе.</p>
+      <div class="in-ind__act">
+        <a class="pg-ulink" href="contacts.html?intent=dev#lead">Обсудить задачу<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <ul class="in-fit" aria-label="Что подойдёт компании с самозанятыми" data-rv-group>
+      <li data-rv><a class="in-fit__r" href="pay.html"><span class="in-fit__lk"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="64" height="24"></span><span class="in-fit__t">Выплаты на&nbsp;карты Uzcard и&nbsp;HUMO, личность через&nbsp;MyID<span class="in-st in-st--task in-fit__st">Под задачу</span></span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li data-rv><a class="in-fit__r" href="services.html#backend"><span class="in-fit__lk in-fit__w">Разработка</span><span class="in-fit__t">Реестр выплат и&nbsp;интеграция с&nbsp;вашей платформой</span><svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+    </ul>
+  </section>
+
+  <!-- 6. Финал -->
+  <section class="pg-next grid">
+    <h2 class="pg-next__t" data-mask><span class="ln"><span>Не нашли свою отрасль?</span></span><span class="ln"><span>Расскажите о&nbsp;задаче.</span></span></h2>
+    <div class="pg-next__a" data-rv>
+      <a class="btn btn--primary" href="contacts.html?intent=dev#lead">Обсудить задачу</a>
+      <a class="pg-ulink" href="tel:+998503333900">Позвонить +998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+    </div>
+  </section>
+</main>
+  <!-- foot:start -->
+  <footer class="pg-foot">
+    <div class="grid foot__colophon">
+      <div class="foot__brand"><img src="img/safa-color.svg" alt="safa" width="96" height="34"><p>Собственные продукты и&nbsp;разработка на&nbsp;заказ для транспорта и&nbsp;бизнеса в&nbsp;Узбекистане.</p></div>
+      <nav class="foot__col foot__col--a" aria-label="Продукты"><h3>Продукты</h3><ul><li><a href="fleet.html">Safa Fleet</a></li><li><a href="gps.html">Safa GPS</a></li><li><a href="pay.html">Safa PAY</a></li><li><a href="industries.html" aria-current="page">Решения по&nbsp;отраслям</a></li><li><a href="cabinet.html">Кабинет партнёра</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Услуги"><h3>Услуги</h3><ul><li><a href="services.html#mobile">Мобильные приложения</a></li><li><a href="services.html#web">Веб-сервисы и&nbsp;платформы</a></li><li><a href="services.html#backend">Backend и&nbsp;API</a></li><li><a href="services.html#iot">IoT и&nbsp;телематика</a></li><li><a href="services.html#ai">AI и&nbsp;автоматизация</a></li><li><a href="services.html#integrations">Интеграции</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="about.html">О компании</a></li><li><a href="services.html#process">Как мы работаем</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Документы"><h3>Документы</h3><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="data-deletion.html">Удаление данных</a></li><li><a href="terms.html">Условия использования</a></li></ul></nav>
+      <p class="foot__legal">© 2026 SAFA ONE MChJ&nbsp;· ИНН&nbsp;312911394&nbsp;· Резидент IT&nbsp;Park Uzbekistan<br>Узбекистан, г.&nbsp;Ташкент, Юнусабадский район, махалля Mirzo&nbsp;Ulugʻbek, <span style="white-space:nowrap">ул. Xalqobod-2,</span> д.&nbsp;65/6</p>
+    </div>
+  </footer>
+  <!-- foot:end -->
+</div></div>
+</body></html>

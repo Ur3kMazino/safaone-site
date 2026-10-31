@@ -1,0 +1,210 @@
+/* Safa PAY — кабинет партнёра: cabinet-dashboard.html (после проверки).
+   Основа — css/cabinet.css. Здесь только раскладка разделов, цифры, воронка, график и блок подтверждения водителей.
+   Карточек и подложек нет: группы разделены отступами и волосяными линиями. Обведена только подсказка графика (и зона сброса из основы). */
+
+/* ========== Цифры ========== */
+.cab-main{font-variant-numeric:tabular-nums}
+/* margin-left: табличная «1» стоит с широким полем слева — оптически выравниваем по краю текста */
+.kpi-hero{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.16em;margin-left:-.14em;
+  font:300 clamp(56px,6.2cqw,104px)/.95 var(--font);letter-spacing:-.045em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.kpi-hero__n{white-space:nowrap}
+.kpi-hero small{font:500 .3em/1 var(--font);letter-spacing:-.01em;color:var(--ink-3)}
+.kpi-l{margin-bottom:10px;font:var(--marg);color:var(--ink-2)}
+.kpi{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.2em;
+  font:400 clamp(30px,2.8cqw,44px)/1.05 var(--font);letter-spacing:-.032em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.kpi>span{white-space:nowrap}
+.kpi small{font:500 .42em/1 var(--font);letter-spacing:0;color:var(--ink-3);white-space:nowrap}
+.kpi-s{margin-top:10px;font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.delta-up{color:var(--ok)}
+.delta-down{color:var(--err)}
+
+/* ========== Депозит ========== */
+.dep{margin-top:clamp(56px,6cqw,88px)}
+.dep__grid{margin-top:36px;align-items:start}
+.dep__main{grid-column:1/8;min-width:0}
+.dep__side{grid-column:9/13;min-width:0;padding-left:var(--cg);border-left:1px solid var(--line)}
+.dep__m+.dep__m{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+/* шкала запаса: 100% = 7 дней */
+.meter{margin-top:28px}
+.meter__track{position:relative;height:2px;border-radius:1px;background:var(--line-2)}
+/* без красного конца: в финансовом интерфейсе красный край полосы читается как авария */
+.meter__f{position:absolute;left:0;top:0;bottom:0;border-radius:1px;background:linear-gradient(90deg,var(--pay-1),var(--pay-2))}
+.meter__tick{position:absolute;right:0;top:-4px;width:1px;height:10px;background:var(--ink-3)}
+.meter__row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px;margin-top:14px}
+.meter__l{margin-left:auto;font:var(--cap);color:var(--ink-3)}
+.dep__warn{white-space:normal}
+.dep__note{margin-top:8px;font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ========== Заголовок раздела: подпись источника справа ========== */
+.sec-h__src{font:var(--cap);letter-spacing:0;color:var(--ink-3)}
+
+/* ========== Водители: воронка и задачи ========== */
+.drv__grid{margin-top:36px;align-items:start}
+.fun{grid-column:1/8;min-width:0;display:grid;grid-template-columns:max-content minmax(0,1fr) 6ch;column-gap:20px}
+.fun__r{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:center;min-height:44px}
+.fun__l{font:400 16px/1.3 var(--font);color:var(--ink-2)}
+.fun__b{position:relative;height:6px;border-radius:3px;background:#1C13260d;overflow:hidden}
+.fun__b>i{position:absolute;left:0;top:0;bottom:0;width:var(--w);border-radius:3px;background:var(--purple);transition:width .6s var(--ease-out)}
+.fun__n{font:500 17px/1 var(--font);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.tasks{grid-column:9/13;min-width:0;border-top:1px solid var(--line)}
+.task{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;min-height:56px;padding:12px 0;border-bottom:1px solid var(--line)}
+.task .st{white-space:normal;align-items:baseline}
+.task .st::before{transform:translateY(-1px)}
+/* ссылка стоит по тексту статуса, а не по точке: 8px точка + 7px зазор */
+.task>.ulink{flex:none;margin-left:15px}
+@media (min-width:1024px){.task{flex-direction:column;align-items:flex-start;justify-content:center;gap:6px}}
+
+/* ========== Выводы: период, KPI, график ========== */
+.wd__bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 24px;margin-top:20px}
+.wd__range{font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px;margin-top:36px}
+.kpis__c{min-width:0}
+.kpis__c+.kpis__c{padding-left:24px;border-left:1px solid var(--line)}
+/* смена периода: кроссфейд .2s без подсчёта */
+.kpi,.kpi-s,.wd__range,.ch__t{transition:opacity .2s var(--ease)}
+.is-swap .kpi,.is-swap .kpi-s,.wd__range.is-swap,.ch__t.is-swap{opacity:0}
+
+.ch{margin:clamp(40px,4cqw,56px) 0 0}
+.ch__t{font:500 17px/1.3 var(--font);letter-spacing:-.005em;color:var(--ink)}
+.ch__box{--h:clamp(220px,20cqw,300px);--ax:52px;display:grid;grid-template-columns:var(--ax) minmax(0,1fr);margin-top:36px}
+@supports (height:round(down,10px,4px)){.ch__box{--h:round(down,clamp(220px,20cqw,300px),12px)}}
+.ch__y{position:relative;height:var(--h);padding-bottom:1px;font:400 13px/1 var(--font-ui);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ch__y>span{position:absolute;right:12px;transform:translateY(50%);white-space:nowrap}
+.ch__y>.ch__unit{transform:translateY(calc(50% - 20px))}
+.ch__area{position:relative;height:var(--h);border-bottom:1px solid var(--line-2)}
+.ch__grid>i{position:absolute;left:0;right:0;height:0;border-top:1px solid #1C13260f}
+.ch__bars{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+.ch__c{position:relative;display:flex;align-items:flex-end;justify-content:center;height:100%;min-width:0;padding:0;border:0;border-radius:0;background:none;cursor:default;-webkit-tap-highlight-color:transparent}
+.ch__c:focus-visible{outline:none}
+.bar__f{display:block;width:44%;max-width:44px;height:calc(var(--v) * 100%);border-radius:6px 6px 0 0;background:var(--g-pay-bar);transform-origin:50% 100%}
+.ch__bars--dense .bar__f{width:60%;border-radius:4px 4px 0 0}
+/* максимум и наведённый столбец — сплошной акцент #D0466A, без ухода в красный */
+.ch__c.is-max .bar__f,.ch__c:hover .bar__f,.ch__c.is-hot .bar__f,.ch__c:focus-visible .bar__f{background:var(--pay-acc)}
+.ch__c.is-part .bar__f{background:var(--pay-2);opacity:.55}
+.ch__c:focus-visible .bar__f{outline:2px solid var(--purple);outline-offset:2px}
+.bar__v{position:absolute;left:50%;bottom:calc(var(--v) * 100% + 8px);translate:calc(-50% + var(--dx,0px)) 0;font:600 13px/1 var(--font-ui);color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none;transition:opacity .15s}
+.ch__c.is-hot .bar__v,.ch.has-tip .bar__v{opacity:0}
+.ch__x{grid-column:2;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));height:30px;padding-top:12px;
+  font:400 13px/1 var(--font-ui);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.ch__x>span{justify-self:center;white-space:nowrap}
+.ch__x>span.is-end{justify-self:end}
+/* подсказка: белая, радиус 12, тень как у тоста; у крайних столбцов прижата к краю графика */
+.ch__tip{position:absolute;z-index:3;left:0;top:0;display:grid;gap:4px;padding:10px 12px;border-radius:12px;background:#fff;box-shadow:var(--pop-sh);
+  transform:translateY(-100%);pointer-events:none;white-space:nowrap}
+.ch__tip b{font:600 13px/1.2 var(--font-ui);color:var(--ink);font-variant-numeric:tabular-nums}
+.ch__tip span{font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+/* рост столбцов при показе */
+@media (prefers-reduced-motion:no-preference){
+  .ch.is-grow .bar__f{animation:grow .9s var(--ease-out) both;animation-delay:calc(var(--i) * var(--st,60ms))}
+  .ch.is-grow .bar__v{animation:vfade .4s var(--ease) both;animation-delay:calc(var(--i) * var(--st,60ms) + .55s)}
+}
+@keyframes grow{from{transform:scaleY(0)}}
+@keyframes vfade{from{opacity:0}}
+
+/* ========== Подтверждение активных водителей ========== */
+.cf{scroll-margin-top:calc(var(--head-h) + 8px)}
+.cf__txt{max-width:62ch;margin-top:16px;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink-2)}
+.cf__steps{margin-top:40px;align-items:start}
+.cf__s{grid-column:span 4;min-width:0}
+.cf__s+.cf__s{padding-left:var(--cg);border-left:1px solid var(--line)}
+.cf__h{display:flex;align-items:baseline;gap:14px;font:600 20px/1.25 var(--font);letter-spacing:-.015em;text-wrap:balance}
+.cf__n{flex:none;min-width:.6em;font:200 40px/1 var(--font);letter-spacing:-.03em;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.cf__p{margin-top:14px;font:400 16px/1.5 var(--font);color:var(--ink-2)}
+.cf__act{margin-top:22px}
+.cf__cap{margin-top:10px;font:var(--cap);color:var(--ink-3)}
+.cf__tbl{margin-top:18px}
+.cf__tbl caption{caption-side:top;padding-bottom:6px;text-align:left;font:var(--cap);color:var(--ink-3)}
+.cf__yes{color:var(--ok)}
+.cf__no{color:var(--err)}
+.drop__t{flex:1 1 180px}
+.cf__err{margin-top:8px;font:400 13px/1.4 var(--font-ui);color:var(--err)}
+.cf__err:empty{display:none}
+.cf__sample{margin-top:14px}
+.cf__foot{max-width:80ch;margin-top:28px;font:var(--cap);color:var(--ink-3)}
+.cf__go{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:28px}
+.cf__go .cf__cap{margin-top:0}
+.cf__go .cf__cap[hidden]{display:none}
+.cf__cancel{align-self:center}
+/* строка файла: имя в одну строку, длинное — многоточием посередине, расширение и размер не отрываются */
+.cf .files__t{flex:1 1 auto;min-width:0}
+.cf .files__name{display:flex;min-width:0;white-space:nowrap}
+.cf .files__base{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.cf .files__ext{flex:none}
+/* разрядка «1 117» в кнопке и итоге видна так же, как в тексте */
+.cf .btn,.cf__done-h{font-variant-numeric:tabular-nums}
+.cf__done{margin-top:36px}
+.cf__done-h{font:600 24px/1.2 var(--font);letter-spacing:-.02em}
+.cf__done-p{max-width:62ch;margin-top:12px;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink-2)}
+.cf__done-act{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+
+/* ========== ≤1023: всё на всю ширину ========== */
+@media (max-width:1023px){
+  .dep__side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--cg);margin-top:40px;padding-left:0;border-left:0}
+  .dep__m,.dep__m+.dep__m{margin-top:0;padding-top:20px;border-top:1px solid var(--line)}
+  .tasks{margin-top:32px}
+  /* 2×2 без зазоров между ячейками: отступы — паддингом, поэтому линии смыкаются крестом */
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:0;row-gap:0}
+  .kpis__c:nth-child(-n+2){padding-bottom:22px}
+  .kpis__c:nth-child(odd){padding-left:0;padding-right:24px;border-left:0}
+  .kpis__c:nth-child(even){padding-left:24px;border-left:1px solid var(--line)}
+  .kpis__c:nth-child(n+3){padding-top:22px;border-top:1px solid var(--line)}
+  .w-lg{display:none}
+  .cf__s+.cf__s{margin-top:28px;padding-top:24px;padding-left:0;border-left:0;border-top:1px solid var(--line)}
+}
+
+/* «Среднее время зачисления» → «Время зачисления» на узких экранах */
+.w-sm{display:none}
+@media (max-width:1023px){.w-sm{display:inline}}
+
+/* ========== ≤480: KPI в одну колонку — подпись слева, значение справа, строки через линии ========== */
+@media (max-width:480px){
+  .kpis{grid-template-columns:minmax(0,1fr);margin-top:28px;border-bottom:1px solid var(--line)}
+  .kpis__c,.kpis__c:nth-child(n){display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;column-gap:16px;
+    padding:16px 0 15px;border-left:0;border-top:1px solid var(--line)}
+  .kpis__c .kpi-l{grid-column:1;grid-row:1;margin:0}
+  .kpis__c .kpi{grid-column:2;grid-row:1;justify-content:flex-end;font-size:28px;flex-wrap:nowrap}
+  .kpis__c .kpi small{font-size:max(.42em,12px)}
+  .kpis__c .kpi-s{grid-column:1/-1;grid-row:2;margin-top:4px}
+}
+
+/* ========== ≤640: телефон ========== */
+@media (max-width:640px){
+  /* число и единица всегда в одну строку: кегль по ширине контента (100cqw − поля полотна − поля контента) */
+  .kpi-hero{flex-wrap:nowrap;font-size:min(56px,calc((100cqw - 2 * var(--gap) - 2 * var(--in)) / 7.95),calc((100cqw - 2 * var(--gap) - 2 * var(--in) - 28px) / 7.15))}
+  .kpi-hero small{font-size:max(.3em,12px)}   /* единица не мельче 12px; под неё в формуле выше 28px */
+  .hx{align-items:flex-start}
+  .hx>.glass{margin-top:calc((1.1em - 34px) / 2)}
+  .sec-h__act{margin-left:0}
+  .dep__side{grid-template-columns:minmax(0,1fr);row-gap:20px;margin-top:32px}
+  .fun{display:block}
+  .fun__r{display:grid;grid-template-columns:minmax(0,1fr) 6ch;column-gap:16px;row-gap:8px;padding:8px 0}
+  .fun__l{grid-column:1/-1;font-size:15px}
+  .wd__bar{flex-direction:column;align-items:flex-start}
+  .ch__box{--ax:40px}
+  .ch__y>span{right:8px}
+  .ch__x .ph-hide,.ch__x .xl-d{display:none}
+  .cf__go{flex-direction:column;align-items:stretch}
+  .cf__go .btn{width:100%}
+  .cf__h{gap:12px}
+}
+/* складной 280: вкладки периода в одну строку, подпись KPI не прилипает к числу */
+@media (max-width:359px){
+  #wd-tabs.seg{gap:0;margin-left:-6px}
+  #wd-tabs .seg__o{padding:0 6px;font-size:15px}
+  #wd-tabs .seg__o::after{left:6px;right:6px}
+  .kpis__c .kpi{font-size:24px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .fun__b>i{transition:none}
+  .kpi,.kpi-s,.wd__range,.ch__t{transition:opacity .2s}
+}
+/* до попадания графика в кадр столбцы ждут роста */
+@media (prefers-reduced-motion:no-preference){
+  .ch.is-wait .bar__f{transform:scaleY(0)}
+  .ch.is-wait .bar__v{opacity:0}
+}
+/* цифры в тексте раздела — табличные, как во всём кабинете (font-шорткат их сбрасывает) */
+.cf__p,.cf__txt,.cf__foot,.cf__cap,.cf__done-p,.task .st,.fun__l,.files__name{font-variant-numeric:tabular-nums}
+/* карта широкая: в квадрате 40×40 она ниже монет и людей у соседних заголовков — на глаз выравниваем */
+#wd-h .glass{scale:1.2}

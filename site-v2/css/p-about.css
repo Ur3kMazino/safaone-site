@@ -1,0 +1,123 @@
+/* Safa One — «О компании» (about.html). После css/site.css и css/pages.css. Классы страницы — с префиксом ab-.
+   Стекло на странице одно — плитка-знак в герое. Устройств нет. */
+
+/* ---------- 1. Герой: плитка стоит на земле, чуть откинута назад ---------- */
+.ab-tile .pg-obj__f{transform:perspective(900px) rotateX(8deg);transform-origin:50% 100%}
+.ab-hero .pg-hero__obj{justify-content:center;padding-right:clamp(0px,2cqw,40px)}
+@media (min-width:1024px){
+  /* плитка уже машины и пина: её место — по центру колонок 9–12, чтобы не подпирать строку H1 */
+  .ab-hero .pg-hero__obj{grid-column:9/13}
+}
+
+/* ---------- 2. Заявление: абзац от левого поля на колонках 1–9 (не центрированная колонка чтения главной) ---------- */
+.ab-read-sec{padding-block:clamp(96px,10cqw,176px) clamp(88px,9cqw,160px)}
+.ab-read{grid-column:1/10;max-width:30em;margin:0;font:400 clamp(26px,2.8cqw,40px)/1.3 var(--font);letter-spacing:-.022em;color:var(--ink);text-wrap:pretty}
+.ab-read b{font-weight:500}
+.ab-read .pg-tl{text-decoration-color:var(--purple)}
+/* маска строк, собранная скриптом: слово — окно с клипом, внутри едет вверх; --k — номер строки */
+.ab-read .ab-w{display:inline-block;vertical-align:top;clip-path:inset(-.35em -.3em 0 -.3em)}
+.ab-read .ab-w>span{display:inline-block;transform:translateY(112%);transition:transform 1s var(--e-enter);transition-delay:calc(var(--k,0) * 80ms)}
+.ab-read.is-in .ab-w>span{transform:none}
+.ab-read a.pg-tl:hover{color:var(--acc-ink)}
+
+/* ---------- 3. Продукты: лок-ап — заголовок строки ---------- */
+.ab-prod .pg-row__in{align-items:center}
+.ab-prod .pg-row__t{grid-column:1/5;display:flex;align-items:center;min-height:clamp(34px,3cqw,44px)}
+/* --lk — высота слова «safa» во всех трёх лок-апах (у Fleet и PAY оно занимает весь файл) */
+.ab-prod__lk{--lk:clamp(34px,3cqw,44px);display:block;height:var(--lk);width:auto}
+/* GPS: «safa» в файле — от y 31.9 до 136.66 из 163.54, т.е. 0.6406 высоты. Картинка выше в 1/0.6406 = 1.561 раза,
+   а отрицательные поля сверху/снизу (0.195 и 0.164 высоты файла) оставляют в потоке только рамку слова:
+   слово того же размера и на той же высоте строки, что у Fleet и PAY, пин свисает за рамку */
+.ab-prod__lk--gps{height:calc(var(--lk) * 1.561);margin-block:calc(var(--lk) * -.3045) calc(var(--lk) * -.2566)}
+.ab-prod .pg-row__d{grid-column:5/12;max-width:40ch;font:400 clamp(19px,1.7cqw,25px)/1.36 var(--font);letter-spacing:-.014em;color:var(--ink-2);transition:color .24s,translate .24s var(--e-enter)}
+.ab-prod .pg-row__x{grid-column:12/13;color:var(--ink)}
+.ab-prod a.pg-row__in .pg-row__x .pg-arr{width:20px;height:20px;margin:0}
+.ab-prod .pg-row__d b{font-weight:500;color:var(--ink)}
+.ab-prod a.pg-row__in:hover .pg-row__d{color:var(--ink)}
+.ab-prod a.pg-row__in:hover .pg-row__x .pg-arr{translate:3px 0}
+/* фокус: кольцо не по краю контента (пин и стрелка касались бы его), а с полем — внутрь по вертикали, чтобы не резать
+   линии строк, и наружу по горизонтали, в поле полотна (--in ≥ 20px, кольцо выходит на 8–16 + 5 px) */
+.ab-prod a.pg-row__in{position:relative}
+.ab-prod a.pg-row__in:focus-visible{box-shadow:none}
+.ab-prod a.pg-row__in:focus-visible::after{content:"";position:absolute;inset:clamp(10px,1cqw,14px) calc(-1 * clamp(8px,1.2cqw,16px));border-radius:14px;box-shadow:var(--ring);pointer-events:none}
+
+/* ---------- 4. Принципы: три колонки ровно на сетке страницы (1–4 / 5–8 / 9–12), без вертикальных линий:
+   соседние разделы — разлинованные списки, здесь ритм держат тонкие цифры ---------- */
+/* «работа» не остаётся одна: на телефоне «На чём / держится работа» (270 px в колонке 277 на 360).
+   Не &nbsp;, а nowrap от 360 px — уже 360 пара не помещается и переносится обычным образом, без вылета за поле */
+@media (min-width:360px){ .ab-nw{white-space:nowrap} }
+@media (min-width:1024px){
+  /* заголовок одной строкой на колонках 1–8, лид — ровно над колонкой 03 (9–12), низом по строке заголовка */
+  #principles .pg-head>:first-child{grid-column:1/9}
+  #principles .pg-head>.pg-lead{grid-column:9/13}
+}
+.ab-pr{grid-column:1/-1;display:grid;grid-template-columns:subgrid;margin:0;padding:0;list-style:none}
+.ab-pr__i{position:relative;min-width:0;padding:4px 0 8px}
+.ab-pr__i:nth-child(1){grid-column:1/5}
+.ab-pr__i:nth-child(2){grid-column:5/9}
+.ab-pr__i:nth-child(3){grid-column:9/13}
+.ab-pr__n{display:block;font-size:clamp(48px,4.4cqw,64px);color:var(--ink);font-variant-numeric:lining-nums proportional-nums;letter-spacing:-.06em}
+.ab-pr__b{margin-top:clamp(28px,2.8cqw,48px)}
+.ab-pr .pg-h3{max-width:15ch}
+.ab-pr .pg-p{margin-top:16px;max-width:34ch}
+
+/* ---------- 3–4. Ритм: нижняя линия списка продуктов — линия раздела, после неё тот же отступ, что на других стыках ---------- */
+#products{padding-bottom:0}
+
+/* ---------- 5. Реквизиты одной строкой между двумя линиями (сверху своя, снизу — линия финала).
+   Полная таблица с копированием — только в контактах ---------- */
+.ab-req{position:relative;align-items:baseline;padding-block:clamp(26px,2.4cqw,36px)}
+.ab-req::before{content:"";position:absolute;top:0;left:var(--in);right:var(--in);height:1px;background:var(--line)}
+.ab-req__t{grid-column:1/9;margin:0;font:400 clamp(17px,1.3cqw,19px)/1.45 var(--font);letter-spacing:-.008em;color:var(--ink-2)}
+.ab-req__t b{font-weight:500;color:var(--ink)}
+.ab-req__dot{display:inline-block;margin:0 .6em;color:var(--ink-3)}
+.ab-req__i{white-space:nowrap}
+.ab-req__a{grid-column:9/13;justify-self:end;white-space:nowrap}
+
+/* ---------- 6. Финал: действия по нижней линии всего блока фразы ---------- */
+.ab-next .pg-next__a{grid-row:1/3}
+
+/* ============================== планшет и телефон ============================== */
+@media (max-width:1023px){
+  /* плитка по оси кадра, не прижата вправо */
+  .ab-hero .pg-hero__obj{justify-content:center;padding-right:0}
+  .ab-tile{--obj-w-m:min(56%,300px)}
+  .ab-read{grid-column:1/-1;max-width:24em}
+  .ab-prod .pg-row__in{grid-template-columns:minmax(0,1fr) auto;row-gap:14px;column-gap:24px}
+  .ab-prod .pg-row__t{grid-column:1}
+  .ab-prod .pg-row__d{grid-column:1;grid-row:2;max-width:36ch}
+  .ab-prod .pg-row__x{grid-column:2;grid-row:1;align-self:center}
+  /* последний пункт закрывает линия раздела реквизитов — своей нижней линии нет */
+  .ab-pr{grid-template-columns:minmax(0,1fr);border-bottom:0}
+  .ab-pr__i,.ab-pr__i:nth-child(n){grid-column:1/-1;display:grid;grid-template-columns:clamp(64px,14cqw,120px) minmax(0,1fr);align-items:baseline;
+    padding:clamp(28px,4cqw,40px) 0;border-top:1px solid var(--line)}
+  .ab-pr__n{font-size:clamp(40px,7cqw,56px)}
+  .ab-pr__b{margin-top:0}
+  .ab-pr .pg-h3{max-width:none}
+  .ab-req{row-gap:14px}
+  .ab-req__t,.ab-req__a{grid-column:1/-1;justify-self:start}
+  .ab-next .pg-next__a{grid-row:auto}
+}
+@media (max-width:640px){
+  .ab-tile{--obj-w-m:72%}   /* ≈58% ширины кадра на 360–390 (ТЗ 1.9: 56–72%) */
+  .ab-read{font-size:24px;line-height:1.36}
+  /* на телефоне — три короткие строки, без точек-разделителей в начале строки */
+  .ab-req__dot{display:none}
+  .ab-req__i{display:block}
+  .ab-prod__lk{--lk:30px}
+  .ab-prod .pg-row__d{font-size:18px}
+  /* жирное начало описания — своей строкой во всех трёх строках: заголовок чернилами, ниже серый текст */
+  .ab-prod .pg-row__d b{display:block;margin-bottom:2px}
+  /* финал: «Давайте работать / вместе.» двумя строками, как на десктопе, а не лесенкой из трёх слов */
+  .ab-next .pg-next__t{font-size:clamp(32px,9.3vw,40px)}
+  .ab-pr__i,.ab-pr__i:nth-child(n){grid-template-columns:minmax(0,1fr);row-gap:18px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ab-read .ab-w>span{transform:none!important;transition:none!important}
+  .ab-prod .pg-row__d{transition:none}
+}
+
+/* ---------- подвал: плитка logo_tile уже стоит в герое этой страницы. После синхронизации подвала с главной (v3.1 §3.10)
+   в его центре окажется та же плитка в кольце орбиты — на «О компании» прячем орбиту целиком (кольцо без плитки было бы пустым) ---------- */
+.pg-about .foot__orbit,.pg-about .foot__tile{display:none}

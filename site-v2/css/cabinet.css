@@ -1,0 +1,376 @@
+/* Safa PAY — кабинет партнёра. Общая основа трёх страниц: cabinet.html, cabinet-connect.html, cabinet-dashboard.html.
+   Язык главной (site.css), перенесённый в интерфейс приложения: светлое поле, одно белое полотно с теми же полями и скруглением,
+   Onest крупно, Helvetica Neue для служебных подписей, волосяные линии вместо карточек.
+   Внутри полотна нет подложек, рамок разделов и полупрозрачных панелей: разделы отделены отступами и линиями.
+   Обведены только зона сброса файла (пунктир), подсказка графика и тост. site.css не подключаем — нужные токены скопированы сюда. */
+
+/* ========== 1. Токены ========== */
+:root{
+  /* из site.css — значения не менять */
+  --field:#F3EEF6; --sheet:#FFFFFF;
+  --ink:#1C1326; --ink-2:#4A4152; --ink-3:#6F6677; --ph:#7D7387; --ghost:#9A90A6; --pre:#B9AEC4;
+  --line:#1C132617;            /* волосяная линия */
+  --line-2:#1C132626;          /* линия под шапкой таблицы, ось графика, пустой отрезок прогресса */
+  --line-field:#1C132640;      /* линия поля ввода */
+  --purple:#623289; --pink:#F29FC5; --plum:#9F5D87; --night:#180033; --rose:#C25E93;
+  --g-brand:linear-gradient(100deg,#623289 15%,#F29FC5 115%);
+  --g-pay:linear-gradient(100deg,#9F5D87,#DE3C35);
+  --btn:linear-gradient(120deg,#B07AA0 0%,#8C58A8 22%,#7C4BA6 55%,#623289 100%);   /* кнопку настраивал владелец — как есть */
+  --font:"Onest","Helvetica Neue",Arial,sans-serif;
+  --font-ui:"Helvetica Neue",Onest,sans-serif;   /* как в site.css: без Helvetica/Arial, иначе на Windows подставится Arial */
+  --mono:ui-monospace,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.2,.7,.2,1); --ease-out:cubic-bezier(.16,1,.3,1);
+  --gap:clamp(24px,2.5vw,48px); --radius:clamp(22px,1.5vw,28px);
+  --in:clamp(20px,5cqw,96px); --cg:clamp(12px,1.7cqw,24px);
+  --r-sm:14px;
+  --head-h:76px;
+  --sec-gap:clamp(64px,7cqw,112px);        /* между крупными разделами */
+  --sec-pad:clamp(40px,4cqw,56px);         /* от линии раздела до заголовка */
+  --t2:500 clamp(40px,4.8cqw,68px)/.98 var(--font); --t2-ls:-.032em;
+  --t3:400 clamp(19px,1.6cqw,23px)/1.42 var(--font); --t3-ls:-.012em;
+  --cap:400 13px/1.45 var(--font-ui);
+  --marg:400 15px/1.5 var(--font-ui);
+  --pop-sh:0 0 0 1px #1C13260f,0 18px 44px -26px #6232897a;   /* тост и подсказка графика */
+
+  /* палитра продукта Safa PAY — только для данных (график, шкала), не для текста интерфейса */
+  --pay-1:#F29FC5; --pay-2:#E8708F; --pay-3:#DE3C35; --pay-acc:#D0466A;
+  --pay-ink:#A8325A;           /* единственный розовый для текста: 6.4:1 на белом */
+  --g-pay-bar:linear-gradient(180deg,#E8708F 0%,#D0466A 100%);
+  --g-pay-bar-hi:linear-gradient(180deg,#E8708F 0%,#DE3C35 100%);
+  --g-pay-line:linear-gradient(90deg,#F29FC5 0%,#E8708F 45%,#DE3C35 100%);
+
+  /* статусы — слово и точка, без плашек */
+  --ok:#0d7a48;   --ok-dot:#19b36b;
+  --warn:#8a5200; --warn-dot:#F5A623;
+  --req:var(--pay-ink); --req-dot:var(--pay-acc);
+  --err:#C0392B;
+  --mute-dot:#1C132633;
+}
+@media (max-width:640px){:root{--gap:14px;--radius:20px;--head-h:60px}}
+
+/* ========== 2. База ========== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+html{background:var(--field);color-scheme:light;scrollbar-gutter:stable;-webkit-text-size-adjust:100%}
+body{overflow-x:clip;background:var(--field);color:var(--ink);font:400 17px/1.55 var(--font);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+h1,h2,h3,h4,p,figure{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+fieldset{min-width:0;margin:0;padding:0;border:0}
+legend{padding:0}
+h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+::selection{background:#F29FC566;color:var(--night)}
+[hidden]{display:none!important}
+[tabindex="-1"]:focus{outline:none}
+:focus-visible{outline:2px solid var(--purple);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.nw{white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.skip-link{position:fixed;left:16px;top:-60px;z-index:100;padding:10px 16px;border-radius:999px;background:var(--night);color:#fff;font-weight:600;transition:top .2s}
+.skip-link:focus{top:16px}
+
+/* ========== 3. Рамка: одно полотно ========== */
+.cab{container-type:inline-size}
+.cab-canvas{position:relative;display:flex;flex-direction:column;margin:var(--gap);min-height:calc(100svh - 2 * var(--gap));
+  background:var(--sheet);border-radius:var(--radius);box-shadow:0 0 0 1px #1C13260d,0 30px 60px -50px #62328940;overflow:clip}
+.cab-main{flex:1;padding:clamp(48px,5cqw,88px) var(--in) clamp(64px,7cqw,120px)}
+@media (min-width:1680px){.cab-main>*{max-width:1480px}}
+/* широкие экраны: колонка 1480 по центру полотна; шапка и подвал на той же вертикали (до 2000 — прежний --in, 1920 не меняется) */
+@media (min-width:2000px){.cab-canvas{--in:max(clamp(20px,5cqw,96px),calc((100cqw - 2 * var(--gap) - 1480px) / 2))}}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--cg)}
+@media (max-width:1023px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.grid>*{grid-column:1/-1!important}}
+/* раздел: отступ сверху и, где нужна граница, линия */
+.sec{margin-top:var(--sec-gap)}
+.sec--rule{padding-top:var(--sec-pad);border-top:1px solid var(--line)}
+
+/* ========== 4. Шапка: первая строка полотна, как меню сайта ========== */
+.cab-head{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;
+  height:var(--head-h);padding:0 var(--in);border-bottom:1px solid transparent;
+  transition:background-color .35s,border-color .35s}
+.cab-head.is-stuck{background:#fff;border-bottom-color:var(--line)}   /* сплошной белый: сквозь полупрозрачную подложку проступала розовая дымка графика */
+.cab-brand{display:flex;align-items:center;gap:14px;min-width:0}
+.cab-logo{display:grid;align-items:center;height:44px;flex:none}
+.cab-logo img{width:auto;height:28px}
+.cab-brand__t{font:500 16px/1 var(--font);color:var(--ink-2);white-space:nowrap}
+.cab-sep{width:1px;height:18px;flex:none;background:currentColor;opacity:.25}
+.cab-tools{display:flex;align-items:center;gap:4px}
+.cab-tools .cab-sep{margin:0 10px}
+.cab-help{padding-right:2px;font:400 15px/1 var(--font-ui);color:var(--ink-3)}
+.cab-link{position:relative;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;border:0;background:none;cursor:pointer;
+  font:500 16px/1 var(--font);color:var(--ink);opacity:.86;transition:opacity .2s;white-space:nowrap}
+.cab-link::after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:1.5px;border-radius:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .3s var(--ease)}
+.cab-link:hover{opacity:1}
+.cab-link:hover::after,.cab-link[aria-current="page"]::after{transform:scaleX(1)}
+.cab-phone{font-variant-numeric:tabular-nums}
+.cab-user{display:flex;align-items:center;gap:10px;padding:0 6px 0 4px;font:500 15px/1 var(--font);white-space:nowrap}
+.cab-user__name{min-width:0;max-width:16ch;overflow:hidden;text-overflow:ellipsis}   /* длинный логин не сдвигает телефон */
+.cab-ava{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;
+  background:linear-gradient(135deg,#9F5D87,#623289);color:#fff;font:600 12px/1 var(--font-ui);letter-spacing:.02em}
+.cab-icon{display:grid;place-items:center;width:44px;height:44px;flex:none;padding:0;border:0;border-radius:50%;background:none;color:var(--ink);
+  opacity:.62;cursor:pointer;transition:opacity .2s}
+.cab-icon:hover{opacity:1}
+.cab-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cab-icon--phone{display:none}
+@media (max-width:640px){
+  .cab-brand__t,.cab-help,.cab-sep,.cab-user__name,.cab-phone,.cab-about{display:none}
+  .cab-icon--phone{display:grid}
+  .cab-user{padding:0 2px}
+}
+
+/* ========== 5. Подвал полотна ========== */
+.cab-foot{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px;margin:0 var(--in);padding:22px 0 28px;
+  border-top:1px solid var(--line);font:var(--cap);color:var(--ink-3)}
+.cab-foot a{color:var(--ink-2);text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:1px;text-underline-offset:3px;
+  transition:color .2s,text-decoration-color .2s}
+.cab-foot a:hover{color:var(--purple);text-decoration-color:#6232894d}
+.cab-foot__demo{margin-left:auto}
+/* строка о демо не помещается в одну строку с реквизитами до ~1260px: тогда она идёт своей строкой слева, а не висит справа под ссылками */
+@media (max-width:1259px){.cab-foot__demo{margin-left:0;flex-basis:100%}}
+/* планшет: строка реквизитов, строка ссылок, строка о демо — ссылки не разрываются по разным строкам */
+@media (min-width:641px) and (max-width:1023px){.cab-foot>span:first-child{flex-basis:100%}}
+
+/* ========== 6. Заголовок страницы: H1 → мета-строка под ним → лид. Над H1 ничего нет ========== */
+.cab-title{margin-left:-.03em;font:var(--t2);letter-spacing:var(--t2-ls);text-wrap:balance}
+.cab-title:focus{outline:none}
+/* узкий телефон: самое длинное слово H1 («Подключение» = 6,32em) помещается в поле; 40px — с ≈330px */
+@media (max-width:640px){.cab-title{font-size:min(40px,calc((100cqw - 2 * var(--gap) - 2 * var(--in)) / 6.4))}}
+/* части мета-строки разделены точкой. Точка — фон в левом поле каждой части (не ::before: он занят точкой статуса .st);
+   строка сдвинута влево на ширину разделителя и обрезана по левому краю — после переноса строка не начинается с «·» */
+.cab-meta{--sep:1.2em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 0;margin:18px 0 0 calc(var(--sep) * -1);clip-path:inset(-12px -12px -12px var(--sep));
+  font:var(--marg);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.cab-meta>*{padding-left:var(--sep);background:radial-gradient(circle,var(--ink-3) 0 1px,transparent 1.5px) 0 55%/var(--sep) 100% no-repeat}
+.cab-lead{max-width:56ch;margin-top:20px;font:var(--t3);letter-spacing:var(--t3-ls);color:var(--ink-2)}
+/* маска строки, как у подписей фильма: режет только снизу */
+.ln{display:block;clip-path:inset(-.35em -.3em 0 -.3em);padding:.07em 0 .12em;margin:-.07em 0 -.12em}
+.js .ln>span{display:inline-block;transform:translateY(112%);transition:transform 1s var(--ease-out);transition-delay:calc(var(--k,0) * 90ms)}
+.js .is-in .ln>span{transform:none}
+.js [data-fade]{opacity:0;translate:0 16px;transition:opacity .9s var(--ease) .45s,translate .9s var(--ease) .45s}
+.js .is-in [data-fade],.js [data-fade].is-in{opacity:1;translate:0 0}
+
+/* ========== 7. Заголовок раздела: [стекло] Текст ● статус ……… действие ========== */
+/* <div class="sec-h"><h2 class="hx"><img class="glass" …>Текст</h2><span class="st …">…</span><button class="… sec-h__act">…</button></div>
+   Стекло стоит ВНУТРИ заголовка (.hx): при переносе строки оно уходит вместе с текстом и никогда не оказывается над ним */
+.sec-h{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;font:600 clamp(26px,2.4cqw,34px)/1.1 var(--font);letter-spacing:-.025em}
+.sec-h>h2,.sec-h>h3{font:inherit;letter-spacing:inherit;min-width:0}
+.hx{display:flex;align-items:center;gap:14px;min-width:0}
+@media (max-width:640px){.hx{gap:12px}}
+.sec-h .st{align-self:center}
+.sec-h__act{margin-left:auto}
+.glass{display:block;width:40px;height:40px;flex:none;object-fit:contain;filter:drop-shadow(2px 4px 3px #1C13261f)}
+@media (max-width:640px){.glass{width:34px;height:34px}}
+.h-sm{font:600 20px/1.25 var(--font);letter-spacing:-.015em}
+
+/* ========== 8. Статус: цветное слово и точка 8px ========== */
+.st{display:inline-flex;align-items:center;gap:7px;font:500 15px/1.2 var(--font-ui);letter-spacing:0;white-space:nowrap}
+.st::before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:currentColor}
+.st--ok{color:var(--ok)}       .st--ok::before{background:var(--ok-dot)}
+.st--todo{color:var(--warn)}   .st--todo::before{background:var(--warn-dot)}
+.st--req{color:var(--req)}     .st--req::before{background:var(--req-dot)}
+.st--opt{color:var(--ink-3)}   .st--opt::before{background:var(--mute-dot)}
+.st--mute{color:var(--ink-2)}  .st--mute::before{background:var(--mute-dot)}
+.st--wait{color:var(--purple)} .st--wait::before{background:var(--purple);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 #62328966}60%{box-shadow:0 0 0 6px #62328900}}
+
+/* ========== 9. Кнопки и текстовые ссылки ========== */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:58px;padding:0 30px;border:0;border-radius:999px;cursor:pointer;
+  font:600 17px/1 var(--font);letter-spacing:-.005em;white-space:nowrap;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background-color .25s,color .25s,opacity .2s}
+.btn svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s var(--ease)}
+.btn:hover svg.arr{transform:translateX(3px)}
+.btn:active{transform:scale(.98)}
+.btn--primary{color:#fff;background:var(--btn);box-shadow:inset 0 1px 0 #ffffff40,0 16px 34px -16px #623289b3}
+.btn--primary:hover{box-shadow:inset 0 1px 0 #ffffff55,0 20px 44px -14px #623289cc}
+.btn--primary:focus-visible{outline:none;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--purple)}
+.btn--line{color:var(--ink);background:#fff;box-shadow:inset 0 0 0 1px #1C13261f,0 10px 24px -18px #62328966}
+.btn--line:hover{box-shadow:inset 0 0 0 1px #1C132640,0 12px 26px -18px #62328980}
+.btn--md{height:44px;padding:0 22px;font-size:15px}
+.btn--sm{height:40px;padding:0 18px;font-size:15px;gap:8px}
+.btn--sm svg{width:15px;height:15px}
+.btn:disabled,.btn[aria-disabled="true"]{background:#1C13260d;color:#1C132673;box-shadow:none;cursor:not-allowed;transform:none}
+.btn:disabled svg.arr{transform:none}
+/* отправка: три точки поверх подписи, ширина кнопки не меняется */
+.dots{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px}
+.dots i{width:6px;height:6px;border-radius:50%;background:currentColor;animation:dot 1s ease-in-out infinite;animation-delay:calc(var(--i) * .15s)}
+.is-busy>:not(.dots),[aria-busy="true"] .btn[type="submit"]>:not(.dots){visibility:hidden}
+.is-busy>.dots,[aria-busy="true"] .btn[type="submit"]>.dots{display:flex}
+.is-busy,[aria-busy="true"] .btn[type="submit"]{cursor:progress}
+@keyframes dot{0%,80%,100%{opacity:.3;transform:scale(.75)}40%{opacity:1;transform:none}}
+/* текст с линией снизу */
+.ulink{display:inline-block;padding:0 0 3px;border:0;border-radius:0;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;
+  font:500 16px/1.3 var(--font);color:var(--ink);cursor:pointer;transition:color .25s}
+.ulink:hover{color:var(--purple)}
+.ulink--sm{font-size:15px}
+.ulink--mute{color:var(--ink-3)}
+.ulink:focus-visible{border-radius:6px;outline-offset:4px}   /* общее скругление рамки фокуса, а не острые углы от border-radius:0 */
+/* сенсорные: зона касания ≥44px без изменения вида; ссылки подвала стоят столбиком — псевдоэлемент делил бы 6px зазора между соседями, поэтому строки подвала по 44px */
+@media (pointer:coarse){
+  .ulink:not(.step__act){position:relative}
+  .ulink:not(.step__act)::before{content:"";position:absolute;inset:-11px -6px}
+  .cab-foot{row-gap:0}
+  .cab-foot>*{display:inline-flex;align-items:center;min-height:44px}
+}
+/* ссылки внутри мелкого текста — как .check a на сайте */
+.tlink{color:var(--purple);text-decoration:underline;text-decoration-color:#6232894d;text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color .2s}
+.tlink:hover{text-decoration-color:var(--purple)}
+/* узкий телефон: подпись главной кнопки переносится внутри «пилюли», а не вылезает за неё */
+@media (max-width:420px){:is(.cf__go,.mod__send,.reg__send) .btn{height:auto;min-height:58px;padding:10px 24px;white-space:normal;text-align:center;line-height:1.2;text-wrap:balance}}
+
+/* ========== 10. Поле: волосяная линия, при фокусе слева заливается линия 2px ==========
+   .fld            — подпись, строка поля, подсказка/ошибка
+   .fld__box       — строка поля с линией (в ней префикс, ввод и кнопка «Показать»)
+   .fld__in        — сам ввод
+   .fld__msg       — подсказка; при ошибке тем же местом показывает текст ошибки (.is-err) */
+.fld{display:grid;align-content:start;gap:8px;min-width:0}
+.fld__top{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.fld__label,.fld>label,.fld legend{font:500 15px/1.3 var(--font);color:var(--ink)}
+.fld__box{--c:var(--purple);position:relative;display:flex;align-items:center;min-width:0;height:52px;padding:0 2px 6px;
+  background:linear-gradient(var(--c),var(--c)) 0 100%/0% 2px no-repeat,
+             linear-gradient(var(--line-field),var(--line-field)) 0 100%/100% 1px no-repeat;
+  transition:background-size .45s var(--ease-out),background-color .2s}
+.fld__box:focus-within{background-size:100% 2px,100% 1px}
+.fld__box.is-invalid{--c:var(--err);background-size:100% 2px,100% 1px}
+.fld__box.is-invalid:focus-within{background-color:#C0392B0d}
+.fld__in{flex:1;min-width:0;width:100%;height:100%;padding:6px 0 0;border:0;border-radius:0;outline:none;background:transparent;
+  font:500 clamp(19px,1.5cqw,22px)/1.3 var(--font);letter-spacing:-.01em;color:var(--ink)}
+.fld__in[data-mask]{font-variant-numeric:tabular-nums}
+.fld__in::placeholder{color:var(--ph);font-weight:400;opacity:1}
+.fld__in:focus,.fld__in:focus-visible{outline:none}
+.fld__in--mono{font:400 15px/1.3 var(--mono);letter-spacing:0;overflow-wrap:anywhere}
+.fld__in::-ms-reveal{display:none}
+.fld__pre{flex:none;padding:6px 10px 0 0;font:500 clamp(19px,1.5cqw,22px)/1.3 var(--font);letter-spacing:-.01em;color:var(--pre);font-variant-numeric:tabular-nums;user-select:none}
+.fld__eye{flex:none;display:grid;place-items:center;min-width:44px;height:44px;margin:6px -6px 0 8px;padding:0 6px;border:0;border-radius:8px;background:none;cursor:pointer;
+  font:400 13px/1 var(--font-ui);color:var(--ink-2);transition:color .2s}
+.fld__eye:hover{color:var(--purple)}
+.fld__msg{font:var(--cap);color:var(--ink-3)}
+.fld__msg:empty{display:none}
+.fld__msg.is-err{font:400 13px/1.4 var(--font-ui);color:var(--err)}
+.fld__note{font:var(--marg);color:var(--ink-2)}
+/* набор полей формы: 2 колонки, на телефоне одна */
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--cg);row-gap:36px}
+.fgrid>.is-wide{grid-column:1/-1}
+@media (max-width:640px){.fgrid{grid-template-columns:minmax(0,1fr);row-gap:28px}}
+/* группа вариантов */
+.fset{display:grid;gap:8px}
+.fset>legend{float:left;width:100%;margin-bottom:0}
+.fset>legend+*{clear:both}
+.fset__opts{display:flex;flex-wrap:wrap;align-items:center;gap:0 28px;margin-top:4px}
+@media (max-width:640px){.fset__opts--stack{display:grid;gap:0}}
+
+/* ========== 11. Чекбокс — как на сайте ========== */
+.check{display:inline-flex;align-items:center;gap:12px;min-height:44px;font:400 17px/1.35 var(--font);color:var(--ink);cursor:pointer}
+.check input{appearance:none;-webkit-appearance:none;display:grid;place-items:center;width:24px;height:24px;flex:none;margin:0;
+  border:1.5px solid #1C13268c;border-radius:8px;background:#fff;cursor:pointer;transition:background-color .2s,border-color .2s}
+.check input::after{content:"";width:11px;height:6px;border:2px solid #fff;border-top:0;border-right:0;transform:translateY(-1px) rotate(-45deg) scale(0);transition:transform .2s var(--ease)}
+.check input:checked{background:var(--purple);border-color:var(--purple)}
+.check input:checked::after{transform:translateY(-1px) rotate(-45deg) scale(1)}
+.check input:hover:not(:checked){border-color:var(--ink-2)}
+.check input:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+.check input[aria-invalid="true"]:not(:checked){border-color:var(--err)}
+
+/* ========== 12. Выбор одного варианта и вкладки — как RU/UZ в меню: без капсул ==========
+   радио: <div class="seg"><input type="radio" id=… ><label for=…>…</label>…</div>
+   вкладки: <div class="seg" role="tablist"><button role="tab" class="seg__o" aria-selected="true">…</button>…</div> */
+.seg{display:flex;flex-wrap:wrap;gap:0 4px;margin-left:-10px}
+.seg>label,.seg__o{position:relative;display:inline-flex;align-items:center;height:44px;padding:0 10px;border:0;background:none;cursor:pointer;
+  font:500 17px/1 var(--font);font-variant-numeric:tabular-nums;color:var(--ink);opacity:.55;white-space:nowrap;transition:opacity .2s}
+.seg>label::after,.seg__o::after{content:"";position:absolute;left:10px;right:10px;bottom:8px;height:1.5px;border-radius:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:0 50%;transition:transform .3s var(--ease)}
+.seg>label:hover,.seg>input:checked+label,.seg__o:hover,.seg__o[aria-selected="true"]{opacity:1}
+.seg>input:checked+label::after,.seg__o[aria-selected="true"]::after{transform:scaleX(1)}
+.seg>input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.seg>input:focus-visible+label{outline:2px solid var(--purple);outline-offset:-2px;border-radius:6px}
+.seg__o:focus-visible{outline:2px solid var(--purple);outline-offset:-2px;border-radius:6px}
+
+/* ========== 13. Зона сброса файла и список файлов (подключение, подтверждение водителей) ========== */
+.drop{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;padding:22px 24px;border:1px dashed #1C132633;border-radius:var(--r-sm);
+  font:var(--marg);color:var(--ink-2);transition:border-color .2s,background-color .2s}
+.drop.is-over{border-color:var(--purple);background:#6232890a}
+.drop.is-invalid{border-color:var(--err)}
+.files{border-top:1px solid var(--line)}
+.files>li{display:flex;align-items:center;gap:16px;min-height:56px;padding:10px 0;border-bottom:1px solid var(--line)}
+.files__name{min-width:0;font:500 15px/1.35 var(--font);overflow-wrap:anywhere}
+.files__meta{display:block;font:var(--cap);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.files>li>.ulink{margin-left:auto;flex:none}
+
+/* ========== 14. Таблица без рамки ========== */
+.tbl{width:100%;border-collapse:collapse;font:400 15px/1.4 var(--font);font-variant-numeric:tabular-nums}
+.tbl th{height:40px;padding:0 16px 0 0;text-align:left;font:500 13px/1.2 var(--font-ui);color:var(--ink-3);border-bottom:1px solid var(--line-2);white-space:nowrap}
+.tbl td{height:44px;padding:0 16px 0 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl .r{text-align:right}
+
+/* ========== 15. Нумерованный список с линиями (справка «Что понадобится») ========== */
+.olist{margin-top:16px;border-top:1px solid var(--line);counter-reset:ol}
+.olist>li{display:grid;grid-template-columns:32px minmax(0,1fr);padding:12px 0;border-bottom:1px solid var(--line);font:var(--marg);color:var(--ink-2)}
+.olist>li::before{counter-increment:ol;content:counter(ol);font:500 15px/1.5 var(--font-ui);color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+/* ========== 16. Тост: поверх страницы на 3,2 с ========== */
+.toast{position:fixed;z-index:60;left:0;right:0;bottom:calc(var(--gap) + 16px);width:max-content;max-width:calc(100vw - 32px);margin:0 auto;
+  padding:12px 18px;border-radius:12px;background:#fff;box-shadow:var(--pop-sh);font:400 15px/1.4 var(--font-ui);color:var(--ink);
+  opacity:0;translate:0 8px;transition:opacity .25s var(--ease),translate .25s var(--ease);pointer-events:none}
+.toast.is-on{opacity:1;translate:0 0}
+
+/* ========== 17. Движение: при reduced-motion только смена прозрачности ========== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .js .ln>span{transform:none;opacity:0;transition:opacity .2s}
+  .js .is-in .ln>span{opacity:1}
+  .js [data-fade]{translate:none;transition:opacity .2s}
+  .fld__box,.btn,.cab-link::after,.seg>label::after,.seg__o::after{transition-duration:.01ms}
+  .toast{translate:none;transition:opacity .2s}
+  .st--wait::before{animation:none}
+}
+
+/* ========== 18. Правый край шапки — по краю содержимого (у ссылки и иконки свои поля внутри) ========== */
+.cab-tools>.cab-link:last-child{margin-right:-14px}
+@media (min-width:641px){.cab-tools>.cab-phone:nth-last-child(2){margin-right:-14px}}
+.cab-tools>.cab-icon:last-child{margin-right:-12px}
+
+/* ========== 19. cabinet.html — регистрация ⇄ вход ==========
+   Режим задаёт <html data-mode="login">; блоки режима помечены data-for="reg|login" */
+html[data-mode="login"] [data-for="reg"],html:not([data-mode="login"]) [data-for="login"]{display:none!important}
+.reg{align-items:start}
+.reg__col{grid-column:1/8;min-width:0}
+.reg__aside{grid-column:9/13;justify-self:center;align-self:start;position:sticky;top:calc(var(--head-h) + 64px)}
+.reg__coin{width:256px;height:256px;filter:drop-shadow(6px 14px 12px #1C132622)}
+@media (prefers-reduced-motion:no-preference){.reg__coin{animation:coin 7s ease-in-out infinite alternate}}
+@keyframes coin{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+@media (max-width:1023px){.reg__aside{display:none}.reg__col{max-width:640px}}
+.reg__form{margin-top:clamp(40px,4cqw,56px)}
+.reg__form--login{max-width:440px}
+.reg__form--login .fgrid{grid-template-columns:minmax(0,1fr)}
+.reg__agg{margin-top:40px}
+.reg__size{margin-top:32px}
+.reg__send{display:flex;align-items:center;gap:16px 24px;margin-top:44px;padding-top:28px;border-top:1px solid var(--line)}
+.reg__form--login .reg__send{margin-top:40px;padding-top:0;border-top:0}   /* в форме из двух полей линия над кнопкой шла второй параллельной чертой под линией поля */
+.reg__consent{max-width:44ch;font:var(--cap);color:var(--ink-3)}
+.reg__alt{margin-top:24px;font:var(--marg);color:var(--ink-2)}
+.reg__alt .ulink{margin-left:.45em;font-size:15px}
+.reg__forgot{margin-top:4px;font:var(--marg);color:var(--ink-2);text-wrap:wrap}
+.reg__forgot a{color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.reg__forgot a:hover{color:var(--purple)}
+.reg__need{margin-top:clamp(56px,6cqw,88px);padding-top:32px;border-top:1px solid var(--line)}
+@media (max-width:640px){
+  /* «больше 2 000» не помещается в строку на 360–414: ровная сетка 2×2 вместо переноса одного варианта */
+  .reg__size .seg{display:grid;grid-template-columns:repeat(2,max-content);column-gap:4px}
+  .reg__send{flex-direction:column;align-items:stretch}
+  .reg__send .btn{width:100%}
+  .reg__consent{max-width:none}
+}
+/* складной 280: «больше 2 000» не доходит до края полотна — поля вариантов уже */
+@media (max-width:359px){.reg__size .seg{margin-left:-6px}.reg__size .seg>label{padding:0 6px;font-size:16px}.reg__size .seg>label::after{left:6px;right:6px}}
+
+/* ========== 20. Добавлено сборкой pay-dashboard: шапка партнёра на 641–1023px ==========
+   На планшете «Кабинет партнёра» наезжал на «Помощь» (у партнёра справа ещё аватар, имя и выход).
+   ≤1023 убираем слово «Помощь» (телефон остаётся), ≤800 — и «Кабинет партнёра» с разделителем у логотипа. */
+@media (max-width:1023px){.cab-help{display:none}}
+@media (max-width:800px){.cab-brand__t,.cab-brand .cab-sep{display:none}}
+/* у партнёра справа ещё аватар, логин и выход: до 959px «Кабинет партнёра» наезжал на «О Safa PAY» */
+@media (max-width:959px){.cab-head:has(.cab-user) .cab-brand__t,.cab-head:has(.cab-user) .cab-brand .cab-sep{display:none}}
+/* 641–759: без логина логотип не уходит под «О Safa PAY»; аватар остаётся, как на телефоне */
+@media (max-width:759px){.cab-user__name{display:none}}

@@ -1,0 +1,98 @@
+/* Safa One — скролл-фильм. Переменные --purple/--pink задаются в site.css */
+/* ---------- SCROLL FILM (механика 1:1 с vibr) ---------- */
+.film{
+  --stage-h:100vh;
+  --screens:6;                          /* длина прокрутки в экранах (у vibr 4) — больше = медленнее и плавнее */
+  height:calc(var(--stage-h) * var(--screens));
+  position:relative;overflow:clip;background:#000;   /* фон: при свёрнутых тулбарах телефона под сценой 100svh не видно светлой полосы */
+  border-radius:0 0 20px 20px;
+  view-timeline-name:--film;view-timeline-axis:block;
+}
+@supports (height:100svh){.film{--stage-h:100svh}}
+.film__stage{position:sticky;top:0;height:var(--stage-h);background:#000}
+.film__media{
+  --card-w:min(996px, calc(100vw - 120px));
+  --media-w:var(--card-w);
+  --media-h:calc(var(--card-w) * 560 / 996);
+  --media-r:15px;
+  position:absolute;inset:0;margin:auto;
+  width:var(--media-w);height:var(--media-h);border-radius:var(--media-r);
+  overflow:hidden;isolation:isolate;background:#000;z-index:1;
+}
+.film__media canvas,.film__media img{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;object-fit:cover;border-radius:inherit}
+.film__poster{z-index:2;transition:opacity .3s linear}
+/* в шапке-полосе cover срезал бы финальный кадр со слоганом (без WebGL) — кадр целиком, по бокам чёрный фон карточки */
+.film--hero .film__poster:is([src*="poster_ru"],[src*="poster_uz"]){object-fit:contain}
+/* без WebGL — финальный кадр 16:9 со слоганом; в высокой карточке cover резал слоган: кадр полосой по центру, края растворяются в чёрном */
+@media (max-aspect-ratio:5/4){
+  .film__poster:is([src*="poster_ru"],[src*="poster_uz"]){top:50%;bottom:auto;height:auto;border-radius:0;transform:translateY(-50%) scale(1.4);
+    -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 90%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 90%,transparent)}
+}
+@media (prefers-reduced-motion:reduce){
+  .film{--screens:1}
+  .film__media{--media-w:100%!important;--media-h:100%!important;--media-r:0px!important}
+}
+.ladder{
+  position:absolute;z-index:2;top:50%;left:clamp(16px,2.6cqw,50px);transform:translateY(-50%);
+  width:22px;height:184px;padding:12px 5px;border-radius:6px;
+  background:#faf6ec52;backdrop-filter:blur(136px);-webkit-backdrop-filter:blur(136px);
+  box-shadow:0 0 6px #00000026;display:flex;
+}
+.ladder__hairline{position:absolute;inset:0;border-radius:6px;outline:1px solid #ffffff1a;outline-offset:-1px;mix-blend-mode:plus-lighter;pointer-events:none}
+.ladder__track{position:relative;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:8px}
+.ladder__rung{display:block;height:1px;border-radius:1px;background:#faf6ec;transform-origin:50% 50%}
+.ladder__group{position:relative;height:24px;flex-shrink:0}
+.ladder__group .ladder__rung{position:absolute;left:0;right:0;opacity:.3}
+.ladder__needle{position:absolute;top:-.5px;left:-1px;width:14px;height:2px;border-radius:1px;background:var(--pink)}
+@keyframes ladderTrack{from{transform:translateY(0)}to{transform:translateY(164px)}}
+@keyframes ladderWave{0%{transform:scaleX(1)}50%{transform:scaleX(.45)}to{transform:scaleX(1)}}
+@supports (animation-timeline:view()){
+  .ladder__needle{animation:ladderTrack linear both;animation-timeline:--film;animation-range:contain}
+  .ladder__rung{animation:ladderWave ease-in-out both;animation-timeline:--film;
+    animation-range:contain calc(var(--i)*5% - 15%) contain calc(var(--i)*5% + 15%)}
+}
+@media (max-width:480px){.ladder{transform-origin:0 50%;transform:translateY(-50%) scale(.666667)}}
+/* кнопка «Пропустить» — только пока фильм идёт сам */
+.film__skip{all:unset;position:absolute;z-index:3;right:clamp(16px,2.6cqw,40px);bottom:clamp(16px,3cqw,40px);cursor:pointer;font:600 13px/1 Onest,"Helvetica Neue",Arial,sans-serif;letter-spacing:.02em;color:#fff;
+  padding:10px 16px;border-radius:999px;background:#ffffff1f;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 0 0 1px #ffffff2e inset;opacity:.85;transition:opacity .2s}
+.film__skip:hover{opacity:1}
+.film__skip:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+.film__skip[hidden]{display:none}
+@media (pointer:coarse){.ladder{backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px)}}
+
+/* ---------- ШАПКА ГЛАВНОЙ: фильм в карточке со скруглением (как hero у vibr) ---------- */
+/* один экран: фильм в шапке идёт по времени от первого действия, а не по скроллу (film.js, FILM.play) — длинная дорожка прокрутки не нужна */
+.film--hero{--screens:1;border-radius:0;background:transparent;view-timeline-name:--film}
+/* высота шапки (31.10): карточка в 2,5 раза ниже экрана — (экран − 2 поля) / 2,5, не ниже 260px.
+   Сцену под такую полосу раскладывает film.js (layoutFor): кадр вписан по высоте, фон тянется по ширине */
+.film--hero{--hero-card:max(260px, calc((100vh - 2 * var(--hero-gap,16px)) / 2.5));--stage-h:calc(var(--hero-card) + 2 * var(--hero-gap,16px))}
+@supports (height:100svh){.film--hero{--hero-card:max(260px, calc((100svh - 2 * var(--hero-gap,16px)) / 2.5))}}
+/* сколько сверху карточки закрывает меню сайта (оно висит поверх шапки): film.js опускает сцену и верхний ряд предметов.
+   Тип <length> — чтобы getComputedStyle отдал уже посчитанные px, а не текст calc() */
+@property --film-top{syntax:'<length>';inherits:true;initial-value:0px}
+.film--hero{--film-top:calc(var(--nav-top,28px) - var(--hero-gap,16px) + 60px)}
+@media (orientation:landscape) and (max-height:500px){.film--hero{--film-top:calc(var(--nav-top,28px) - var(--hero-gap,16px) + 48px)}}
+.film--hero .film__stage{background:transparent}
+.film--hero .film__media{
+  --gap:var(--hero-gap,16px);
+  inset:var(--gap);margin:0;width:auto;height:auto;border-radius:var(--hero-radius,22px);
+  box-shadow:0 0 0 1px #ffffff14 inset,0 30px 70px -40px #18003380;
+}
+.film--hero .film__media::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;pointer-events:none;
+  box-shadow:inset 0 0 0 1px #ffffff17}
+/* поля и радиус карточки задаёт site.css (--hero-gap, --hero-radius); здесь только запасные значения */
+.film--hero .ladder{left:calc(var(--hero-gap,16px) + clamp(14px,2.2vw,34px))}
+.film--hero .film__skip{right:calc(var(--hero-gap,16px) + clamp(14px,2.2vw,32px));bottom:calc(var(--hero-gap,16px) + clamp(14px,2.2vw,32px))}
+@media (prefers-reduced-motion:reduce){.film--hero .film__media{inset:var(--hero-gap,16px)!important;width:auto!important;height:auto!important}}
+
+/* подсказка «Листайте вниз» — видна только на 1-м кадре */
+.film__hint{position:absolute;z-index:3;left:50%;bottom:calc(var(--hero-gap,16px) + 26px);transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;color:#fff;font:500 12px/1 Onest,"Helvetica Neue",Arial,sans-serif;
+  letter-spacing:.14em;text-transform:uppercase;opacity:0;transition:opacity .5s ease;pointer-events:none}
+.film.is-start .film__hint{opacity:.72}
+.film__hint i{display:block;width:22px;height:34px;border-radius:12px;box-shadow:inset 0 0 0 1.5px #ffffffb3;position:relative}
+.film__hint i::after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;margin-left:-1.5px;border-radius:2px;background:#fff;
+  animation:filmHint 1.8s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes filmHint{0%{transform:translateY(0);opacity:1}70%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:0}}
+@media (prefers-reduced-motion:reduce){.film__hint i::after{animation:none}}

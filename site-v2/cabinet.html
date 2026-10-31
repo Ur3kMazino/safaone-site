@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F3EEF6">
+<title>Кабинет партнёра — Safa PAY</title>
+<meta name="description" content="Регистрация и вход в кабинет партнёра Safa PAY: выплаты водителям такси через парк.">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>(function(h){h.classList.replace('no-js','js');if(location.hash==='#login')h.setAttribute('data-mode','login')})(document.documentElement)</script>
+<!-- шрифты со своего сервера (css/fonts.css); кириллица и латиница Onest нужны первому экрану — грузим сразу -->
+<link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-cyrillic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-latin.woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css?v=15e75de1">
+<link rel="stylesheet" href="css/cabinet.css?v=de3434dd">
+<script src="js/cabinet.js?v=cac5f2cb" defer></script>
+</head>
+<body data-page="reg">
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<div class="cab">
+  <div class="cab-canvas">
+
+    <header class="cab-head">
+      <div class="cab-brand">
+        <a class="cab-logo" href="index.html" aria-label="Safa One — на главную"><img src="img/safa-pay-color.svg" alt="Safa PAY" width="75" height="28"></a>
+        <span class="cab-sep" aria-hidden="true"></span>
+        <span class="cab-brand__t">Кабинет партнёра</span>
+      </div>
+      <div class="cab-tools">
+        <a class="cab-link cab-about" href="pay.html">О&nbsp;Safa PAY</a>
+        <span class="cab-sep cab-about__sep" aria-hidden="true"></span>
+        <span class="cab-help">Помощь</span>
+        <a class="cab-link cab-phone" href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+        <a class="cab-icon cab-icon--phone" href="tel:+998503333900" aria-label="Позвонить: +998 50 333 39 00"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 3.8H5.6a1.8 1.8 0 0 0-1.8 2c.9 7.6 6.8 13.5 14.4 14.4a1.8 1.8 0 0 0 2-1.8v-2.6l-4-1.6-2 2a12 12 0 0 1-6-6l2-2-1.6-4.4z"/></svg></a>
+      </div>
+    </header>
+
+    <main id="main" class="cab-main">
+      <div class="grid reg">
+        <div class="reg__col">
+
+          <div class="cab-hero">
+            <h1 class="cab-title" id="page-title" tabindex="-1">
+              <span class="ln" data-for="reg"><span>Регистрация партнёра</span></span>
+              <span class="ln" data-for="login"><span>Вход в&nbsp;кабинет</span></span>
+            </h1>
+            <p class="cab-lead" data-fade data-for="reg">Создайте аккаунт парка&nbsp;— дальше покажем, что загрузить для подключения к&nbsp;Safa&nbsp;PAY.</p>
+            <p class="cab-lead" data-fade data-for="login">Введите логин и&nbsp;пароль, которые вы придумали при регистрации.</p>
+          </div>
+
+          <!-- регистрация -->
+          <form class="reg__form" id="reg-form" data-for="reg" novalidate aria-label="Регистрация партнёра" data-next="cabinet-connect.html">
+            <div class="fgrid">
+              <div class="fld">
+                <label class="fld__label" for="r-park">Название парка</label>
+                <div class="fld__box"><input class="fld__in" id="r-park" name="park" type="text" placeholder="Например, Таксопарк №&#8239;1" autocomplete="organization" data-rule="req" aria-describedby="r-park-m"></div>
+                <p class="fld__msg" id="r-park-m" data-hint="Как его знают водители">Как его знают водители</p>
+              </div>
+              <div class="fld">
+                <label class="fld__label" for="r-name">ФИО</label>
+                <div class="fld__box"><input class="fld__in" id="r-name" name="full_name" type="text" placeholder="Фамилия Имя Отчество" autocomplete="name" data-rule="req" aria-describedby="r-name-m"></div>
+                <p class="fld__msg" id="r-name-m"></p>
+              </div>
+              <div class="fld">
+                <label class="fld__label" for="r-pos">Должность</label>
+                <div class="fld__box"><input class="fld__in" id="r-pos" name="position" type="text" placeholder="Например, директор" autocomplete="organization-title" data-rule="req" aria-describedby="r-pos-m"></div>
+                <p class="fld__msg" id="r-pos-m"></p>
+              </div>
+              <div class="fld">
+                <label class="fld__label" for="r-phone">Контактный телефон<span class="sr-only">, код страны +998</span></label>
+                <div class="fld__box"><span class="fld__pre" aria-hidden="true">+998</span><input class="fld__in" id="r-phone" name="phone" type="tel" inputmode="tel" placeholder="90 123 45 67" autocomplete="tel-national" data-mask="phone" data-rule="phone" aria-describedby="r-phone-m"></div>
+                <p class="fld__msg" id="r-phone-m" data-hint="Позвоним, чтобы помочь с&nbsp;подключением">Позвоним, чтобы помочь с&nbsp;подключением</p>
+              </div>
+              <div class="fld">
+                <label class="fld__label" for="r-login">Логин</label>
+                <div class="fld__box"><input class="fld__in" id="r-login" name="login" type="text" placeholder="Придумайте логин" autocomplete="username" autocapitalize="none" spellcheck="false" data-rule="login" aria-describedby="r-login-m"></div>
+                <p class="fld__msg" id="r-login-m"></p>
+              </div>
+              <div class="fld">
+                <label class="fld__label" for="r-pw">Пароль</label>
+                <div class="fld__box"><input class="fld__in" id="r-pw" name="password" type="password" placeholder="Придумайте пароль" autocomplete="new-password" data-secret data-rule="pw8" aria-describedby="r-pw-m"><button class="fld__eye" type="button" data-pw-toggle aria-controls="r-pw" aria-pressed="false">Показать</button></div>
+                <p class="fld__msg" id="r-pw-m" data-hint="Не меньше 8 символов">Не меньше 8 символов</p>
+              </div>
+            </div>
+
+            <fieldset class="fset reg__agg" data-rule="anyCheck" aria-describedby="r-agg-m">
+              <legend class="fld__label">С&nbsp;каким агрегатором работаете</legend>
+              <p class="fld__msg" id="r-agg-m" data-hint="Можно выбрать несколько. Сейчас Safa PAY подключается к&nbsp;Яндекс Fleet">Можно выбрать несколько. Сейчас Safa PAY подключается к&nbsp;Яндекс Fleet</p>
+              <div class="fset__opts fset__opts--stack">
+                <label class="check"><input type="checkbox" name="aggregator" value="yandex"><span>Яндекс Go</span></label>
+                <label class="check"><input type="checkbox" name="aggregator" value="wildberries"><span>Wildberries Такси</span></label>
+                <label class="check"><input type="checkbox" name="aggregator" value="other"><span>Другой</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="fset reg__size" data-rule="oneRadio" data-err="Выберите размер парка" aria-describedby="r-size-m">
+              <legend class="fld__label">Сколько водителей в&nbsp;парке</legend>
+              <p class="fld__msg" id="r-size-m"></p>
+              <div class="seg">
+                <input type="radio" name="size" id="r-size-1" value="lt100"><label for="r-size-1">до&nbsp;100</label>
+                <input type="radio" name="size" id="r-size-2" value="100-500"><label for="r-size-2">100–500</label>
+                <input type="radio" name="size" id="r-size-3" value="500-2000"><label for="r-size-3">500–2&#8239;000</label>
+                <input type="radio" name="size" id="r-size-4" value="gt2000"><label for="r-size-4">больше 2&#8239;000</label>
+              </div>
+            </fieldset>
+
+            <div class="reg__send">
+              <button class="btn btn--primary" type="submit"><span>Зарегистрироваться</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i><svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+              <p class="reg__consent">Нажимая «Зарегистрироваться», вы&nbsp;принимаете <a class="tlink" href="terms.html">условия использования</a> и&nbsp;<a class="tlink" href="privacy.html">политику конфиденциальности</a>.</p>
+            </div>
+            <p class="reg__alt">Уже есть аккаунт?<button class="ulink" type="button" data-mode-to="login">Войти</button></p>
+          </form>
+
+          <!-- вход -->
+          <form class="reg__form reg__form--login" id="login-form" data-for="login" novalidate aria-label="Вход в кабинет партнёра" data-next="cabinet-dashboard.html">
+            <div class="fgrid">
+              <div class="fld">
+                <label class="fld__label" for="l-login">Логин</label>
+                <div class="fld__box"><input class="fld__in" id="l-login" name="login" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" data-rule="req" aria-describedby="l-login-m"></div>
+                <p class="fld__msg" id="l-login-m"></p>
+              </div>
+              <div class="fld">
+                <div class="fld__top">
+                  <label class="fld__label" for="l-pw">Пароль</label>
+                  <button class="ulink ulink--sm" type="button" id="forgot-btn" aria-expanded="false" aria-controls="forgot">Забыли пароль?</button>
+                </div>
+                <div class="fld__box"><input class="fld__in" id="l-pw" name="password" type="password" autocomplete="current-password" data-secret data-rule="req" aria-describedby="l-pw-m"><button class="fld__eye" type="button" data-pw-toggle aria-controls="l-pw" aria-pressed="false">Показать</button></div>
+                <p class="fld__msg" id="l-pw-m"></p>
+                <p class="reg__forgot" id="forgot" hidden>Восстановить доступ поможет поддержка: <a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></p>
+              </div>
+            </div>
+            <div class="reg__send">
+              <button class="btn btn--primary" type="submit"><span>Войти</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i><svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+            </div>
+            <p class="reg__alt">Нет аккаунта?<button class="ulink" type="button" data-mode-to="reg">Зарегистрироваться</button></p>
+          </form>
+
+          <section class="reg__need" data-for="reg" aria-labelledby="need-h">
+            <h2 class="h-sm" id="need-h">Что понадобится для подключения</h2>
+            <ol class="olist">
+              <li><span>Юридическое наименование и&nbsp;ИНН&nbsp;— как в&nbsp;карточке счёта в&nbsp;банке</span></li>
+              <li><span>Документы юрлица: свидетельство о&nbsp;регистрации, устав, решение о&nbsp;назначении директора, паспорт директора</span></li>
+              <li><span>Расчётный счёт в&nbsp;сумах&nbsp;— 20&nbsp;цифр&nbsp;— и&nbsp;МФО филиала банка</span></li>
+              <li><span>Ключ Яндекс Fleet с&nbsp;правом на&nbsp;создание транзакций&nbsp;— его выпускает директор</span></li>
+              <li><span>ЭЦП директора&nbsp;— для договора и&nbsp;полномочия</span></li>
+              <li><span>Список водителей «ПИНФЛ + телефон»&nbsp;— по&nbsp;желанию</span></li>
+            </ol>
+          </section>
+        </div>
+
+        <aside class="reg__aside" aria-hidden="true">
+          <picture>
+            <source media="(min-width:1024px)" srcset="media/g2/coin_pay_512.webp" width="256" height="256">
+            <img class="reg__coin" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" width="256" height="256" loading="lazy" decoding="async">
+          </picture>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="cab-foot">
+      <span>©&nbsp;2026 SAFA ONE MChJ · ИНН&nbsp;312911394</span>
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="terms.html">Условия использования</a>
+      <span class="cab-foot__demo">Демо-версия: данные условные, формы ничего не отправляют</span>
+    </footer>
+
+  </div>
+</div>
+<div class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

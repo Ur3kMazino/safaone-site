@@ -1,0 +1,191 @@
+/* Safa One — документы: privacy.html, terms.html, data-deletion.html (ТЗ_страницы.md §2.8). Один шаблон.
+   Раскладка: герой --doc (H1 4–12, лид 4–10, мета) → линия → рельс 1–3 (документы + содержание, липкий) и текст 4–10 (≤68ch).
+   Без стекла (кроме check_badge в «Письмо готово.»), движение — только маска H1. Классы — префикс dc-. */
+
+/* ---------- герой ---------- */
+.dc-hero{padding-bottom:clamp(56px,6cqw,104px)}
+.dc-hero .pg-hero__lead{max-width:46ch}
+.dc-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-top:clamp(24px,2.2cqw,32px)!important}
+.dc-meta>span{white-space:nowrap}
+.dc-meta>i{font-style:normal;color:#B5ABBE}
+.dc-meta time{font:inherit}
+/* «Удаление данных»: путь к форме запроса — с первого экрана, тихой ссылкой, не второй кнопкой */
+.dc-hero__act{grid-column:4/13;margin:clamp(24px,2.2cqw,32px) 0 0}
+
+/* ---------- тело: рельс + текст ---------- */
+.dc-body{position:relative;align-items:start;padding-top:clamp(48px,5cqw,88px)}
+.dc-body::before{content:"";position:absolute;top:0;left:var(--in);right:var(--in);height:1px;background:var(--line)}
+
+/* рельс: переключатель документов, линия, содержание */
+.dc-rail{grid-column:1/4;grid-row:1;position:sticky;top:140px;align-self:start;min-width:0;padding-right:clamp(8px,1.6cqw,32px)}
+.dc-nav__sum{display:none}
+.dc-nav__body{max-height:calc(100svh - 170px);overflow:auto;overscroll-behavior:contain;scrollbar-width:none;padding:2px 0 2px 3px;margin-left:-3px}
+.dc-nav__body::-webkit-scrollbar{display:none}
+/* длинное содержание на низком экране: снизу мягко уходит в белое, пока есть что прокрутить */
+.dc-nav__body.is-more{-webkit-mask-image:linear-gradient(#000 calc(100% - 48px),transparent);mask-image:linear-gradient(#000 calc(100% - 48px),transparent)}
+.dc-step-arr{margin:0 .1em 0 0;color:var(--ink-3)}
+.dc-docs ul,.dc-toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.dc-docs{padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.dc-docs a,.dc-toc a{position:relative;display:block;padding:6px 0 6px 18px;border-radius:4px;transition:color .2s}
+.dc-docs a::before,.dc-toc a::before{content:"";position:absolute;left:-1px;top:6px;bottom:6px;width:1.5px;border-radius:1px;background:var(--purple);
+  transform:scaleY(0);transition:transform .3s var(--e-enter)}
+.dc-docs a{font:500 15px/1.3 var(--font-ui);letter-spacing:0;color:var(--ink-3)}
+.dc-docs a:hover{color:var(--ink)}
+.dc-docs a[aria-current="page"]{color:var(--ink)}
+.dc-docs a[aria-current="page"]::before{transform:none}
+.dc-toc a{display:grid;grid-template-columns:2ch minmax(0,1fr);column-gap:10px;font:400 15px/1.35 var(--font-ui);color:var(--ink-2)}
+/* пропорциональные цифры: «11» не разваливается на «1 1»; по правому краю — единицы под единицами */
+.dc-toc__n{font-variant-numeric:proportional-nums lining-nums;color:var(--ink-3);text-align:right}
+.dc-toc a:hover{color:var(--ink)}
+.dc-toc a.is-active{color:var(--ink)}
+.dc-toc a.is-active::before{transform:none}
+/* ровные строки содержания: без одного слова на второй строке */
+.dc-toc__t{text-wrap:balance}
+/* фокус в рельсе: кольцо внутри ссылки — .dc-nav__body режет внешнее (overflow) */
+.dc .dc-docs a:focus-visible,.dc .dc-toc a:focus-visible{box-shadow:inset 0 0 0 2px var(--purple);border-radius:6px}
+
+/* колонка текста */
+.dc-text{grid-column:4/11;grid-row:1;min-width:0;max-width:68ch;font:400 17px/1.65 var(--font);color:var(--ink-2);text-wrap:pretty}
+.dc-text p{margin:0}
+.dc-text :is(p,ul,ol)+:is(p,ul,ol){margin-top:1em}
+.dc-text b{font-weight:500;color:var(--ink)}
+.dc-text .pg-tl{color:var(--ink)}
+.dc-sec+.dc-sec{margin-top:clamp(56px,5cqw,72px);padding-top:clamp(40px,3.6cqw,56px);border-top:1px solid var(--line)}
+.dc-h2{display:flex;align-items:baseline;gap:.42em;margin:0 0 20px;font:500 clamp(24px,2.2cqw,32px)/1.15 var(--font);letter-spacing:-.022em;color:var(--ink);text-wrap:balance}
+.dc-h2__n{flex:none;font-weight:300;color:var(--ink-3);font-variant-numeric:proportional-nums lining-nums}
+/* 10+ разделов (политика, условия): заголовки с одного левого края при «1.» и «10.» */
+.dc-text:has(>section:nth-of-type(11)) .dc-h2__n{min-width:1.2em}
+.dc .nw{white-space:nowrap}
+/* списки: тире; нумерованный — номер табличный --ink-3 */
+.dc-ul,.dc-ol{list-style:none;margin:0;padding:0}
+.dc-ul li,.dc-ol li{position:relative;padding-left:1.6em}
+.dc-ul li+li,.dc-ol li+li{margin-top:.55em}
+.dc-ul li::before{content:"—"/"";position:absolute;left:0;color:var(--ink-3)}
+.dc-ul--def li{padding-left:0}
+.dc-ul--def li::before{content:none}
+.dc-ol{counter-reset:dc}
+.dc-ol li{counter-increment:dc}
+.dc-ol li::before{content:counter(dc) "."/"";position:absolute;left:0;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+
+/* ---------- «Другие документы» и вопрос ---------- */
+.dc-end{margin-top:clamp(80px,8cqw,128px);padding-top:clamp(40px,3.6cqw,56px);border-top:1px solid var(--line)}
+.dc-end__h{margin-bottom:clamp(20px,2cqw,28px)}
+.dc-others{border-bottom:1px solid var(--line)}
+.dc-oth{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:24px;row-gap:4px;align-items:center;padding:clamp(20px,2cqw,28px) 0;border-top:1px solid var(--line);color:var(--ink)}
+.dc-oth__t{grid-column:1;font:500 clamp(20px,1.8cqw,24px)/1.25 var(--font);letter-spacing:-.015em;transition:translate .24s var(--e-enter)}
+.dc-oth__d{grid-column:1;font:var(--marg);color:var(--ink-3);transition:translate .24s var(--e-enter)}
+.dc-oth>.pg-arr{grid-column:2;grid-row:1/3;width:20px;height:20px;margin:0}
+.dc-oth:hover .dc-oth__t,.dc-oth:hover .dc-oth__d{translate:4px 0}
+/* фокус строки: рамка с полями вокруг всей строки, стрелка внутри */
+.dc-oth{position:relative}
+.dc a.dc-oth:focus-visible{outline:none;box-shadow:none}
+.dc-oth:focus-visible::after{content:"";position:absolute;inset:6px -14px;border-radius:12px;box-shadow:0 0 0 2px var(--purple);pointer-events:none}
+.dc-ask{margin-top:28px!important;font:var(--marg);color:var(--ink-2)}
+
+/* ---------- форма удаления (подписанные поля, pages.js: form) ---------- */
+.dc-sec--form .dc-form{margin-top:clamp(36px,3.4cqw,48px)}
+.dc-form__row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(20px,2.4cqw,40px)}
+.dc-form .pg-pf--tel{display:flex}
+.dc-form .pg-pf__in{flex:1;min-width:0;width:auto;field-sizing:fixed}
+.dc-form textarea.pg-pf{field-sizing:content;min-height:calc(1.3em + .35em);line-height:1.3;vertical-align:top;max-height:12lh;overflow:auto}
+/* место под ошибку зарезервировано: ошибка в 8 px под линией поля, до следующей подписи 28 px */
+.dc-form .pg-fld{padding-bottom:52px}
+.dc-form .pg-fld>.pg-err{top:calc(100% - 52px + 8px);bottom:auto}
+.dc-form .pg-fld:not(:has(>.pg-err)){padding-bottom:32px}   /* комментарий без проверки — резерв не нужен */
+.dc-form .pg-radios{padding-bottom:34px}
+.dc-form .pg-radio{font-size:18px}
+.dc-form .pg-radios legend{margin-bottom:0}   /* подпись → кружки ≈12 px, как подпись → поле; цель касания 44 px сохраняется */
+.dc-form .pg-form__send{flex-direction:column;align-items:flex-start;gap:48px;margin-top:12px}
+.dc-form .pg-check{max-width:46ch;font-size:15px;color:var(--ink-2)}
+.dc-form .pg-check input{margin-top:1px}
+.dc-done{margin-top:clamp(36px,3.4cqw,48px)}
+.dc-done .pg-h3{font-weight:500}
+.dc-done .pg-p{text-wrap:balance}
+
+/* ---------- ноутбук и iPad альбомный (1024–1399): рельс шире (1–4), текст 5–12 — без переносов в рельсе и пустых колонок справа ---------- */
+@media (min-width:1024px) and (max-width:1399px){
+  .dc-rail{grid-column:1/5}
+  .dc-text{grid-column:5/13;max-width:700px}
+  .dc-hero .pg-hero__h,.dc-hero .pg-hero__lead,.dc-hero .pg-hero__meta,.dc-hero__act{grid-column-start:5}
+}
+/* 2200+: рельс и текст — одной группой по центру полотна (раскладка 1024–1399: рельс 1–4, текст 5–12); крупнее — общим zoom сетки (pages.css) */
+@media (min-width:2200px){
+  .dc main>.pg-hero .grid,.dc .dc-body{max-width:calc(1240px + 2 * var(--in));margin-inline:auto}
+  .dc-rail{grid-column:1/5}
+  .dc-text{grid-column:5/13}
+  .dc-hero .pg-hero__h,.dc-hero .pg-hero__lead,.dc-hero .pg-hero__meta,.dc-hero__act{grid-column-start:5}
+  .dc-nav__body{max-height:calc(100svh / var(--xl) - 170px)}   /* под zoom растёт и 100svh — делим обратно, содержание не уходит под край окна */
+}
+
+/* ---------- планшет и телефон: рельс — раскрывающийся блок под мета-строкой ---------- */
+@media (max-width:1023px){
+  .dc-hero{padding-bottom:36px}
+  .dc-body{padding-top:0}
+  .dc-body::before{display:none}
+  .dc-rail{grid-column:1/-1;grid-row:auto;position:static;padding-right:0;margin-bottom:clamp(48px,9cqw,72px)}
+  .dc-nav{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dc-nav__sum{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:60px;padding:14px 0;cursor:pointer;list-style:none;
+    font:500 18px/1.3 var(--font);letter-spacing:-.01em;color:var(--ink)}
+  .dc-nav__sum::-webkit-details-marker{display:none}
+  .dc-nav__i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;transition:rotate .24s var(--e-enter)}
+  .dc-nav[open] .dc-nav__i{rotate:45deg}
+  .dc-nav::details-content{block-size:0;overflow:clip;transition:block-size .36s var(--e-enter),content-visibility .36s allow-discrete}
+  .dc-nav[open]::details-content{block-size:auto}
+  .dc-nav.is-jump::details-content{transition:none}
+  .dc-nav__body{max-height:none;overflow:visible;padding:4px 0 28px 3px}
+  .dc-docs a,.dc-toc a{padding-block:12px;min-height:44px;align-content:center}   /* цель касания ≥ 44 px */
+  .dc-docs a::before,.dc-toc a::before{top:10px;bottom:10px}
+  .dc-meta{display:grid;gap:2px}
+  .dc-meta>i{display:none}
+  .dc-text{grid-column:1/-1;grid-row:auto}
+  .dc-hero .pg-hero__h{font-size:clamp(40px,6.8cqw,50px)}   /* планшет ≈50 px; телефон — ниже, ≤640 */
+  .dc-hero__act{grid-column:1/-1}
+  /* фокус «Содержание и документы»: рамка с полями, «+» внутри */
+  .dc-nav__sum{position:relative}
+  .dc summary.dc-nav__sum:focus-visible{box-shadow:none;outline:none}
+  .dc-nav__sum:focus-visible::after{content:"";position:absolute;inset:6px -10px;border-radius:10px;box-shadow:0 0 0 2px var(--purple);pointer-events:none}
+}
+/* планшет: дата — строка 1, «SAFA ONE MChJ · ИНН · safaone.uz…» — строка 2 */
+@media (min-width:641px) and (max-width:1023px){
+  .dc-meta{display:flex;flex-wrap:wrap;gap:2px 10px}
+  .dc-meta>span:first-child{flex-basis:100%}
+  .dc-meta>i{display:inline}
+  .dc-meta>i:first-of-type{display:none}
+}
+@media (max-width:640px){
+  .dc-h2{display:block}   /* номер в строке: длинные H2 без сироты */
+  .dc-h2__n{margin-right:.32em}
+  .dc-hero .pg-hero__h{font-size:min(40px,10vw)}
+  .dc-hero--long .pg-hero__h{font-size:min(40px,7.6vw)}   /* только «конфиденциальности» */
+  .dc-hero .pg-hero__lead{font-size:17px}
+  .dc-form__row{grid-template-columns:minmax(0,1fr)}
+  .dc-form .pg-form__send .btn{width:100%}
+  .dc-text{font-size:16.5px}
+}
+/* 280–359: длинные слова и неразрывные строки не уходят за поле */
+@media (max-width:359px){
+  .dc-h2{font-size:min(24px,calc((100cqw - 2 * var(--gap) - 2 * var(--in)) / 9.9));overflow-wrap:break-word}   /* «Интеллектуальная» = 9,8em */
+  .dc-meta>span{white-space:normal}
+  .dc-meta time{white-space:nowrap}   /* перенос перед датой: «Редакция от / 26 октября 2026 г.» */
+  .dc-hero__act .pg-ulink{white-space:normal}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .dc-docs a::before,.dc-toc a::before,.dc-nav::details-content,.dc-nav__i,.dc-oth__t,.dc-oth__d{transition:none!important}
+}
+
+/* ---------- печать: одна колонка без меню, подвала и рельса ---------- */
+@media print{
+  .dc-rail,.dc-form,.dc-done,.dc-oth>.pg-arr{display:none!important}
+  .dc-body::before{display:none}
+  .dc-hero{padding:16px 0 24px}
+  .dc-body{padding-top:0}
+  .dc-hero .grid>*,.dc-text{grid-column:1/-1!important;max-width:none}
+  .dc .pg-h1{font-size:28pt!important;line-height:1.05}
+  .dc .pg-lead{font-size:13pt}
+  .dc .dc-h2__n,.dc .dc-meta>i,.dc .dc-ul li::before,.dc .dc-ol li::before,.dc .dc-toc__n{color:#000!important}
+  .dc,.dc .pg-canvas,.dc .dc-text,.dc .dc-h2,.dc .pg-h1,.dc .pg-lead,.dc .dc-meta,.dc .dc-oth,.dc .dc-oth__d,.dc .dc-ask{color:#000!important}
+  .dc-sec{break-inside:auto}
+  .dc-h2{break-after:avoid}
+  .dc a[href^="http"]::after{content:" (" attr(href) ")"}
+}

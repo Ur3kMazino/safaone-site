@@ -1,0 +1,306 @@
+<!doctype html><html lang="ru" class="no-js"><head>
+  <meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Safa PAY — выплаты водителям | Safa One</title><meta name="description" content="Водитель сам выводит заработок из Яндекс Fleet на карту Uzcard или HUMO в приложении Safa. Парк видит каждую выплату.">
+<meta property="og:title" content="Safa PAY — выплаты водителям | Safa One"><meta property="og:description" content="Водитель сам выводит заработок из Яндекс Fleet на карту Uzcard или HUMO в приложении Safa. Парк видит каждую выплату."><meta property="og:image" content="media/poster_wide_f1.webp">
+<meta name="theme-color" content="#F3EEF6">
+<link rel="icon" type="image/png" sizes="64x64" href="img/favicon.png"><link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<script>document.documentElement.classList.replace('no-js','js')</script>
+<!-- шрифты со своего сервера (css/fonts.css); кириллица и латиница Onest нужны первому экрану — грузим сразу -->
+<link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="fonts/onest-v11-latin.woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css?v=15e75de1">
+<link rel="stylesheet" href="css/site.css?v=7b95ca34"><link rel="stylesheet" href="css/pages.css?v=a5334afb"><link rel="stylesheet" href="css/p-pay.css?v=104195c3">
+<script defer src="js/vendor/lenis-1.1.13.min.js?v=44dcd10f"></script>
+<script defer src="js/pages.js?v=fdcdab16"></script>
+<script defer src="js/p-pay.js?v=338b25ec"></script>
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"index.html"},{"@type":"ListItem","position":2,"name":"Safa PAY","item":"pay.html"}]},{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Safa PAY","applicationCategory":"FinanceApplication","description":"Водитель сам выводит заработок из Яндекс Fleet на карту Uzcard или HUMO в приложении Safa. Парк видит каждую выплату.","url":"pay.html","publisher":{"@type":"Organization","name":"SAFA ONE MChJ"}}]</script>
+</head><body class="pg" data-tone="pay">
+<a class="skip-link" href="#main">К содержимому</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="d-ok" viewBox="0 0 12 12"><path d="M2.4 6.4 4.9 8.8 9.6 3.4"/></symbol>
+  <symbol id="d-wait" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.7"/><path d="M6 3.5V6l1.7 1.1"/></symbol>
+  <symbol id="d-bad" viewBox="0 0 12 12"><path d="M6 2.3v4.6"/><path d="M6 9.6v.1" stroke-width="2"/></symbol>
+  <symbol id="pg-arr" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-plus" viewBox="0 0 16 16"><path d="M8 2v12M2 8h12" vector-effect="non-scaling-stroke"/></symbol>
+  <symbol id="pg-copy" viewBox="0 0 16 16"><rect x="5.5" y="5.5" width="8" height="8" rx="2" vector-effect="non-scaling-stroke"/><path d="M10.5 3.2A1.8 1.8 0 0 0 8.8 2H4a2 2 0 0 0-2 2v4.8a1.8 1.8 0 0 0 1.2 1.7" vector-effect="non-scaling-stroke"/></symbol>
+  <!-- такси: кузов с фарами и шашкой над крышей (devices-system) -->
+  <symbol id="i-taxi" viewBox="0 0 24 24"><rect x="7.5" y="3.2" width="9" height="2.5" rx="1"/><path d="M4 18v-4.4l1.9-4.8A2 2 0 0 1 7.8 7.5h8.4a2 2 0 0 1 1.9 1.3l1.9 4.8V18a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z"/><path d="M4.5 13.5h15M7.5 19v1.8M16.5 19v1.8"/><path d="M7.4 16.2h.6M16 16.2h.6" stroke-width="2.2"/></symbol>
+</svg>
+<!-- nav:start -->
+<!-- меню сайта: одна разметка на всех страницах (scratchpad/pages/tools/chrome.py). Лого | разделы и язык по центру | кнопка — без внутренних плашек -->
+<header class="nav is-light" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Safa One — на главную">
+    <img class="is-white" src="img/safa-white.svg" alt="" width="71" height="25">
+    <img class="is-color" src="img/safa-color.svg" alt="" width="71" height="25">
+  </a>
+  <nav class="nav__menu" aria-label="Основное меню">
+    <div class="nav__dd">
+      <button class="nav__link" type="button" aria-expanded="false" aria-controls="drop-products" aria-current="true">Продукты
+        <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.2 3.7 5 6.5l2.8-2.8"/></svg></button>
+      <div class="drop drop--fit" id="drop-products">
+        <!-- герои продуктов, 96px, без loading=lazy: выпадашка открывается сразу, ленивые мигали бы. Файлы — по финальным путям (утренний импорт №1/№7/№2 их заменит) -->
+        <a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><div><b>Safa Fleet</b><span>CRM для таксопарков</span></div></a>
+        <a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><div><b>Safa GPS</b><span>Мониторинг транспорта</span></div></a>
+        <a href="pay.html" data-sec="pay" aria-current="page"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><div><b>Safa PAY</b><span>Выплаты водителям</span></div></a>
+      </div>
+    </div>
+    <a class="nav__link" href="industries.html">Решения</a>
+    <a class="nav__link" href="services.html" data-sec="services">Услуги</a>
+    <a class="nav__link" href="about.html" data-sec="why">О компании</a>
+    <a class="nav__link" href="contacts.html" data-sec="contact">Контакты</a>
+    <span class="nav__sep" aria-hidden="true"></span>
+    <div class="lang" role="group" aria-label="Язык">
+      <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+      <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+    </div>
+  </nav>
+  <div class="nav__end">
+    <!-- кабинет партнёра — текстовая ссылка у кнопки, как пункты меню; уже 1600px подпись короткая (места между меню и кнопкой мало) -->
+    <a class="nav__link nav__cab" href="cabinet.html" aria-label="Кабинет партнёра"><span class="nav__cab-l">Кабинет партнёра</span><span class="nav__cab-s">Кабинет</span></a>
+    <a class="btn btn--primary nav__cta" href="contacts.html#lead">Обсудить проект</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="mnav"><i aria-hidden="true"></i><span class="burger__t">Меню</span></button>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav" aria-label="Меню" data-lenis-prevent>
+  <!-- без подписей групп: группы разделены только отступом. Предметы — только у трёх продуктов, те же, что в выпадашке -->
+  <ul class="mnav__prod">
+    <li><a href="fleet.html" data-sec="fleet"><img class="og" src="media/nav/car_fleet_96.webp?v=30132625" alt=""><span>Safa Fleet</span></a></li>
+    <li><a href="gps.html" data-sec="gps"><img class="og" style="--os:1.07" src="media/nav/pin_gps_96.webp?v=30132645" alt=""><span>Safa GPS</span></a></li>
+    <li><a href="pay.html" data-sec="pay" aria-current="page"><img class="og" src="media/nav/card_pay_96.webp?v=30132631" alt=""><span>Safa PAY</span></a></li>
+  </ul>
+  <ul>
+    <li><a href="industries.html">Решения</a></li>
+    <li><a href="services.html" data-sec="services">Услуги</a></li>
+    <li><a href="about.html" data-sec="why">О компании</a></li>
+    <li><a href="contacts.html" data-sec="contact">Контакты</a></li>
+  </ul>
+  <a class="mnav__cab" href="cabinet.html">Кабинет партнёра<svg class="arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  <div class="lang" role="group" aria-label="Язык">
+    <button type="button" data-lang="ru" aria-pressed="true" aria-label="RU, русский">RU</button>
+    <button type="button" data-lang="uz" aria-pressed="false" aria-label="UZ, oʻzbekcha" lang="uz">UZ</button>
+  </div>
+  <div class="mnav__end"><a class="btn btn--primary" href="contacts.html#lead">Обсудить проект</a></div>
+</nav>
+<!-- nav:end -->
+<div class="page"><div class="canvas pg-canvas">
+<main id="main">
+
+  <!-- 1. Герой: карта и монеты на земле -->
+  <section class="pg-hero pg-hero--split py-hero">
+    <div class="grid">
+      <div class="pg-hero__text">
+        <h1 class="pg-h1 py-h1" data-mask><span class="ln"><span><img class="pg-lk" src="img/safa-pay-color.svg" alt="Safa PAY" width="96" height="30">Водитель</span></span><span class="ln"><span>выводит сам.</span></span><span class="ln"><span>Парк видит</span></span><span class="ln"><span>каждую выплату.</span></span></h1>
+        <p class="pg-lead" data-rv>Водитель выводит заработок из Яндекс Fleet на&nbsp;карту Uzcard или HUMO в&nbsp;приложении Safa. Деньги приходят на&nbsp;карту из&nbsp;депозита, который парк пополняет заранее.</p>
+        <div class="pg-actions" data-rv>
+          <a class="btn btn--primary" href="cabinet.html">Подключить парк</a>
+          <a class="pg-ulink" href="cabinet.html">Войти в&nbsp;кабинет<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        </div>
+      </div>
+      <div class="pg-hero__obj">
+        <div class="py-duo">
+          <div class="pg-obj py-duo__card" style="--obj-d:160ms">
+            <div class="pg-obj__f"><img src="media/xl/card_pay.webp?v=30132631" srcset="media/xl/card_pay_898w.webp?v=30132631 898w, media/xl/card_pay.webp?v=30132631 1600w" sizes="(max-width: 1023px) min(60vw, 420px), (max-width: 1279px) clamp(220px, 26vw, 480px), clamp(220px, 30.5vw, 560px)" alt="" width="1600" height="1151" fetchpriority="high"></div>
+            <i class="cshadow" aria-hidden="true"></i>
+          </div>
+          <div class="pg-obj py-duo__coins">
+            <div class="pg-obj__f"><img src="media/xl/coins_pay.webp?v=30132636" alt="" width="776" height="1000"></div>
+            <i class="cshadow" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pg-ground" aria-hidden="true"></div>
+  </section>
+
+  <!-- 2. Путь денег: одна линия, четыре узла -->
+  <section class="pg-sec grid" id="how">
+    <div class="pg-head pg-head--wide">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Как деньги доходят</span></span><span class="ln"><span>до&nbsp;карты водителя</span></span></h2>
+    </div>
+    <ol class="pg-path" data-path>
+      <li class="pg-path__track" aria-hidden="true"><i class="pg-path__line"></i></li>
+      <li class="pg-path__n" style="--c:#9F5D87;--t:0ms"><i class="pg-path__dot" aria-hidden="true"></i><h3 class="pg-h3">Парк пополняет депозит</h3><p class="pg-p">Регистрирует парк в&nbsp;кабинете, загружает документы и&nbsp;после проверки пополняет депозит для выплат.</p></li>
+      <li class="pg-path__n" style="--c:#B2527A;--t:260ms"><i class="pg-path__dot" aria-hidden="true"></i><h3 class="pg-h3">Водитель подтверждает личность</h3><p class="pg-p">В&nbsp;приложении Safa проходит MyID и&nbsp;добавляет карту Uzcard или HUMO.</p></li>
+      <li class="pg-path__n" style="--c:#C6476A;--t:510ms"><i class="pg-path__dot" aria-hidden="true"></i><h3 class="pg-h3">Выводит заработок</h3><p class="pg-p">Сумма списывается с&nbsp;баланса водителя в&nbsp;Яндекс Fleet и&nbsp;приходит на&nbsp;карту из&nbsp;депозита парка.</p></li>
+      <li class="pg-path__n" style="--c:#D73F4C;--t:770ms"><i class="pg-path__dot" aria-hidden="true"></i><h3 class="pg-h3">Парк видит всё</h3><p class="pg-p">Выплаты и&nbsp;остаток депозита&nbsp;— в&nbsp;<a class="pg-tl" href="cabinet.html">кабинете партнёра</a>.</p></li>
+    </ol>
+  </section>
+
+  <!-- 3. Две стороны одной выплаты: водитель | парк -->
+  <section class="pg-sec pg-sec--rule grid" id="sides">
+    <div class="pg-head">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Две стороны</span></span><span class="ln"><span>одной выплаты</span></span></h2>
+    </div>
+    <div class="py-sides">
+      <div class="py-side py-side--drv">
+        <div class="py-side__h">
+        <div class="pg-hrow"><img class="pg-gl pg-gl--s" src="media/g2/steering_wheel_pay_256.webp" srcset="media/g2/steering_wheel_pay_512.webp 2x" alt="" width="44" height="44" loading="lazy" decoding="async" style="--os:1.08"><h3 class="pg-h3" data-mask><span class="ln"><span>Для водителя</span></span></h3></div>
+        <ul class="py-list" data-rv-group>
+          <li class="pg-p" data-rv>Вывод на&nbsp;карту Uzcard или HUMO в&nbsp;пару нажатий</li>
+          <li class="pg-p" data-rv>Баланс по&nbsp;каждому парку&nbsp;— в&nbsp;одном приложении</li>
+          <li class="pg-p" data-rv>Личность водителя подтверждается через MyID</li>
+        </ul>
+        </div>
+        <figure class="py-dev" data-rv>
+          <div class="py-phone-wrap">
+            <div class="py-phone" role="img" aria-label="Приложение Safa на iPhone: можно вывести 328 400 сум, карта Uzcard с номером на 4417, Таксопарк № 1" data-pay-phone>
+              <div class="py-phone__scr" aria-hidden="true">
+                <i class="py-ip-island"></i>
+                <div class="py-ip-status"><b>9:41</b>
+                  <span class="py-ip-sys">
+                    <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                    <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1.6 4.4a9.4 9.4 0 0 1 12.8 0"/><path d="M4.2 7.2a5.6 5.6 0 0 1 7.6 0"/><circle cx="8" cy="10" r="1.3" fill="currentColor" stroke="none"/></svg>
+                    <svg viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.5" height="11.8" rx="3.6" fill="none" stroke="currentColor" stroke-opacity=".4"/><rect x="2.2" y="2.2" width="19.3" height="8.6" rx="2.2" fill="currentColor"/><path d="M24.6 4.4v4.2a2.1 2.1 0 0 0 0-4.2z" fill="currentColor" fill-opacity=".45"/></svg>
+                  </span>
+                </div>
+                <div class="py-ip-body">
+                  <div class="py-ip-top"><b>Салом, Алишер</b><span class="py-ip-bell"><svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2.1H4.4z"/><path d="M10 21.2a2.1 2.1 0 0 0 4 0"/></svg><i></i></span></div>
+                  <div class="py-ip-balance">
+                    <header><span>Можно вывести</span><img src="img/safa-white.svg" alt="" width="40" height="14"></header>
+                    <b><span class="py-ip-amt" data-to="328400">328&#8239;400</span><small>&nbsp;сум</small></b>
+                  </div>
+                  <div class="py-ip-card py-ip-rows">
+                    <div class="py-ip-row"><svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="14" rx="3"/><path d="M3 10h18M15.5 15h2"/></svg><span>Всего на&nbsp;балансе</span><span class="pg-sum">412&#8239;900&nbsp;<small>сум</small></span></div>
+                    <div class="py-ip-row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m9 15 6-6"/><circle cx="9.4" cy="9.4" r=".6"/><circle cx="14.6" cy="14.6" r=".6"/></svg><span>Кэшбэк</span><span class="pg-sum py-ip-acc">4&#8239;129&nbsp;<small>сум</small></span></div>
+                  </div>
+                  <div class="py-ip-actions">
+                    <span class="py-ip-card py-ip-act" data-act="out"><span class="py-ip-act__ic"><svg viewBox="0 0 24 24"><path d="M6 18 18 6M9 6h9v9"/></svg></span><span class="py-ip-act__t"><b>Вывести</b><small>на&nbsp;карту</small></span></span>
+                    <span class="py-ip-card py-ip-act is-off"><span class="py-ip-act__ic"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M15 18H6V9"/></svg></span><span class="py-ip-act__t"><b>Пополнить</b><small>Скоро</small></span></span>
+                  </div>
+                  <div class="py-ip-h"><b>Мои карты</b><span>Все карты</span></div>
+                  <div class="py-ip-card py-ip-bank">
+                    <span class="py-ip-mark"><i></i></span>
+                    <div><span><b><span class="py-ip-dots">&#8226;&#8226;</span>&nbsp;4417</b><span class="py-ip-badge">Основная</span></span><small>ALISHER KARIMOV · 08/29</small></div>
+                  </div>
+                  <div class="py-ip-h"><b>Можно вывести по&nbsp;паркам</b></div>
+                  <div class="py-ip-card py-ip-park">
+                    <span class="py-ip-ava"><svg viewBox="0 0 24 24"><use href="#i-taxi"/></svg></span>
+                    <div><b>Таксопарк №&#8239;1</b><span class="pg-plate pg-plate--s"><span class="pg-plate__reg">01</span><span class="pg-plate__num">K<i></i>784<i></i>MA</span><span class="pg-plate__cc"><i class="pg-plate__flag"></i>UZ</span></span></div>
+                    <span class="pg-sum">328&#8239;400&nbsp;<small>сум</small></span>
+                  </div>
+                </div>
+                <div class="py-ip-tabs">
+                  <span class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z"/></svg>Главная</span>
+                  <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>История</span>
+                  <span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.4 18.3a6.6 6.6 0 0 1 11.2 0"/></svg>Профиль</span>
+                </div>
+                <i class="py-ip-home"></i>
+              </div>
+            </div>
+          </div>
+          <figcaption class="pg-cap"><b>Приложение Safa.</b> Сколько можно вывести, баланс по&nbsp;каждому парку и&nbsp;карты водителя&nbsp;— на&nbsp;главном экране.</figcaption>
+        </figure>
+      </div>
+
+      <i class="py-sides__rule" aria-hidden="true"></i>
+
+      <div class="py-side py-side--park">
+        <div class="py-side__h">
+        <div class="pg-hrow"><img class="pg-gl pg-gl--s" src="media/g2/bank_pay_256.webp" srcset="media/g2/bank_pay_512.webp 2x" alt="" width="44" height="44" loading="lazy" decoding="async" style="--os:1.04"><h3 class="pg-h3" data-mask><span class="ln"><span>Для парка</span></span></h3></div>
+        <ul class="py-list" data-rv-group>
+          <li class="pg-p" data-rv>Не&nbsp;нужно переводить деньги водителям вручную</li>
+          <li class="pg-p" data-rv>Каждая выплата и&nbsp;остаток депозита видны в&nbsp;кабинете</li>
+          <li class="pg-p" data-rv>Выводить могут только водители, которых вы&nbsp;подтвердили</li>
+          <li class="pg-p" data-rv>Балансы и&nbsp;статусы водителей&nbsp;— общие с&nbsp;<a class="pg-tl" href="fleet.html">Safa Fleet</a></li>
+        </ul>
+        </div>
+        <figure class="py-dev py-cab" data-rv>
+          <div class="py-cab__body">
+          <p class="py-cab__t" id="py-cab-t">Подтвердите список активных водителей</p>
+          <div class="py-cab__tbl" role="table" aria-labelledby="py-cab-t">
+            <div class="py-cab__r py-cab__th" role="row"><span role="columnheader">Водитель</span><span role="columnheader">Госномер</span><span role="columnheader">Статус</span></div>
+            <div class="py-cab__r" role="row">
+              <span class="py-cab__n" role="cell"><span class="pg-ava" data-c="2" aria-hidden="true">АК</span>Каримов&nbsp;А.</span>
+              <span role="cell"><span class="pg-plate pg-plate--s" role="img" aria-label="Госномер 01 K 784 MA"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">K<i></i>784<i></i>MA</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span></span>
+              <span role="cell"><span class="py-st">Активен</span></span>
+            </div>
+            <div class="py-cab__r" role="row">
+              <span class="py-cab__n" role="cell"><span class="pg-ava" data-c="2" aria-hidden="true">ЖТ</span>Турсунов&nbsp;Ж.</span>
+              <span role="cell"><span class="pg-plate pg-plate--s" role="img" aria-label="Госномер 01 Y 362 MB"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">Y<i></i>362<i></i>MB</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span></span>
+              <span role="cell"><span class="py-st">Активен</span></span>
+            </div>
+            <div class="py-cab__r" role="row">
+              <span class="py-cab__n" role="cell"><span class="pg-ava" data-c="2" aria-hidden="true">СР</span>Рахимов&nbsp;С.</span>
+              <span role="cell"><span class="pg-plate pg-plate--s" role="img" aria-label="Госномер 10 H 519 AB"><span class="pg-plate__reg" aria-hidden="true">10</span><span class="pg-plate__num" aria-hidden="true">H<i></i>519<i></i>AB</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span></span>
+              <span role="cell"><span class="py-st">Активен</span></span>
+            </div>
+            <div class="py-cab__r" role="row">
+              <span class="py-cab__n" role="cell"><span class="pg-ava" data-c="2" aria-hidden="true">БЮ</span>Юсупов&nbsp;Б.</span>
+              <span role="cell"><span class="pg-plate pg-plate--s" role="img" aria-label="Госномер 01 E 205 XA"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">E<i></i>205<i></i>XA</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span></span>
+              <span role="cell"><span class="py-st py-st--bad">Заблокирован<span class="py-st__m"><span class="py-st__sep">· </span>выводы закрыты</span></span></span>
+            </div>
+            <div class="py-cab__r" role="row">
+              <span class="py-cab__n" role="cell"><span class="pg-ava" data-c="2" aria-hidden="true">ША</span>Алиев&nbsp;Ш.</span>
+              <span role="cell"><span class="pg-plate pg-plate--s" role="img" aria-label="Госномер 01 T 947 CA"><span class="pg-plate__reg" aria-hidden="true">01</span><span class="pg-plate__num" aria-hidden="true">T<i></i>947<i></i>CA</span><span class="pg-plate__cc" aria-hidden="true"><i class="pg-plate__flag"></i>UZ</span></span></span>
+              <span role="cell"><span class="py-st">Активен</span></span>
+            </div>
+          </div>
+          <div class="py-cab__foot"><span class="py-cab__btn" aria-hidden="true" tabindex="-1">Подтвердить список</span></div>
+          </div>
+          <figcaption class="pg-cap"><b>Кабинет партнёра.</b> Выводы открыты только водителям из&nbsp;подтверждённого списка.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Что понадобится для подключения -->
+  <section class="pg-sec pg-sec--rule grid" id="connect">
+    <div class="pg-head">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Что понадобится</span></span><span class="ln"><span>для подключения</span></span></h2>
+      <p class="pg-lead" data-rv>После регистрации кабинет покажет, что именно загрузить.</p>
+    </div>
+    <ol class="pg-rows py-req" data-rv-group>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">01</span><h3 class="pg-h3 pg-row__t">Юридическое наименование и&nbsp;ИНН</h3><p class="pg-p pg-row__d">Как в&nbsp;карточке счёта в&nbsp;банке</p></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">02</span><h3 class="pg-h3 pg-row__t">Документы юрлица</h3><p class="pg-p pg-row__d">Свидетельство о&nbsp;регистрации, устав, решение о&nbsp;назначении директора, паспорт директора</p></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">03</span><h3 class="pg-h3 pg-row__t">Расчётный счёт в&nbsp;сумах</h3><p class="pg-p pg-row__d">20&nbsp;цифр&nbsp;— и&nbsp;МФО филиала банка</p></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">04</span><h3 class="pg-h3 pg-row__t">Ключ Яндекс Fleet</h3><p class="pg-p pg-row__d">С&nbsp;правом на&nbsp;создание транзакций&nbsp;— его&nbsp;выпускает директор</p></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">05</span><h3 class="pg-h3 pg-row__t">ЭЦП директора</h3><p class="pg-p pg-row__d">Для договора и&nbsp;полномочия</p></div></li>
+      <li class="pg-row" data-rv><div class="pg-row__in"><span class="pg-row__n">06</span><h3 class="pg-h3 pg-row__t">Список водителей «ПИНФЛ + телефон»</h3><p class="pg-p pg-row__d py-opt">По&nbsp;желанию</p></div></li>
+    </ol>
+    <div class="py-req__act" data-rv><a class="pg-ulink" href="cabinet.html">Зарегистрировать парк<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div>
+  </section>
+
+
+  <!-- 5. FAQ -->
+  <section class="pg-sec pg-sec--rule grid pg-faq" id="faq">
+    <div class="pg-faq__aside">
+      <h2 class="pg-h2" data-mask><span class="ln"><span>Вопросы</span></span><span class="ln"><span>и&nbsp;ответы</span></span></h2>
+      <p class="pg-marg">Не&nbsp;нашли ответ&nbsp;— позвоните или напишите.</p>
+      <a class="pg-ulink" href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a>
+      <a class="pg-ulink" href="mailto:dev@safaone.uz">dev@safaone.uz</a>
+    </div>
+    <div class="pg-faq__list">
+      <details class="pg-qa"><summary><h3>Откуда берутся деньги для выплат?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Парк пополняет депозит в&nbsp;Safa PAY переводом с&nbsp;расчётного счёта. Когда водитель выводит заработок, такая&nbsp;же сумма списывается с&nbsp;его баланса в&nbsp;Яндекс Fleet, а&nbsp;деньги уходят на&nbsp;карту из&nbsp;депозита.</p></div></details>
+      <details class="pg-qa"><summary><h3>Какие карты поддерживаются?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Карты Uzcard и&nbsp;HUMO. Водитель может добавить несколько карт и&nbsp;выбрать основную.</p></div></details>
+      <details class="pg-qa"><summary><h3>Когда деньги приходят на&nbsp;карту?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Платежи проходят через сторонних платёжных операторов, к&nbsp;каждой операции применяются их&nbsp;условия. Срок зачисления зависит от&nbsp;банка карты. Статус каждого вывода виден водителю в&nbsp;приложении, а&nbsp;парку&nbsp;— в&nbsp;кабинете.</p></div></details>
+      <details class="pg-qa"><summary><h3>Может&nbsp;ли водитель вывести больше, чем заработал?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Нет. Сумма вывода ограничена балансом водителя в&nbsp;Яндекс Fleet.</p></div></details>
+      <details class="pg-qa"><summary><h3>Как водителю начать?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">В&nbsp;приложении Safa подтвердить личность через MyID и&nbsp;выбрать свой парк. Выводы откроются, когда парк подтвердит водителя в&nbsp;списке активных.</p></div></details>
+      <details class="pg-qa"><summary><h3>Как удалить свои данные?</h3><svg class="pg-qa__i" viewBox="0 0 16 16" aria-hidden="true"><use href="#pg-plus"/></svg></summary><div class="pg-qa__a"><p class="pg-p">Аккаунт можно удалить в&nbsp;приложении или по&nbsp;запросу&nbsp;— порядок описан на&nbsp;странице «<a class="pg-tl" href="data-deletion.html">Удаление данных</a>».</p></div></details>
+    </div>
+  </section>
+
+  <!-- 6. Финал -->
+  <section class="pg-next grid py-next">
+    <h2 class="pg-next__t" data-mask><span class="ln"><span>Подключите парк</span></span><span class="ln"><span>к&nbsp;Safa PAY.</span></span></h2>
+    <div class="pg-next__a" data-rv>
+      <a class="btn btn--primary" href="cabinet.html">Подключить парк</a>
+      <a class="pg-ulink" href="cabinet.html">Войти в&nbsp;кабинет<svg class="pg-arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <p class="pg-marg py-next__m" data-rv>Вопросы по&nbsp;подключению: <a class="pg-tl" href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></p>
+  </section>
+</main>
+  <!-- foot:start -->
+  <footer class="pg-foot">
+    <div class="grid foot__colophon">
+      <div class="foot__brand"><img src="img/safa-color.svg" alt="safa" width="96" height="34"><p>Собственные продукты и&nbsp;разработка на&nbsp;заказ для транспорта и&nbsp;бизнеса в&nbsp;Узбекистане.</p></div>
+      <nav class="foot__col foot__col--a" aria-label="Продукты"><h3>Продукты</h3><ul><li><a href="fleet.html">Safa Fleet</a></li><li><a href="gps.html">Safa GPS</a></li><li><a href="pay.html" aria-current="page">Safa PAY</a></li><li><a href="industries.html">Решения по&nbsp;отраслям</a></li><li><a href="cabinet.html">Кабинет партнёра</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Услуги"><h3>Услуги</h3><ul><li><a href="services.html#mobile">Мобильные приложения</a></li><li><a href="services.html#web">Веб-сервисы и&nbsp;платформы</a></li><li><a href="services.html#backend">Backend и&nbsp;API</a></li><li><a href="services.html#iot">IoT и&nbsp;телематика</a></li><li><a href="services.html#ai">AI и&nbsp;автоматизация</a></li><li><a href="services.html#integrations">Интеграции</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Компания"><h3>Компания</h3><ul><li><a href="about.html">О компании</a></li><li><a href="services.html#process">Как мы работаем</a></li><li><a href="contacts.html">Контакты</a></li><li><a href="tel:+998503333900">+998&nbsp;50&nbsp;333&nbsp;39&nbsp;00</a></li><li><a href="mailto:dev@safaone.uz">dev@safaone.uz</a></li></ul></nav>
+      <nav class="foot__col" aria-label="Документы"><h3>Документы</h3><ul><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="data-deletion.html">Удаление данных</a></li><li><a href="terms.html">Условия использования</a></li></ul></nav>
+      <p class="foot__legal">© 2026 SAFA ONE MChJ&nbsp;· ИНН&nbsp;312911394&nbsp;· Резидент IT&nbsp;Park Uzbekistan<br>Узбекистан, г.&nbsp;Ташкент, Юнусабадский район, махалля Mirzo&nbsp;Ulugʻbek, <span style="white-space:nowrap">ул. Xalqobod-2,</span> д.&nbsp;65/6</p>
+    </div>
+  </footer>
+  <!-- foot:end -->
+</div></div>
+</body></html>

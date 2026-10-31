@@ -1,0 +1,143 @@
+/* Safa One — industries.html «Решения по отраслям» (ТЗ_страницы.md §2.7). Префикс in-.
+   Герой --type (H1, лид 1–6, легенда статусов маргиналией 9–12) + матрица «отрасль × продукт» (role=table),
+   четыре отрасли: предмет слева в строке H2, текст 1–6, список «что подойдёт» 8–12.
+   Без карточек, заливок и фрагментов UI: линии, точки статусов, лок-апы продуктов. */
+
+/* ============================== герой ============================== */
+/* нижняя линия матрицы и есть разделитель перед «Таксопарками»: без поля героя и без второй линии,
+   от линии до H2 — то же padding-top раздела, что у всех остальных (128 px на 1440) */
+.pg-hero.in-hero{padding-bottom:0}
+.in-hero+.pg-sec--rule::before{display:none}
+.in-hero .pg-hero__lead{margin-top:clamp(28px,2.6cqw,40px)}
+.in-hero .pg-actions{margin-top:clamp(32px,2.8cqw,40px)}
+/* легенда статусов — маргиналия героя: читается до таблицы */
+.in-legend{max-width:40ch}
+.in-legend .in-key{display:block;padding-left:18px;text-indent:-18px}
+.in-legend .in-key+.in-key{margin-top:8px}
+.in-legend b{color:var(--ink);font-weight:500}
+.in-key::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10px;border-radius:50%;background:var(--ok-dot);vertical-align:.06em}
+.in-key--task::before{background:var(--warn-dot)}
+/* ≥1024: легенда стоит над теми колонками, которые объясняет — точки на одной вертикали со статусами Safa GPS.
+   (100% + cg) / 8 — ровно расстояние от колонки 7 сетки до колонки GPS матрицы (формула колонок ниже, и на сетке 1480 тоже) */
+@media (min-width:1024px){
+  .pg-hero--type .in-legend{grid-column:7/13;max-width:none;padding-left:calc((100% + var(--cg)) / 8)}
+}
+
+/* ============================== матрица ============================== */
+/* первая колонка = 5 колонок сетки страницы (название отрасли в одну строку на ≥1280), четыре статуса делят остальные 7 поровну */
+.in-mx{grid-column:1/-1;margin-top:clamp(72px,7.4cqw,128px);border-bottom:1px solid var(--line)}
+.in-mx__hd,.in-mx__r{display:grid;column-gap:var(--cg);align-items:center;
+  grid-template-columns:minmax(0,calc((100% - 11 * var(--cg)) * 5 / 12 + 4 * var(--cg))) repeat(4,minmax(0,1fr))}
+.in-mx__c0{min-width:0}
+/* шапка: лок-апы 26 px и слово «Разработка» на одной нижней линии (низ «safa» = базовая линия слова) */
+.in-mx__hd{align-items:end;padding-bottom:clamp(18px,1.8cqw,26px)}
+.in-mx__h{display:flex;align-items:flex-end;min-height:26px}
+.in-mx__h img{display:block;height:26px;width:auto}
+/* у лок-апа GPS слово «safa» — 115/260 высоты против 180/260 у Fleet и PAY, низ слова на 215/260 (пин свисает ниже):
+   крупнее, чтобы слово читалось в одном весе с соседями, и вниз — низ «safa» на общей линии */
+.in-mx__h img[src*="safa-gps"]{height:32px;margin-block:-.5px -5.5px}
+.in-mx__h--w{font:500 clamp(17px,1.4cqw,20px)/26px var(--font);letter-spacing:-.012em;color:var(--ink);translate:0 calc(13.2px - .333em)}   /* сдвиг сверен по пикселям на 2x: базовая линия слова = низ «safa» у Fleet и PAY */
+/* строки: линии между, без заливок; вся строка — ссылка на раздел отрасли */
+.in-mx__r{position:relative;border-top:1px solid var(--line);padding-block:clamp(22px,2.2cqw,34px)}
+.in-mx__a{display:inline-block;max-width:100%;font:500 clamp(21px,2cqw,30px)/1.18 var(--font);letter-spacing:-.02em;color:var(--ink);
+  transition:color .24s}
+.in-mx__t{display:inline-block;transition:translate .24s var(--e-enter)}
+.in-mx__a::after{content:"";position:absolute;inset:0;z-index:1}
+.in-mx__a .pg-arr{width:.6em;height:.6em;margin-left:.36em;rotate:90deg;color:var(--ink-3);vertical-align:-.02em;transition:translate .24s var(--e-enter),color .24s}
+.in-mx__r:hover .in-mx__t{translate:4px 0}
+.in-mx__r:hover .in-mx__a{color:var(--acc-ink)}
+.in-mx__r:hover .in-mx__a .pg-arr,.in-mx__a:focus-visible .pg-arr{translate:0 3px;color:var(--acc-ink)}
+/* фокус — на всей строке (она кликабельна целиком): кольцо рисует ::after, накрывающий строку,
+   с воздухом 14 px по бокам и отступом 6 px от линий строки — не прижато к первой букве и не лежит на линиях */
+.pg .in-mx__a:focus-visible{box-shadow:none;outline:none}
+.in-mx__a:focus-visible::after{inset:6px -14px;border-radius:12px;box-shadow:var(--ring,0 0 0 3px #fff,0 0 0 5px var(--purple))}
+.in-mx__r:has(.in-mx__a:focus-visible) .in-mx__a{color:var(--acc-ink)}
+.in-nw{white-space:nowrap}
+/* подпись столбца внутри ячейки — только на узких экранах */
+.in-mx__l{display:none}
+/* статус: точка 8 px + слово */
+.in-st{display:inline-flex;align-items:center;gap:10px;font:400 15px/1.3 var(--font-ui);letter-spacing:0;color:var(--ink);white-space:nowrap}
+.in-st::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--ok-dot)}
+.in-st--task{color:var(--ink-2)}
+.in-st--task::before{background:var(--warn-dot)}
+.in-st--no{color:var(--ink-3)}
+.in-st--no::before{display:none}
+
+/* ============================== отрасль ============================== */
+.in-ind{row-gap:0;align-items:start}
+.in-ind__h{--h2:clamp(34px,4.2cqw,60px);grid-column:1/-1;align-items:flex-start}
+/* предмет 56 px слева в строке H2; центр — на середине первой строки (при переносе остальные строки идут правее предмета) */
+.in-gl{--gs:56px;margin-top:calc((var(--h2) - var(--gs)) / 2)}
+.in-ind__h .pg-h2{padding-top:0;font-size:var(--h2)}
+.in-ind__txt{grid-column:1/7;margin-top:clamp(36px,3.6cqw,56px);padding-left:calc(56px + 14px)}
+.in-ind__lead{max-width:36ch;font-size:clamp(19px,1.55cqw,22px)}
+.in-ind__act{display:flex;flex-wrap:wrap;gap:16px 32px;margin-top:36px}
+/* список «что подойдёт»: лок-ап или слово | фраза (+ статус второй строкой) | стрелка */
+.in-fit{grid-column:8/13;margin:clamp(36px,3.6cqw,56px) 0 0;padding:0;list-style:none;border-bottom:1px solid var(--line)}
+.in-fit>li{border-top:1px solid var(--line)}
+/* ссылка шире строки на 12 px с каждой стороны, содержимое на прежнем месте: кольцу фокуса есть куда дышать */
+.in-fit__r{display:grid;grid-template-columns:clamp(88px,7.4cqw,104px) minmax(0,1fr) 18px;column-gap:clamp(14px,1.4cqw,22px);align-items:center;
+  min-height:68px;padding-block:16px;margin-inline:-12px;padding-inline:12px;border-radius:10px;color:var(--ink)}
+.in-fit__lk{display:flex;align-items:center;min-height:24px}
+.in-fit__lk img{display:block;height:24px;width:auto}
+.in-fit__lk img[src*="safa-gps"]{height:29px}   /* то же выравнивание веса слова «safa», что в шапке матрицы */
+/* слово вместо лок-апа (Разработка, MyID) — уменьшенная копия «Разработки» из шапки матрицы */
+.in-fit__w{font:500 15px/1 var(--font);letter-spacing:-.01em;color:var(--ink);white-space:nowrap}
+.in-fit__t{font:400 clamp(18px,1.35cqw,20px)/1.3 var(--font);letter-spacing:-.01em;transition:translate .24s var(--e-enter),color .24s;text-wrap:pretty}
+/* статус «Под задачу» — тот же компонент, что в матрице, второй строкой под фразой */
+.in-fit__st{display:flex;width:max-content;margin-top:6px;font-size:13px;gap:8px}
+.in-fit__st::before{width:6px;height:6px}
+.in-fit__r>.pg-arr{grid-column:3;justify-self:end;width:16px;height:16px;margin:0;color:var(--ink-2)}
+a.in-fit__r:hover .in-fit__t{translate:4px 0;color:var(--acc-ink)}
+a.in-fit__r:hover>.pg-arr{color:var(--acc-ink)}
+/* стрелка в покое кончается ровно там, где линия: общий сдвиг на 3 px (pages.css) вынес бы её за край колонки */
+a.in-fit__r:is(:hover,:focus-visible)>.pg-arr{translate:0}
+
+/* ============================== ≥1680: содержимое до 1480 px от левого поля (ТЗ §1.9) ============================== */
+@media (min-width:1680px){
+  #main .grid{grid-template-columns:repeat(12,minmax(0,calc((1480px - 11 * var(--cg)) / 12)));justify-content:start}
+  #main :is(.pg-sec--rule,.pg-next)::before{right:auto;width:1480px}
+}
+
+/* ============================== планшет ============================== */
+@media (max-width:1023px){
+  .in-hero .in-legend{margin-top:28px}
+  /* матрица: каждая отрасль — блок «название → продукты со статусом»; шапка остаётся для чтения с экрана */
+  .in-mx{margin-top:clamp(56px,9cqw,80px)}
+  .in-mx__hd{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .in-mx__r{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:18px;padding-block:24px 26px}
+  .in-mx__c0{grid-column:1/-1}
+  .in-mx__c{display:grid;gap:6px;align-content:start;min-width:0}
+  .in-mx__l{display:block;font:400 13px/1.2 var(--font-ui);color:var(--ink-3)}
+  .in-mx__a{font-size:clamp(21px,3.4cqw,26px)}
+  /* неприменимые ячейки не занимают место; «Не применяется» остаётся для экранных читалок */
+  .in-mx__c:has(.in-st--no){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+  .in-gl{--gs:48px}
+  .in-ind__txt{grid-column:1/-1;padding-left:0;margin-top:28px}
+  .in-fit{grid-column:1/-1;margin-top:40px}
+}
+/* ============================== телефон ============================== */
+@media (max-width:640px){
+  .in-mx__r{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}
+  .in-st{font-size:15px}
+  .in-fit__st{font-size:13px}
+  .in-hero .pg-actions{margin-top:28px}
+  .in-ind__h{--h2:clamp(30px,8.4vw,34px);gap:10px}
+  .in-gl{--gs:36px}
+  .in-ind__h .pg-h2{hyphens:auto;-webkit-hyphens:auto}
+  /* лок-ап остаётся слева в строке, фраза рядом, стрелка справа */
+  .in-fit__r{grid-template-columns:76px minmax(0,1fr) 16px;column-gap:12px;min-height:64px}
+  .in-fit__lk img{height:20px}
+  .in-fit__lk img[src*="safa-gps"]{height:24px}
+  .in-fit__t{font-size:17px}
+  /* поле страницы 20 px: кольцо фокуса ближе к содержимому, чтобы не упираться в край экрана */
+  .in-fit__r{margin-inline:-10px;padding-inline:10px}
+  .in-mx__a:focus-visible::after{inset:5px -10px}
+  .in-fit__w{font-size:13px;line-height:1.15}
+  .in-fit__r>.pg-arr{width:14px;height:14px}
+  .in-ind__act{gap:20px 28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .in-mx__a,.in-mx__a .pg-arr,.in-fit__t{transition:none!important}
+}
