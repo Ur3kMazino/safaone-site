@@ -50,13 +50,13 @@
           <p class="cab-lead" id="cn-lead" data-fade>Заполните обязательные пункты, подпишите договор и&nbsp;отправьте документы на&nbsp;проверку.</p>
         </div>
 
-        <!-- прогресс: 5 обязательных пунктов (1, 2, 3, 4, 6) -->
+        <!-- прогресс: 5 пунктов (1, 2, 3, 4, 6); шага «Список водителей» нет — его загружают в кабинете после модерации -->
         <div class="prog cn__prog">
           <div class="prog__head">
             <p class="prog__n" aria-hidden="true"><span id="prog-n">3</span><i>/5</i></p>
             <div class="prog__txt" aria-live="polite">
               <p class="prog__t"><span class="sr-only" id="prog-sr">Готово 3 из 5: </span>обязательных пунктов готово&nbsp;·&nbsp;<span id="prog-pct">60</span>%</p>
-              <p class="prog__s">Список водителей&nbsp;— по&nbsp;желанию</p>
+              <p class="prog__s">Список водителей загрузите в&nbsp;кабинете после проверки</p>
             </div>
           </div>
           <div class="prog__bar" id="prog-bar" role="progressbar" aria-label="Подключение к Safa PAY" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3" aria-valuetext="Готово 3 из 5 обязательных пунктов">
@@ -212,41 +212,9 @@
             </div>
           </li>
 
-          <!-- 05 Список водителей — необязательно -->
-          <li class="step" id="step-5" data-step="5">
-            <span class="step__n" aria-hidden="true">05</span>
-            <div class="step__main">
-              <div class="step__h"><h3 class="hx" id="s5-h"><img class="glass" src="media/g2/people_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Список водителей</span></h3><span class="st st--opt" data-st>Необязательно</span></div>
-              <p class="step__d">Файл с&nbsp;колонками «ПИНФЛ» и&nbsp;«Телефон». CSV или XLSX до&nbsp;6&nbsp;МБ. Можно пропустить</p>
-              <p class="step__v" data-val hidden></p>
-              <p class="step__ex" data-ex><b>Пример строки:</b> ПИНФЛ&nbsp;<span class="nw">31234567890123</span> · Телефон&nbsp;<span class="nw">998901234567</span></p>
-            </div>
-            <button class="step__act btn btn--line btn--sm" type="button" data-act aria-expanded="false" aria-controls="s5-panel"><span data-act-t>Загрузить файл</span><span class="sr-only">: Список водителей</span></button>
-            <div class="step__panel" id="s5-panel">
-              <div class="step__pin">
-                <form class="step__form" novalidate aria-labelledby="s5-h">
-                  <div class="fld">
-                    <div class="drop" data-drop>
-                      <p class="drop__t">Перетащите файл сюда или&nbsp;выберите на&nbsp;компьютере<span class="drop__s">CSV или XLSX до&nbsp;6&nbsp;МБ</span></p>
-                      <input class="sr-only drop__in" type="file" id="s5-file" name="drivers" accept=".csv,.xlsx" aria-describedby="s5-file-m">
-                      <label class="btn btn--line btn--sm drop__btn" for="s5-file">Выбрать файл</label>
-                    </div>
-                    <p class="fld__msg" id="s5-file-m" aria-live="polite"></p>
-                    <ul class="files" data-files aria-label="Загруженный файл"></ul>
-                  </div>
-                  <div class="step__btns">
-                    <button class="btn btn--primary btn--sm" type="submit"><span>Сохранить</span><i class="dots" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i></i></button>
-                    <button class="ulink" type="button" data-cancel>Отмена</button>
-                    <button class="ulink ulink--sm ulink--mute step__demo" type="button" data-example>Заполнить примером</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </li>
-
-          <!-- 06 Договор и полномочие — после шагов 1–4 -->
+          <!-- 05 Договор и полномочие — после шагов 1–4 -->
           <li class="step is-locked" id="step-6" data-step="6">
-            <span class="step__n" aria-hidden="true">06</span>
+            <span class="step__n" aria-hidden="true">05</span>
             <div class="step__main">
               <div class="step__h"><h3 class="hx" id="s6-h"><img class="glass" src="media/g2/signature_pen_256.webp" alt="" aria-hidden="true" width="40" height="40" decoding="async"><span>Договор и&nbsp;полномочие</span></h3><span class="st st--todo" data-st>Не подписано</span></div>
               <p class="step__warn" id="s6-warn" aria-live="polite"></p>
@@ -455,7 +423,7 @@ function value(n){
 function render(){
   var lock = locked();
   var next = REQ.filter(function(n){ return !S[n].done && !(n === 6 && lock); })[0] || 0;
-  [1, 2, 3, 4, 5, 6].forEach(function(n){
+  [1, 2, 3, 4, 6].forEach(function(n){
     var li = step(n), s = S[n], st = $('[data-st]', li), v = $('[data-val]', li), ex = $('[data-ex]', li), a = actOf(n);
     li.classList.toggle('is-done', s.done);
     li.classList.toggle('is-next', n === next);
@@ -560,7 +528,7 @@ function addFiles(n, files){
     } else done(null);
   }
 }
-[2, 5].forEach(function(n){
+[2].forEach(function(n){   // список водителей загружают в кабинете после модерации, не здесь
   var form = formOf(n), inp = $('.drop__in', form), zone = $('[data-drop]', form);
   inp.addEventListener('change', function(){ addFiles(n, inp.files); inp.value = ''; });
   ['dragenter', 'dragover'].forEach(function(t){ zone.addEventListener(t, function(e){ e.preventDefault(); zone.classList.add('is-over'); }); });
@@ -657,7 +625,7 @@ var SAVE = {
   5: function(){ S[5].file = draft[5]; S[5].done = !!draft[5]; return true; },
   6: function(f){ S[6].until = toIso(f.elements.until.value); return true; } };
 var WAIT = { 1:0, 2:0, 3:0, 4:900, 5:0, 6:1200 };
-[1, 2, 3, 4, 5, 6].forEach(function(n){
+[1, 2, 3, 4, 6].forEach(function(n){
   var form = formOf(n);
   C.bindForm(form, function(f){ var ch = SAVE[n](f); f.removeAttribute('aria-busy'); commit(n, ch); }, WAIT[n]);
   form.addEventListener('submit', function(){
